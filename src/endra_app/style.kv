@@ -1,4 +1,4 @@
-<CorrespondenceHeader>:
+<CorrespondenceHeaderView>:
     orientation: 'horizontal'
     size_hint_y: None
     height: 50
@@ -6,7 +6,7 @@
     padding: 5
     canvas.before:
         Color:
-            rgba: 0.9, 0.9, 0.9, 1  # Background color (light gray)
+            rgba: 0.1, 0.1, 0.1, 1  # background colour
         Rectangle:
             size: self.size
             pos: self.pos
@@ -15,11 +15,11 @@
         id: button1
         text: "Button 1"
         size_hint: 0.2, 1
-        background_color: 0.2, 0.6, 1, 1  # Light blue button
+        background_color: 0.2, 0.6, 1, 1
     Label:
         id: label
         font_size: 16
-        color: 0, 0, 0, 1  # Black text
+        color: 0.9, 0.9, 0.9, 1
         size_hint: 0.6, 1
 
 
@@ -27,4 +27,33 @@
         id: button2
         text: "Button 2"
         size_hint: 0.2, 1
+        background_color: 0.8, 0.3, 0.3, 1
+<SideBarView>
+    orientation: 'vertical'
+    size_hint_x: 0.3
+    size_hint_y: 1
+    spacing: 5
+    padding: 5
+    canvas.before:
+        Color:
+            rgba: 0.2, 0.2, 0.2, 1  # background colour
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    ScrollView:
+        id: scroll_view
+        size_hint: 1, 1
+        
+        GridLayout:
+            id: scroll_layout
+            cols: 1
+            spacing: 10
+            size_hint_y: None
+
+    Button:
+        id: add_corresp_btn
+        text: "Add Widget"
+        size_hint: 1, None
+        height: 50
         background_color: 0.8, 0.3, 0.3, 1  # Light red button
