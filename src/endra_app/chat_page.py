@@ -6,14 +6,14 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.lang import Builder
-from endra import Profile, Correspondence
+from endra import Message, Correspondence
 import os
 # Load the KV file
-KV_FILE = os.path.join(os.path.dirname(__file__), "side_bar.kv")
+KV_FILE = os.path.join(os.path.dirname(__file__), "chat_page.kv")
 Builder.load_file(KV_FILE)
 
 
-class CorrespondenceHeaderView(BoxLayout):
+class MessageView(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.label = self.ids.label
@@ -21,7 +21,7 @@ class CorrespondenceHeaderView(BoxLayout):
         self.button2 = self.ids.button2
 
 
-class CorrespondenceHeader(CorrespondenceHeaderView):
+class MessageWidget(MessageView):
     def __init__(self, correspondence:Correspondence, **kwargs):
         super().__init__(**kwargs)
         self.label.text = correspondence.id
@@ -41,7 +41,7 @@ class CorrespondenceHeader(CorrespondenceHeaderView):
         print(f"Button 2 in '{self.label.text}' clicked!")
 
 
-class SideBarView(BoxLayout):
+class MessagePageView(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -49,36 +49,36 @@ class SideBarView(BoxLayout):
         self.scroll_view = self.ids.scroll_view
         
         self.scroll_layout = self.ids.scroll_layout
-        self.add_corresp_btn = self.ids.add_corresp_btn
+        self.add_message_btn = self.ids.add_message_btn
 
         self.scroll_layout.bind(
             minimum_height=self.scroll_layout.setter('height')
         )
 
-class SideBar(SideBarView):
-    def __init__(self, profile: Profile | None, **kwargs):
+class MessagePage(MessagePageView):
+    def __init__(self, correspondence: Correspondence | None, **kwargs):
         super().__init__(**kwargs)
 
-        self.profile = profile
+        self.correspondence = correspondence
 
-        self.add_corresp_btn.bind(on_press=self.create_correspondence)
-        self.reload_correspondences()
+        self.add_message_btn.bind(on_press=self.create_message)
+        self.reload_messages()
 
-    def reload_correspondences(self):
+    def reload_messages(self):
         logger.info("Reloading correspondences...")
 
         self.remove_all_widgets()
-        if self.profile:
-            for correspondence_id in self.profile.get_active_correspondences():
-                self.add_widget_to_scroll(self.profile.get_correspondence(correspondence_id))
+        if self.correspondence:
+            for message in self.correspondence.get_messages():
+                self.add_widget_to_scroll(message)
 
-    def create_correspondence(self, instance=None):
+    def create_message(self, instance=None):
         logger.info("Creating correspondence...")
-        self.profile.create_correspondence()
-        self.reload_correspondences()
+        self.correspondence.add_message()
+        self.reload_messages()
 
-    def add_widget_to_scroll(self, correspondence):
-        widget = CorrespondenceHeader(correspondence=correspondence)
+    def add_widget_to_scroll(self, message):
+        widget = MessageWidget(message=message)
         self.scroll_layout.add_widget(widget)
 
     def remove_widget_from_scroll(self, index):

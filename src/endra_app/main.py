@@ -2,8 +2,7 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from .side_bar import SideBar
-from .central_page import CentralPage
-
+from .chat_page import MessagePage
 from walidentity.did_manager import blockchain_id_from_did
 
 import shutil
@@ -37,10 +36,10 @@ class MainApp(App):
             self.profile = list(self.profiles.values())[0]
         # Add side-bar and central page
         self.side_bar = SideBar(self.profile)
-        self.central_page = CentralPage()
+        self.message_page = MessagePage(None)
 
         root.add_widget(self.side_bar)
-        root.add_widget(self.central_page)
+        root.add_widget(self.message_page)
 
         return root
     def load_profiles(self) -> dict[Profile]:

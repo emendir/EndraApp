@@ -1,4 +1,4 @@
-<CorrespondenceHeaderView>:
+<MessageView>:
     orientation: 'horizontal'
     size_hint_y: None
     height: 50
@@ -28,9 +28,9 @@
         text: "Button 2"
         size_hint: 0.2, 1
         background_color: 0.8, 0.3, 0.3, 1
-<SideBarView>
+<MessagePageView>
     orientation: 'vertical'
-    size_hint_x: 0.3
+    size_hint_x: 0.7
     size_hint_y: 1
     spacing: 5
     padding: 5
@@ -52,8 +52,8 @@
             size_hint_y: None
 
     Button:
-        id: add_corresp_btn
-        text: "Add Widget"
+        id: add_message_btn
+        text: "New Message"
         size_hint: 1, None
         height: 50
         background_color: 0.8, 0.3, 0.3, 1  # Light red button
