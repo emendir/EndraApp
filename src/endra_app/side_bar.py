@@ -22,8 +22,10 @@ class CorrespondenceHeaderView(BoxLayout):
 
 
 class CorrespondenceHeader(CorrespondenceHeaderView):
-    def __init__(self, correspondence:Correspondence, **kwargs):
+    def __init__(self, main, correspondence:Correspondence, **kwargs):
         super().__init__(**kwargs)
+        self.main = main
+        self.correspondence = correspondence
         self.label.text = correspondence.id
         # Bind events
         self.label.bind(on_touch_down=self.on_label_click)
@@ -33,6 +35,7 @@ class CorrespondenceHeader(CorrespondenceHeaderView):
     def on_label_click(self, instance, touch):
         if self.collide_point(*touch.pos):
             print(f"Label '{self.label.text}' clicked!")
+            self.main.chat_page.load_correspondence(self.correspondence)
 
     def on_button1_click(self, instance):
         print(f"Button 1 in '{self.label.text}' clicked!")
@@ -56,8 +59,9 @@ class SideBarView(BoxLayout):
         )
 
 class SideBar(SideBarView):
-    def __init__(self, profile: Profile | None, **kwargs):
+    def __init__(self, main, profile: Profile | None, **kwargs):
         super().__init__(**kwargs)
+        self.main = main
 
         self.profile = profile
 
@@ -78,7 +82,9 @@ class SideBar(SideBarView):
         self.reload_correspondences()
 
     def add_widget_to_scroll(self, correspondence):
-        widget = CorrespondenceHeader(correspondence=correspondence)
+        widget = CorrespondenceHeader(
+            main = self.main, correspondence=correspondence
+        )
         self.scroll_layout.add_widget(widget)
 
     def remove_widget_from_scroll(self, index):

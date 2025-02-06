@@ -35,11 +35,11 @@ class MainApp(App):
             print(len(self.profiles))
             self.profile = list(self.profiles.values())[0]
         # Add side-bar and central page
-        self.side_bar = SideBar(self.profile)
-        self.message_page = MessagePage(None)
+        self.side_bar = SideBar(self, self.profile)
+        self.chat_page = MessagePage(self, None)
 
         root.add_widget(self.side_bar)
-        root.add_widget(self.message_page)
+        root.add_widget(self.chat_page)
 
         return root
     def load_profiles(self) -> dict[Profile]:

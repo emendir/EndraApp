@@ -1,2 +1,7 @@
 ## Next Steps
-- when user selects correspondence in sidebar, load correspondence in chat_page
+- auto load correspondence if one exists, otherwise deactivate chat page
+- add devices
+- invite other group members
+
+## Bugs
+- on app crashing, cursor doesn't work anywhere on all screens
