@@ -37,6 +37,10 @@ class MainApp(App):
         # Add side-bar and central page
         self.side_bar = SideBar(self, self.profile)
         self.chat_page = MessagePage(self, None)
+        if self.profile:
+            correspondences = self.profile.get_active_correspondences()
+            if len(correspondences) > 0:
+                self.chat_page.load_correspondence(self.profile.get_correspondence(list(correspondences)[0]))
 
         root.add_widget(self.side_bar)
         root.add_widget(self.chat_page)
@@ -70,9 +74,9 @@ class MainApp(App):
             profile.terminate()
 
 
-def run_app():
+def main():
     MainApp().run()
 
 
 if __name__ == '__main__':
-    run_app()
+    main()

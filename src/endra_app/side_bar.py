@@ -73,13 +73,16 @@ class SideBar(SideBarView):
 
         self.remove_all_widgets()
         if self.profile:
-            for correspondence_id in self.profile.get_active_correspondences():
+            active_correspondences=self.profile.get_active_correspondences()
+            for correspondence_id in active_correspondences:
                 self.add_widget_to_scroll(self.profile.get_correspondence(correspondence_id))
-
+            
+                
     def create_correspondence(self, instance=None):
         logger.info("Creating correspondence...")
-        self.profile.create_correspondence()
+        correspondence = self.profile.create_correspondence()
         self.reload_correspondences()
+        self.main.chat_page.load_correspondence(correspondence)
 
     def add_widget_to_scroll(self, correspondence):
         widget = CorrespondenceHeader(

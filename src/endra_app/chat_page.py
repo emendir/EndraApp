@@ -70,10 +70,17 @@ class MessagePageView(BoxLayout):
         )
         self.message_editor = MessageEditor()
         self.add_widget(self.message_editor)
+        
+    def deactivate(self):
+        self.disabled=True
+    def activate(self):
+        self.disabled=False
 
 class MessagePage(MessagePageView):
     def __init__(self, main, correspondence: Correspondence | None, **kwargs):
         super().__init__(**kwargs)
+        self.deactivate()
+        
         self.main = main
         self.correspondence = correspondence
 
@@ -82,6 +89,8 @@ class MessagePage(MessagePageView):
     def load_correspondence(self, correspondence):
         self.correspondence = correspondence
         self.reload_messages()
+        self.activate()
+        
     def reload_messages(self):
         logger.info("Reloading chat messages...")
 
@@ -97,6 +106,7 @@ class MessagePage(MessagePageView):
         self.correspondence.add_message(
             self.message_editor.get_message_content()
         )
+        self.message_editor.text_input_txbx.text = ""
         self.reload_messages()
 
     def add_widget_to_scroll(self, message):
