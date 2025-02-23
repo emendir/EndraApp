@@ -25,16 +25,13 @@ class InvitationPopupView(Popup):
         
         invitation_str = json.dumps(invitation)
         self.qr_code.data = invitation_str
-        self.text_lbl.text = "Click to copoy invitation code to clipboard."
-        
+        self.copy_to_clipboard()
         # Add click event listener to text_lbl
         self.text_lbl.bind(on_touch_down=self.copy_to_clipboard)
 
-    def copy_to_clipboard(self, instance, touch):
-        if instance.collide_point(*touch.pos):
-            Clipboard.copy(instance.text)  # Copy text to clipboard
-            self.text_lbl.text = "Invitation code copied to clipboard!"
-            return True  # Indicate that the event was handled
+    def copy_to_clipboard(self, *args, **kwargs):
+        Clipboard.copy(self.qr_code.data)  # Copy text to clipboard
+        return True  # Indicate that the event was handled
 
 
 class MessageEditorView(BoxLayout):

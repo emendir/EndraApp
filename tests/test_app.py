@@ -17,13 +17,23 @@ _testing_utils.assert_is_loaded_from_source(
 _testing_utils.assert_is_loaded_from_source(
     source_dir=os.path.join(os.path.dirname(__file__), "..", ".."), module=endra_app
 )
-print(APPDATA_DIR)
-if os.path.exists(APPDATA_DIR):
-    shutil.rmtree(APPDATA_DIR)
 WORKING_DIR = os.path.join(os.path.dirname(__file__))
 APPDATA_BACKUP_DIR = os.path.join(
     WORKING_DIR, "appdata"
 )
-print(APPDATA_BACKUP_DIR)
+
+
+# replace appdata with appdata backup
+if not os.path.exists(APPDATA_BACKUP_DIR):
+    os.makedirs(APPDATA_BACKUP_DIR)
+if os.path.exists(APPDATA_DIR):
+    shutil.rmtree(APPDATA_DIR)
 shutil.copytree(APPDATA_BACKUP_DIR, APPDATA_DIR)
+
+# run Endra App
 main()
+
+# copy appdata back into appdata backup
+if os.path.exists(APPDATA_BACKUP_DIR):
+    shutil.rmtree(APPDATA_BACKUP_DIR)
+shutil.copytree(APPDATA_DIR, APPDATA_BACKUP_DIR)

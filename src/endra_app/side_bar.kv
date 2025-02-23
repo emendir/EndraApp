@@ -41,7 +41,32 @@
 
     Button:
         id: add_corresp_btn
-        text: "New Correspondence"
+        text: "Add Correspondence"
         size_hint: 1, None
         height: 50
         background_color: 0.8, 0.3, 0.3, 1  # Light red button
+<AddCorrespondencePopupView@Popup>:
+    title:'New Correspondence'
+    size_hint: None, None
+    size_hint: 0.9,0.9
+    auto_dismiss: True
+    BoxLayout:
+        orientation: 'vertical'
+        TextInput:
+            id: text_input_txbx
+            background_color: 0.1, 0.1, 0.1, 1  # Dark background
+            foreground_color: 0.9, 0.9, 0.9, 1  # Light text color
+            hint_text: 'paste invitation code here'  # Placeholder text
+        Button:
+            id: join_conv_btn
+            size_hint_y:1
+            text: 'join existing correspondence'
+        Button:
+            id: create_conv_btn
+        
+            size_hint_y:1
+            text: 'create new correspondence'
+        Button:
+            size_hint_y:1
+            text: 'cancel'
+            on_release: root.dismiss()
