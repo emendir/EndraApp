@@ -17,8 +17,6 @@ class CorrespondenceHeaderView(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.label = self.ids.label
-        self.button1 = self.ids.button1
-        self.button2 = self.ids.button2
 
 
 class CorrespondenceHeader(CorrespondenceHeaderView):
@@ -29,19 +27,12 @@ class CorrespondenceHeader(CorrespondenceHeaderView):
         self.label.text = correspondence.id
         # Bind events
         self.label.bind(on_touch_down=self.on_label_click)
-        self.button1.bind(on_press=self.on_button1_click)
-        self.button2.bind(on_press=self.on_button2_click)
 
     def on_label_click(self, instance, touch):
         if self.collide_point(*touch.pos):
             print(f"Label '{self.label.text}' clicked!")
             self.main.chat_page.load_correspondence(self.correspondence)
 
-    def on_button1_click(self, instance):
-        print(f"Button 1 in '{self.label.text}' clicked!")
-
-    def on_button2_click(self, instance):
-        print(f"Button 2 in '{self.label.text}' clicked!")
 
 
 class SideBarView(BoxLayout):

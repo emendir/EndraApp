@@ -29,8 +29,6 @@ class MessageView(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.label = self.ids.label
-        self.button1 = self.ids.button1
-        self.button2 = self.ids.button2
 
 
 class MessageWidget(MessageView):
@@ -40,19 +38,11 @@ class MessageWidget(MessageView):
         self.label.text = self.message.content.text
         # Bind events
         self.label.bind(on_touch_down=self.on_label_click)
-        self.button1.bind(on_press=self.on_button1_click)
-        self.button2.bind(on_press=self.on_button2_click)
 
     def on_label_click(self, instance, touch):
         if self.collide_point(*touch.pos):
             print(f"Label '{self.label.text}' clicked!")
 
-    def on_button1_click(self, instance):
-        print(f"Button 1 in '{self.label.text}' clicked!")
-
-    def on_button2_click(self, instance):
-        print(f"Button 2 in '{self.label.text}' clicked!")
-        
 
 
 class MessagePageView(BoxLayout):
@@ -64,12 +54,11 @@ class MessagePageView(BoxLayout):
         
         self.scroll_layout = self.ids.scroll_layout
         self.add_message_btn = self.ids.add_message_btn
-
         self.scroll_layout.bind(
             minimum_height=self.scroll_layout.setter('height')
         )
         self.message_editor = MessageEditor()
-        self.add_widget(self.message_editor)
+        self.ids.add_message_btn_lyt.add_widget(self.message_editor)
         
     def deactivate(self):
         self.disabled=True
