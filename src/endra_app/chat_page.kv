@@ -1,3 +1,4 @@
+#:import QRCodeWidget kivy_garden.qrcode
 <MessageView>:
     orientation: 'horizontal'
     size_hint_y: None
@@ -22,6 +23,7 @@
         id: text_input_txbx
         background_color: 0.1, 0.1, 0.1, 1  # Dark background
         foreground_color: 0.9, 0.9, 0.9, 1  # Light text color
+        hint_text: 'message text'  # Placeholder text
 <MessagePageView>
     orientation: 'vertical'
     size_hint_x: 0.7
@@ -30,11 +32,23 @@
     padding: 5
     canvas.before:
         Color:
-            rgba: 0.2, 0.2, 0.2, 1  # background colour
+            rgba: 0.15, 0.15, 0.15, 1  # background colour
         Rectangle:
             size: self.size
             pos: self.pos
-
+    BoxLayout:
+        id: top_bar_lyt
+        orientation: 'horizontal'
+        size_hint_y: 0.15
+        
+        Button:
+            id: invite_btn
+            size_hint_x: 1
+            text: "invite to this correspondence"
+            size_hint: 1, None
+            height: 50
+            background_color: 0.8, 0.3, 0.3, 1  # Light red button
+        
     ScrollView:
         id: scroll_view
         size_hint: 1, 1
@@ -60,3 +74,23 @@
             height: 50
             background_color: 0.8, 0.3, 0.3, 1  # Light red button
 
+<InvitationPopupView@Popup>:
+    title:'Invitation to Correspondence'
+    size_hint: None, None
+    size_hint: 0.9,0.9
+    auto_dismiss: True
+    BoxLayout:
+        orientation: 'vertical'
+        QRCodeWidget:
+            id: qr_code
+            data: ''
+            size_hint_y: 7
+            
+        Label:
+            id: text_lbl
+            text_size: self.size  # Enable text wrapping
+            size_hint_y: 1
+        Button:
+            size_hint_y:1
+            text: 'Close'
+            on_release: root.dismiss()
