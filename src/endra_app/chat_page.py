@@ -28,6 +28,7 @@ class InvitationPopupView(Popup):
         self.copy_to_clipboard()
         # Add click event listener to text_lbl
         self.text_lbl.bind(on_touch_down=self.copy_to_clipboard)
+        self.qr_code.bind(on_touch_down=self.copy_to_clipboard)
 
     def copy_to_clipboard(self, *args, **kwargs):
         Clipboard.copy(self.qr_code.data)  # Copy text to clipboard
@@ -92,8 +93,7 @@ class MessagePageView(BoxLayout):
 
     def activate(self):
         self.disabled = False
-
-
+from kivy.clock import Clock
 class MessagePage(MessagePageView):
     def __init__(self, main, correspondence: Correspondence | None, **kwargs):
         super().__init__(**kwargs)
@@ -105,11 +105,21 @@ class MessagePage(MessagePageView):
         self.add_message_btn.bind(on_press=self.create_message)
         self.invite_btn.bind(on_press=self.create_invitation)
         self.reload_messages()
+        
+        
+    def on_message_received(self, message):
+        # run self.reload_messages on main kivy thread
+        Clock.schedule_once(lambda dt: self.reload_messages())
 
     def load_correspondence(self, correspondence):
         self.correspondence = correspondence
+        # TODO we should define a block received handler outside of the MessagePage
+        # self.correspondence.clear_block_received_handler()
+        self.correspondence.block_received_handler=self.on_message_received
+        
         self.reload_messages()
         self.activate()
+        
 
     def reload_messages(self):
         logger.info("Reloading chat messages...")
