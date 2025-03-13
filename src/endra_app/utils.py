@@ -1,17 +1,9 @@
 
-import json
-from loguru import logger
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.button import Button
-from kivy.uix.label import Label
 from kivy.lang import Builder
-from endra import Profile, Correspondence
 import os
 from kivy.uix.popup import Popup
 from kivy.core.clipboard import Clipboard
-from kivy_garden.qrcode import QRCodeWidget
 # Load the KV file
 KV_FILE = os.path.join(os.path.dirname(__file__), "utils.kv")
 Builder.load_file(KV_FILE)
@@ -39,9 +31,10 @@ class InvitationView(BoxLayout):
 
 class InvitationPopupView(Popup):
     """Popup window containing InvitationView"""
-    def __init__(self, invitation_code: str, **kwargs):
+    def __init__(self, invitation_code: str, title:str, **kwargs):
         super().__init__(**kwargs)
         self.layout = self.ids.layout
+        self.title=title
         # self.invitation_view = self.ids.invitation_view
         self.invitation_view = InvitationView(invitation_code)
         self.layout.add_widget(self.invitation_view, 1)

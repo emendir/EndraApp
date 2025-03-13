@@ -3,16 +3,9 @@ from kivy.clock import Clock
 import json
 from loguru import logger
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.button import Button
-from kivy.uix.label import Label
 from kivy.lang import Builder
 from endra import Message, Correspondence, MessageContent
 import os
-from kivy.uix.popup import Popup
-from kivy.core.clipboard import Clipboard
-from kivy_garden.qrcode import QRCodeWidget
 from .utils import InvitationPopupView
 # Load the KV file
 KV_FILE = os.path.join(os.path.dirname(__file__), "chat_page.kv")
@@ -129,7 +122,9 @@ class MessagePage(MessagePageView):
         logger.info("Creating invitation...")
         invitation = self.correspondence.create_invitation()
         invitation_str = json.dumps(invitation)
-        popup = InvitationPopupView(invitation_str)
+        popup = InvitationPopupView(
+            invitation_code=invitation_str, title="Chat Invitation"
+        )
         popup.open()
 
     def add_widget_to_scroll(self, message):
