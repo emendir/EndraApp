@@ -1,4 +1,5 @@
 # side_bar.py
+from endra import Device
 from .utils import InvitationPopupView
 from .utils import InvitationView
 import walytis_beta_api
@@ -56,23 +57,71 @@ class AddCorrespondencePopupView(Popup):
         self.dismiss()
 
 
-class ProfileSettingPopupView(Popup):
-    def __init__(self, main, profile: Profile, **kwargs):
+class ProfileSettingsPopupView(Popup):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.main = main
-        self.profile = profile
+
         self.layout = self.ids.layout
         self.scroll_view = self.ids.scroll_view
         self.scroll_layout = self.ids.scroll_layout
         self.add_device_btn = self.ids.add_device_btn
 
-        self.add_device_btn.bind(on_press=self.add_device)
+    def remove_widget_from_scroll(self, index):
+        if 0 <= index < len(self.scroll_layout.children):
+            self.scroll_layout.remove_widget(
+                self.scroll_layout.children[index])
 
-    def add_device(self, *args, **kwargs):
+    def remove_scroll_widgets(self):
+        while (len(self.scroll_layout.children)):
+            self.scroll_layout.remove_widget(self.scroll_layout.children[0])
+
+
+class ProfileSettingsPopup(ProfileSettingsPopupView):
+    def __init__(self, main, profile: Profile, **kwargs):
+        super().__init__(**kwargs)
+        self.main = main
+        self.profile = profile
+
+        self.add_device_btn.bind(on_press=self.invite_device)
+        self.reload_devices()
+    def invite_device(self, *args, **kwargs):
         invitation = self.profile.invite()
         invitation_str = json.dumps(invitation)
         popup = InvitationPopupView(invitation_str)
         popup.open()
+
+    def reload_devices(self):
+        logger.info("Reloading devices...")
+
+        self.remove_scroll_widgets()
+        if self.profile:
+            device_ids = self.profile.get_devices()
+            for device_id in device_ids:
+                self.add_device_wdg(
+                    self.profile.get_device(device_id))
+
+    def add_device_wdg(self, device:Device):
+        print("DEVICE", type(device.id))
+        print(device.id)
+        widget = DeviceHeader(
+            main=self.main, device=device
+        )
+        self.scroll_layout.add_widget(widget)
+
+
+class DeviceHeaderView(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.label = self.ids.label
+
+
+class DeviceHeader(DeviceHeaderView):
+    def __init__(self, main, device: Device, **kwargs):
+        super().__init__(**kwargs)
+        self.main = main
+        self.device = device
+        self.label.text = device.id
+
 
 
 class CorrespondenceHeaderView(BoxLayout):
@@ -110,6 +159,15 @@ class SideBarView(BoxLayout):
             minimum_height=self.scroll_layout.setter('height')
         )
 
+    def remove_widget_from_scroll(self, index):
+        if 0 <= index < len(self.scroll_layout.children):
+            self.scroll_layout.remove_widget(
+                self.scroll_layout.children[index])
+
+    def remove_scroll_widgets(self):
+        while (len(self.scroll_layout.children)):
+            self.scroll_layout.remove_widget(self.scroll_layout.children[0])
+
 
 class SideBar(SideBarView):
     def __init__(self, main, profile: Profile | None, **kwargs):
@@ -118,21 +176,21 @@ class SideBar(SideBarView):
 
         self.profile = profile
 
-        self.add_corresp_btn.bind(on_press=self.add_correspondence)
+        self.add_corresp_btn.bind(on_press=self.offer_add_correspondence)
         self.my_profile_btn.bind(on_press=self.open_profile_settings)
         self.reload_correspondences()
 
     def reload_correspondences(self):
         logger.info("Reloading correspondences...")
 
-        self.remove_all_widgets()
+        self.remove_scroll_widgets()
         if self.profile:
             active_correspondences = self.profile.get_active_correspondences()
             for correspondence_id in active_correspondences:
-                self.add_widget_to_scroll(
+                self.add_correspondence_header(
                     self.profile.get_correspondence(correspondence_id))
 
-    def add_correspondence(self, *args, **kwargs):
+    def offer_add_correspondence(self, *args, **kwargs):
         popup = AddCorrespondencePopupView(
             main=self.main,
             profile=self.profile,
@@ -140,23 +198,14 @@ class SideBar(SideBarView):
         popup.open()
 
     def open_profile_settings(self, *args, **kwargs):
-        popup = ProfileSettingPopupView(
+        popup = ProfileSettingsPopup(
             main=self.main,
             profile=self.profile,
         )
         popup.open()
 
-    def add_widget_to_scroll(self, correspondence):
+    def add_correspondence_header(self, correspondence):
         widget = CorrespondenceHeader(
             main=self.main, correspondence=correspondence
         )
         self.scroll_layout.add_widget(widget)
-
-    def remove_widget_from_scroll(self, index):
-        if 0 <= index < len(self.scroll_layout.children):
-            self.scroll_layout.remove_widget(
-                self.scroll_layout.children[index])
-
-    def remove_all_widgets(self):
-        while (len(self.scroll_layout.children)):
-            self.scroll_layout.remove_widget(self.scroll_layout.children[0])
