@@ -74,24 +74,3 @@
             height: 50
             background_color: 0.8, 0.3, 0.3, 1  # Light red button
 
-<InvitationPopupView@Popup>:
-    title:'Invitation to Correspondence'
-    size_hint: None, None
-    size_hint: 0.9,0.9
-    auto_dismiss: True
-    BoxLayout:
-        orientation: 'vertical'
-        QRCodeWidget:
-            id: qr_code
-            data: ''
-            size_hint_y: 7
-            
-        Label:
-            id: text_lbl
-            text: "Invitation code copied to clipboard!\n(Click to copy again)"
-            text_size: self.size  # Enable text wrapping
-            size_hint_y: 1
-        Button:
-            size_hint_y:1
-            text: 'Close'
-            on_release: root.dismiss()

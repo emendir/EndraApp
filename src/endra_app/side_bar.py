@@ -1,4 +1,8 @@
 # side_bar.py
+from .utils import InvitationPopupView
+from .utils import InvitationView
+import walytis_beta_api
+import json
 from loguru import logger
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
@@ -9,17 +13,18 @@ from kivy.lang import Builder
 from endra import Profile, Correspondence
 import os
 from kivy.uix.popup import Popup
-
+from kivy.core.clipboard import Clipboard
+from kivy_garden.qrcode import QRCodeWidget
 # Load the KV file
 KV_FILE = os.path.join(os.path.dirname(__file__), "side_bar.kv")
 Builder.load_file(KV_FILE)
-import json
-import walytis_beta_api
+
+
 class AddCorrespondencePopupView(Popup):
     def __init__(self, main, profile: Profile, **kwargs):
         super().__init__(**kwargs)
         self.main = main
-        self.profile=  profile
+        self.profile = profile
         self.text_input_txbx = self.ids.text_input_txbx
         self.join_conv_btn = self.ids.join_conv_btn
         self.create_conv_btn = self.ids.create_conv_btn
@@ -36,20 +41,39 @@ class AddCorrespondencePopupView(Popup):
 
     def join_correspondence(self, *args, **kwargs):
         try:
-
             invitation = json.loads(self.text_input_txbx.text)
             correspondence = self.profile.join_correspondence(invitation)
         except json.JSONDecodeError as e:
-            self.text_input_txbx.hint_text = "Invalid Invitation code.\nPaste invitation code here." 
+            self.text_input_txbx.hint_text = "Invalid Invitation code.\nPaste invitation code here."
             return
         except walytis_beta_api.JoinFailureError as e:
-            self.join_conv_btn.hint_text = "Try again\n(join attampt failed)" 
+            self.join_conv_btn.hint_text = "Try again\n(join attampt failed)"
             return
-        
+
         self.main.side_bar.reload_correspondences()
         self.main.chat_page.load_correspondence(correspondence)
-        
+
         self.dismiss()
+
+
+class ProfileSettingPopupView(Popup):
+    def __init__(self, main, profile: Profile, **kwargs):
+        super().__init__(**kwargs)
+        self.main = main
+        self.profile = profile
+        self.layout = self.ids.layout
+        self.scroll_view = self.ids.scroll_view
+        self.scroll_layout = self.ids.scroll_layout
+        self.add_device_btn = self.ids.add_device_btn
+
+        self.add_device_btn.bind(on_press=self.add_device)
+
+    def add_device(self, *args, **kwargs):
+        invitation = self.profile.invite()
+        invitation_str = json.dumps(invitation)
+        popup = InvitationPopupView(invitation_str)
+        popup.open()
+
 
 class CorrespondenceHeaderView(BoxLayout):
     def __init__(self, **kwargs):
@@ -79,6 +103,7 @@ class SideBarView(BoxLayout):
         self.scroll_view = self.ids.scroll_view
 
         self.scroll_layout = self.ids.scroll_layout
+        self.my_profile_btn = self.ids.my_profile_btn
         self.add_corresp_btn = self.ids.add_corresp_btn
 
         self.scroll_layout.bind(
@@ -94,6 +119,7 @@ class SideBar(SideBarView):
         self.profile = profile
 
         self.add_corresp_btn.bind(on_press=self.add_correspondence)
+        self.my_profile_btn.bind(on_press=self.open_profile_settings)
         self.reload_correspondences()
 
     def reload_correspondences(self):
@@ -107,8 +133,15 @@ class SideBar(SideBarView):
                     self.profile.get_correspondence(correspondence_id))
 
     def add_correspondence(self, *args, **kwargs):
-        popup =AddCorrespondencePopupView(
-            main = self.main,
+        popup = AddCorrespondencePopupView(
+            main=self.main,
+            profile=self.profile,
+        )
+        popup.open()
+
+    def open_profile_settings(self, *args, **kwargs):
+        popup = ProfileSettingPopupView(
+            main=self.main,
             profile=self.profile,
         )
         popup.open()

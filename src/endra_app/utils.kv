@@ -1,0 +1,27 @@
+<InvitationView>:
+    orientation: 'vertical'
+    QRCodeWidget:
+        id: qr_code
+        data: ''
+        size_hint_y: 7
+        
+    Label:
+        id: text_lbl
+        text: "Invitation code copied to clipboard!\n(Click to copy again)"
+        text_size: self.size  # Enable text wrapping
+        size_hint_y: 1
+
+<InvitationPopupView@Popup>:
+    title:'Invitation to Correspondence'
+    size_hint: None, None
+    size_hint: 0.9,0.9
+    auto_dismiss: True
+    BoxLayout:
+        id:layout
+        orientation: 'vertical'
+        # InvitationView:
+        #     id:invitation_view
+        Button:
+            size_hint_y:0.1
+            text: 'Close'
+            on_release: root.dismiss()
