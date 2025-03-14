@@ -1,34 +1,37 @@
-<ProfileSettingsPopupView@Popup>:
-    title:'Profile Settings'
-    size_hint: None, None
-    size_hint: 0.9,0.9
-    auto_dismiss: True
+<ProfilesView@DropDown>:
+    
     BoxLayout:
-        id: layout
+
         orientation: 'vertical'
-        Label:
-            text: "Devices"
-            size_hint_y: None
-            font_context: 'system://myapp'
+        size_hint: 1, None  # Important! Tell DropDown the height is explicit
+        height: self.minimum_height  # So it fits content dynamically
+        padding: 10
+        canvas.before:
+            Color:
+                rgba: 0.15, 0.15, 0.15, 1  # background colour
+            Rectangle:
+                size: self.size
+                pos: self.pos
         ScrollView:
             id: scroll_view
-            size_hint: 1, 1
-            
+            size_hint_y: None
+
             GridLayout:
                 id: scroll_layout
                 cols: 1
-                spacing: 10
+                spacing: 1
                 size_hint_y: None
 
         Button:
-            id: add_device_btn
-            text: "Add Device"
-            size_hint: 1, None
+            id: add_profile_btn
+            text: "Add Profile"
+            size_hint_y: None
             height: 50
             background_color: 0.8, 0.3, 0.3, 1  # Light red button
-<DeviceItemView>:
+
+<ProfileItemView>:
     orientation: 'horizontal'
-    size_hint_y: None
+    size_hint_y: 1
     height: 50
     spacing: 5
     padding: 5

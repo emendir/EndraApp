@@ -63,19 +63,19 @@ class ProfileSettingsPopup(ProfileSettingsPopupView):
     def add_device_wdg(self, device: Device):
         print("DEVICE", type(device.id))
         print(device.id)
-        widget = DeviceHeader(
+        widget = DeviceItem(
             main=self.main, device=device
         )
         self.scroll_layout.add_widget(widget)
 
 
-class DeviceHeaderView(BoxLayout):
+class DeviceItemView(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.label = self.ids.label
 
 
-class DeviceHeader(DeviceHeaderView):
+class DeviceItem(DeviceItemView):
     def __init__(self, main, device: Device, **kwargs):
         super().__init__(**kwargs)
         self.main = main

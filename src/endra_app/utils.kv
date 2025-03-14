@@ -10,10 +10,10 @@
         text: "Invitation code copied to clipboard!\n(Click to copy again)"
         text_size: self.size  # Enable text wrapping
         size_hint_y: 1
+        font_context: 'system://myapp'
 
 <InvitationPopupView@Popup>:
     title:'Invitation'
-    size_hint: None, None
     size_hint: 0.9,0.9
     auto_dismiss: True
     BoxLayout:
@@ -22,6 +22,6 @@
         # InvitationView:
         #     id:invitation_view
         Button:
-            size_hint_y:0.1
+            size_hint_y:None
             text: 'Close'
             on_release: root.dismiss()

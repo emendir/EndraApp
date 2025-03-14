@@ -17,6 +17,7 @@
         font_size: 16
         color: 0.9, 0.9, 0.9, 1
         size_hint: 0.6, 1
+        font_context: 'system://myapp'
 <MessageEditorView>
     orientation: 'vertical'
     TextInput:
@@ -24,6 +25,7 @@
         background_color: 0.1, 0.1, 0.1, 1  # Dark background
         foreground_color: 0.9, 0.9, 0.9, 1  # Light text color
         hint_text: 'message text'  # Placeholder text
+        font_context: 'system://myapp'
 <MessagePageView>
     orientation: 'vertical'
     size_hint_x: 0.7
@@ -39,7 +41,7 @@
     BoxLayout:
         id: top_bar_lyt
         orientation: 'horizontal'
-        size_hint_y: 0.15
+        size_hint_y: None
         
         Button:
             id: invite_btn
@@ -61,7 +63,7 @@
     BoxLayout:
         id: add_message_lyt
         orientation: 'horizontal'
-        size_hint_y: 0.15
+        size_hint_y: None
         BoxLayout:
             id: add_message_btn_lyt
             size_hint_x: 3

@@ -49,13 +49,13 @@ class AddCorrespondencePopupView(Popup):
         self.dismiss()
 
 
-class CorrespondenceHeaderView(BoxLayout):
+class CorrespondenceItemView(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.label = self.ids.label
 
 
-class CorrespondenceHeader(CorrespondenceHeaderView):
+class CorrespondenceItem(CorrespondenceItemView):
     def __init__(self, main, correspondence: Correspondence, **kwargs):
         super().__init__(**kwargs)
         self.main = main
@@ -69,15 +69,16 @@ class CorrespondenceHeader(CorrespondenceHeaderView):
             print(f"Label '{self.label.text}' clicked!")
             self.main.chat_page.load_correspondence(self.correspondence)
 
-
+from .profiles import Profiles
 class SideBarView(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
         self.scroll_view = self.ids.scroll_view
-
+        self.profile_controls_lyt = self.ids.profile_controls_lyt
         self.scroll_layout = self.ids.scroll_layout
         self.my_profile_btn = self.ids.my_profile_btn
+        self.open_profiles_btn = self.ids.open_profiles_btn
         self.add_corresp_btn = self.ids.add_corresp_btn
 
         self.scroll_layout.bind(
@@ -103,6 +104,7 @@ class SideBar(SideBarView):
 
         self.add_corresp_btn.bind(on_press=self.offer_add_correspondence)
         self.my_profile_btn.bind(on_press=self.open_profile_settings)
+        self.open_profiles_btn.bind(on_press=self.open_profiles)
         self.reload_correspondences()
 
     def reload_correspondences(self):
@@ -128,9 +130,12 @@ class SideBar(SideBarView):
             profile=self.profile,
         )
         popup.open()
+    def open_profiles(self, *args, **kwargs):
+        dropdown = Profiles(self.main, self.profile)
+        dropdown.open(self.profile_controls_lyt)
 
     def add_correspondence_header(self, correspondence):
-        widget = CorrespondenceHeader(
+        widget = CorrespondenceItem(
             main=self.main, correspondence=correspondence
         )
         self.scroll_layout.add_widget(widget)

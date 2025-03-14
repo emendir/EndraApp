@@ -1,4 +1,4 @@
-# main.py
+from . import _load_kivy # IMPORTANT: import this before importing kivy
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from .side_bar import SideBar
@@ -56,7 +56,8 @@ class MainApp(App):
             )
             profiles.update({profile.did: profile})
         return profiles
-
+    def get_profile_ids(self)->set[str]:
+        return set(self.profiles.keys())
     def create_profile(self) -> Profile:
         tempdir = tempfile.mkdtemp()
         tempdir
@@ -79,4 +80,5 @@ def main():
 
 
 if __name__ == '__main__':
+    print(f"USING_PANGO: {_load_kivy.USING_PANGO}")
     main()
