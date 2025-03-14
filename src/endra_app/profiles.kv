@@ -1,11 +1,11 @@
 <ProfilesView@DropDown>:
     
     BoxLayout:
-
+        id:layout
         orientation: 'vertical'
         size_hint: 1, None  # Important! Tell DropDown the height is explicit
-        height: self.minimum_height  # So it fits content dynamically
-        padding: 10
+        padding: [5,5,5,5]
+        height: scroll_view.height+add_profile_btn.height + self.padding[1] + self.padding[3]
         canvas.before:
             Color:
                 rgba: 0.15, 0.15, 0.15, 1  # background colour
@@ -15,9 +15,11 @@
         ScrollView:
             id: scroll_view
             size_hint_y: None
+            height:  scroll_layout.height if scroll_layout.height < dp(200) else dp(200)  # Max height of scroll
 
             GridLayout:
                 id: scroll_layout
+                height: 300
                 cols: 1
                 spacing: 1
                 size_hint_y: None
@@ -42,9 +44,34 @@
             size: self.size
             pos: self.pos
 
-    Label:
+    Button:
         id: label
         font_size: 16
         color: 0.9, 0.9, 0.9, 1
         size_hint: 0.6, 1
         font_context: 'system://myapp'
+<AddProfilePopupView@Popup>:
+    title:'New Profile'
+    size_hint: None, None
+    size_hint: 0.9,0.9
+    auto_dismiss: True
+    BoxLayout:
+        orientation: 'vertical'
+        TextInput:
+            id: text_input_txbx
+            background_color: 0.1, 0.1, 0.1, 1  # Dark background
+            foreground_color: 0.9, 0.9, 0.9, 1  # Light text color
+            hint_text: 'paste invitation code here'  # Placeholder text
+        Button:
+            id: join_profile_btn
+            size_hint_y:1
+            text: 'join existing profile'
+        Button:
+            id: create_profile_btn
+        
+            size_hint_y:1
+            text: 'create new profile'
+        Button:
+            size_hint_y:1
+            text: 'cancel'
+            on_release: root.dismiss()

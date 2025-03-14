@@ -14,17 +14,19 @@ Builder.load_file(KV_FILE)
 
 
 class AddCorrespondencePopupView(Popup):
-    def __init__(self, main, profile: Profile, **kwargs):
+    def __init__(self,  **kwargs):
         super().__init__(**kwargs)
-        self.main = main
-        self.profile = profile
         self.text_input_txbx = self.ids.text_input_txbx
         self.join_conv_btn = self.ids.join_conv_btn
         self.create_conv_btn = self.ids.create_conv_btn
 
+class AddCorrespondencePopup(AddCorrespondencePopupView):
+    def __init__(self,  main, profile: Profile,**kwargs):
+        super().__init__(**kwargs)
+        self.main = main
+        self.profile = profile
         self.join_conv_btn.bind(on_press=self.join_correspondence)
         self.create_conv_btn.bind(on_press=self.create_correspondence)
-
     def create_correspondence(self, instance=None):
         logger.info("Creating correspondence...")
         correspondence = self.profile.create_correspondence()
@@ -106,7 +108,9 @@ class SideBar(SideBarView):
         self.my_profile_btn.bind(on_press=self.open_profile_settings)
         self.open_profiles_btn.bind(on_press=self.open_profiles)
         self.reload_correspondences()
-
+    def switch_profile(self, profile:Profile):
+        self.profile=profile
+        self.reload_correspondences()
     def reload_correspondences(self):
         logger.info("Reloading correspondences...")
 
@@ -118,7 +122,7 @@ class SideBar(SideBarView):
                     self.profile.get_correspondence(correspondence_id))
 
     def offer_add_correspondence(self, *args, **kwargs):
-        popup = AddCorrespondencePopupView(
+        popup = AddCorrespondencePopup(
             main=self.main,
             profile=self.profile,
         )

@@ -73,7 +73,14 @@ class MessagePageView(BoxLayout):
     def activate(self):
         self.disabled = False
 
+    def remove_widget_from_scroll(self, index):
+        if 0 <= index < len(self.scroll_layout.children):
+            self.scroll_layout.remove_widget(
+                self.scroll_layout.children[index])
 
+    def remove_all_widgets(self):
+        while (len(self.scroll_layout.children)):
+            self.scroll_layout.remove_widget(self.scroll_layout.children[0])
 class MessagePage(MessagePageView):
     def __init__(self, main, correspondence: Correspondence | None, **kwargs):
         super().__init__(**kwargs)
@@ -130,12 +137,9 @@ class MessagePage(MessagePageView):
     def add_widget_to_scroll(self, message):
         widget = MessageWidget(message=message)
         self.scroll_layout.add_widget(widget)
+    
+    def reset(self):
+        self.remove_all_widgets()
+        self.deactivate()
 
-    def remove_widget_from_scroll(self, index):
-        if 0 <= index < len(self.scroll_layout.children):
-            self.scroll_layout.remove_widget(
-                self.scroll_layout.children[index])
 
-    def remove_all_widgets(self):
-        while (len(self.scroll_layout.children)):
-            self.scroll_layout.remove_widget(self.scroll_layout.children[0])

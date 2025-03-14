@@ -69,6 +69,17 @@ class MainApp(App):
         profile = Profile.load(target_dir, TEMP_HARDCODED_KEY)
         self.profiles.update({profile.did: profile})
         return profile
+    def switch_profile(self, profile_id:Profile|str):
+        if isinstance(profile_id, Profile):
+            profile_id = profile_id.did
+        print(f"Switching profile to: {profile_id}")
+        self.profile = self.profiles[profile_id]
+        self.side_bar.switch_profile(self.profile)
+        self.chat_page.reset()
+        correspondences = self.profile.get_active_correspondences()
+        if len(correspondences) > 0:
+            self.chat_page.load_correspondence(self.profile.get_correspondence(list(correspondences)[0]))
+
     def on_stop(self, *args):
         print('closing')
         for profile in self.profiles.values():

@@ -1,4 +1,5 @@
 # side_bar.py
+from kivy.uix.popup import Popup
 from endra import Profile
 from .utils import InvitationPopupView
 import json
@@ -29,8 +30,10 @@ class ProfilesView(DropDown):
     def remove_scroll_widgets(self):
         while (len(self.scroll_layout.children)):
             self.scroll_layout.remove_widget(self.scroll_layout.children[0])
-
-
+        self.scroll_layout.height =0
+    def add_widget_to_scroll(self, widget):
+        self.scroll_layout.add_widget(widget)
+        self.scroll_layout.height = self.scroll_layout.height+ widget.height
 class Profiles(ProfilesView):
     def __init__(self, main, profile: Profile, **kwargs):
         super().__init__(**kwargs)
@@ -42,20 +45,20 @@ class Profiles(ProfilesView):
         print("Loading Dropdown!")
 
     def offer_add_profile(self, *args, **kwargs):
-        pass
+        AddProfilePopup(self.main, self.profile, self).open()
 
     def reload_profiles(self):
         logger.info("Reloading profiles...")
-
+        self.remove_scroll_widgets()
         for profile in self.main.profiles.values():
             print("PROFILE", profile.did)
             self.add_profile_wdg(profile)
-
+        print(self.scroll_layout.height)
     def add_profile_wdg(self, profile: Profile):
         widget = ProfileItem(
-            main=self.main, profile=profile
+            main=self.main, profile=profile, profiles_popup=self
         )
-        self.scroll_layout.add_widget(widget)
+        self.add_widget_to_scroll(widget)
 
 
 class ProfileItemView(BoxLayout):
@@ -65,8 +68,52 @@ class ProfileItemView(BoxLayout):
 
 
 class ProfileItem(ProfileItemView):
-    def __init__(self, main, profile: Profile, **kwargs):
+    def __init__(self, main, profile: Profile, profiles_popup:Profiles, **kwargs):
         super().__init__(**kwargs)
         self.main = main
         self.profile = profile
+        self.profiles_popup=profiles_popup
         self.label.text = profile.did
+        self.label.bind(on_press=self.switch_profile)
+    def switch_profile(self, *args, **kwargs):
+        self.main.switch_profile(self.profile.did)
+        self.profiles_popup.dismiss()
+
+
+class AddProfilePopupView(Popup):
+    def __init__(self,  **kwargs):
+        super().__init__(**kwargs)
+        self.text_input_txbx = self.ids.text_input_txbx
+        self.join_profile_btn = self.ids.join_profile_btn
+        self.create_profile_btn = self.ids.create_profile_btn
+
+
+class AddProfilePopup(AddProfilePopupView):
+    def __init__(self,  main, profile: Profile, profiles_popup:Profiles, **kwargs):
+        super().__init__(**kwargs)
+        self.main = main
+        self.profile = profile
+        self.profiles_popup=profiles_popup
+        self.join_profile_btn.bind(on_press=self.join_profile)
+        self.create_profile_btn.bind(on_press=self.create_profile)
+
+    def create_profile(self, instance=None):
+        logger.info("Creating profile...")
+        profile = self.main.create_profile()
+        self.profiles_popup.reload_profiles()
+        self.main.switch_profile(profile)
+        self.dismiss()
+
+    def join_profile(self, *args, **kwargs):
+        try:
+            invitation = json.loads(self.text_input_txbx.text)
+            profile = self.main.join_profile(invitation)
+        except json.JSONDecodeError:
+            self.text_input_txbx.hint_text = "Invalid Invitation code.\nPaste invitation code here."
+            return
+        self.profiles_popup.reload_profiles()
+        
+        self.main.switch_profile(profile)
+
+
+        self.dismiss()
