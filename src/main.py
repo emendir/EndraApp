@@ -10,6 +10,7 @@ if True: # IMPORT ORDER IS IMPORTANT
     # config should be loaded first to configure ipfs & walytis
     from endra_app.config import APPDATA_DIR
     from endra_app.mainwindow import run
+    import endra_app.logging # initialise IPFS logging
 def main():
     print('Running Endra with appdata at', APPDATA_DIR)
     run()
