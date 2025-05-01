@@ -1,6 +1,6 @@
 # side_bar.py
 from .settings import ProfileSettingsPopup
-import walytis_beta_api
+from walytis_beta_tools.exceptions import JoinFailureError
 import json
 from loguru import logger
 from kivy.uix.boxlayout import BoxLayout
@@ -30,6 +30,7 @@ class AddCorrespondencePopup(AddCorrespondencePopupView):
     def create_correspondence(self, instance=None):
         logger.info("Creating correspondence...")
         correspondence = self.profile.create_correspondence()
+        logger.info("Created correspondence!")
         self.main.side_bar.reload_correspondences()
         self.main.chat_page.load_correspondence(correspondence)
         self.dismiss()
@@ -41,7 +42,7 @@ class AddCorrespondencePopup(AddCorrespondencePopupView):
         except json.JSONDecodeError:
             self.text_input_txbx.hint_text = "Invalid Invitation code.\nPaste invitation code here."
             return
-        except walytis_beta_api.JoinFailureError:
+        except JoinFailureError:
             self.join_conv_btn.hint_text = "Try again\n(join attampt failed)"
             return
 
@@ -102,14 +103,16 @@ class SideBar(SideBarView):
         super().__init__(**kwargs)
         self.main = main
 
-        self.profile = profile
+        self.profile=profile
 
         self.add_corresp_btn.bind(on_press=self.offer_add_correspondence)
         self.my_profile_btn.bind(on_press=self.open_profile_settings)
         self.open_profiles_btn.bind(on_press=self.open_profiles)
-        self.reload_correspondences()
+        self.switch_profile(profile)
     def switch_profile(self, profile:Profile):
+        
         self.profile=profile
+        
         self.reload_correspondences()
     def reload_correspondences(self):
         logger.info("Reloading correspondences...")

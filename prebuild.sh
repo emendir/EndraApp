@@ -1,0 +1,25 @@
+#!/bin/bash
+""":"
+
+# the absolute path of this script's directory
+script_dir="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+cd $script_dir
+# Exit if any command fails
+set -e
+
+rsync -XAva --delete ../EndraProtocol/src/endra/ ./src/endra/
+rsync -XAva --delete ../../BlockchainOverlays/WalIdentity/src/walidentity ./src/
+rsync -XAva --delete ../../BlockchainOverlays/Mutablock/src/mutablockchain ./src/
+rsync -XAva --delete ../../BlockchainOverlays/PrivateBlocks/src/private_blocks ./src/
+
+
+
+
+
+exit 0
+"""
+import os
+import sys
+# Python: re-execute the script in Bash
+os.execvp('bash', ['bash', __file__] + sys.argv[1:])
+#"
