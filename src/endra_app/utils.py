@@ -39,3 +39,14 @@ class InvitationPopupView(Popup):
         self.invitation_view = InvitationView(invitation_code)
         self.layout.add_widget(self.invitation_view, 1)
         
+
+def ensure_directories_exist(*dirs):
+    """Ensure that all directories in the list exist."""
+    for dir in dirs:
+        os.makedirs(dir, exist_ok=True)
+
+
+def ensure_dir_exists(dir_path):
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+    return dir_path

@@ -13,7 +13,6 @@ print("Imported components.")
 import shutil
 from endra import Profile
 from walidentity.did_objects import Key
-import os
 from datetime import datetime
 import tempfile
 CRYPTO_FAMILY = "EC-secp256k1"
