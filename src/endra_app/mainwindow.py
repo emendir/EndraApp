@@ -1,20 +1,23 @@
-print("mainwindow.py")
-import os
-
-from .config import APPDATA_DIR
-from . import _load_kivy  # IMPORTANT: import this before importing kivy
-from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
-from .side_bar import SideBar
-from .chat_page import MessagePage
+from . import config
+import walytis_beta_embedded
+from loguru import logger
+import tempfile
+from datetime import datetime
+from walidentity.did_objects import Key
+from endra import Profile
+import shutil
 from walidentity.did_manager import blockchain_id_from_did
+from .chat_page import MessagePage
+from .side_bar import SideBar
+from kivy.uix.boxlayout import BoxLayout
+from kivy.app import App
+from . import _load_kivy  # IMPORTANT: import this before importing kivy
+from .config import APPDATA_DIR
+import os
+print("mainwindow.py")
+
 print("Imported components.")
 
-import shutil
-from endra import Profile
-from walidentity.did_objects import Key
-from datetime import datetime
-import tempfile
 CRYPTO_FAMILY = "EC-secp256k1"
 TEMP_HARDCODED_KEY = Key(
     family=CRYPTO_FAMILY,
@@ -23,11 +26,13 @@ TEMP_HARDCODED_KEY = Key(
     creation_time=datetime(2024, 11, 6, 19, 17, 45, 713000)
 )
 
-from loguru import logger
+
 class MainApp(App):
     def build(self):
         print("MainApp.build()")
-        
+        if not config.USE_BRENTHY:
+            walytis_beta_embedded.run_blockchains()
+
         self.profiles_dir = os.path.join(APPDATA_DIR, "Profiles")
         # Root layout
         root = BoxLayout(orientation='horizontal')
@@ -50,13 +55,13 @@ class MainApp(App):
 
         root.add_widget(self.side_bar)
         root.add_widget(self.chat_page)
-        
+
         print("MianApp.build")
         return root
 
     def load_profiles(self) -> dict[Profile]:
         logger.debug("Loading profiles...")
-        
+
         if not os.path.exists(self.profiles_dir):
             os.makedirs(self.profiles_dir)
         profiles: dict[Profile] = dict()
@@ -94,10 +99,10 @@ class MainApp(App):
             JoinFailureError: 
         """
         logger.debug("Joining profile...")
-        
+
         tempdir = tempfile.mkdtemp()
         profile = Profile.join(
-            invitation, tempdir, TEMP_HARDCODED_KEY,auto_run=False
+            invitation, tempdir, TEMP_HARDCODED_KEY, auto_run=False
         )
         logger.debug("Joined profile.")
 
@@ -115,7 +120,7 @@ class MainApp(App):
     def switch_profile(self, profile_id: Profile | str):
         if isinstance(profile_id, Profile):
             profile_id = profile_id.did
-        
+
         if profile_id == self.profile.did:
             return
         print(f"Switching profile to: {profile_id}")
@@ -128,9 +133,14 @@ class MainApp(App):
                 self.profile.get_correspondence(list(correspondences)[0]))
 
     def on_stop(self, *args):
-        print('closing')
+        logger.debug("Mainwindow: Shutting down...")
         for profile in self.profiles.values():
             profile.terminate()
+        
+        if not config.USE_BRENTHY:
+            logger.debug("Mainwindow: Terminating Wwalytis_beta_embedded!")
+            walytis_beta_embedded.terminate()
+        logger.debug("Mainwindow: Closed!")
 
 
 def run():
