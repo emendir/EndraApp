@@ -1,4 +1,8 @@
 # side_bar.py
+from threading import Thread
+from time import sleep
+from enum import Enum
+from .profiles import Profiles
 from .settings import ProfileSettingsPopup
 from walytis_beta_tools.exceptions import JoinFailureError
 import json
@@ -19,14 +23,18 @@ class AddCorrespondencePopupView(Popup):
         self.text_input_txbx = self.ids.text_input_txbx
         self.join_conv_btn = self.ids.join_conv_btn
         self.create_conv_btn = self.ids.create_conv_btn
+        self.scroll_view = self.ids.scroll_view
+        self.scroll_layout = self.ids.scroll_layout
+
 
 class AddCorrespondencePopup(AddCorrespondencePopupView):
-    def __init__(self,  main, profile: Profile,**kwargs):
+    def __init__(self,  main, profile: Profile, **kwargs):
         super().__init__(**kwargs)
         self.main = main
         self.profile = profile
         self.join_conv_btn.bind(on_press=self.join_correspondence)
         self.create_conv_btn.bind(on_press=self.create_correspondence)
+
     def create_correspondence(self, instance=None):
         logger.info("Creating correspondence...")
         correspondence = self.profile.create_correspondence()
@@ -38,18 +46,95 @@ class AddCorrespondencePopup(AddCorrespondencePopupView):
     def join_correspondence(self, *args, **kwargs):
         try:
             invitation = json.loads(self.text_input_txbx.text)
-            correspondence = self.profile.join_correspondence(invitation)
         except json.JSONDecodeError:
             self.text_input_txbx.hint_text = "Invalid Invitation code.\nPaste invitation code here."
             return
-        except JoinFailureError:
-            self.join_conv_btn.hint_text = "Try again\n(join attampt failed)"
-            return
+        task = JoinCorrespondenceTask(
+            self.main, self.profile, invitation, self)
+        self.scroll_layout.add_widget(task, 0)
+        # try:
+        #     invitation = json.loads(self.text_input_txbx.text)
+        #     correspondence = self.profile.join_correspondence(invitation)
+        # except json.JSONDecodeError:
+        #     self.text_input_txbx.hint_text = "Invalid Invitation code.\nPaste invitation code here."
+        #     return
+        # except JoinFailureError:
+        #     self.join_conv_btn.hint_text = "Try again\n(join attampt failed)"
+        #     return
+        #
+        # self.main.side_bar.reload_correspondences()
+        # self.main.chat_page.load_correspondence(correspondence)
+        #
+        # self.dismiss()
+
+
+class TaskStatus(Enum):
+    initialising = 0
+    in_progress = 1
+    succeeded = 2
+    error = 3
+
+
+class TaskItemView(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.label = self.ids.label
+
+
+class JoinCorrespondenceTask(TaskItemView):
+    def __init__(
+        self,
+        main,
+        profile: Profile,
+        invitation: str,
+        popup_window: AddCorrespondencePopup | None = None,
+        **kwargs
+    ):
+        super().__init__(**kwargs)
+        self._terminate = False
+        self.main = main
+        self.profile = profile
+        self.invitation = invitation
+        self.popup_window = popup_window
+        self.invitation: str = invitation
+        self.result: str | None = None
+        self.status = TaskStatus.initialising
+        self.task_thread = Thread(target=self.run_task)
+        self.task_thread.start()
+
+    def run_task(self):
+        self.update_status(TaskStatus.in_progress)
+        while not self._terminate:
+            try:
+                logger.debug("JoinCorrespondenceTask: joining...")
+                correspondence = self.profile.join_correspondence(
+                    self.invitation
+                )
+                self.update_status(TaskStatus.succeeded)
+                break
+            except JoinFailureError:
+                pass
+            except Exception as e:
+                error_message = (
+                    f"{e}\n"
+                    "JoinCorrespondenceTask: error running task"
+                )
+                logger.error(error_message)
+                self.update_status(TaskStatus.error)
+                return
+            sleep(1)
 
         self.main.side_bar.reload_correspondences()
-        self.main.chat_page.load_correspondence(correspondence)
+        if self.popup_window and self.popup_window._is_open:
+            self.main.chat_page.load_correspondence(correspondence)
+            self.popup_window.dismiss()
 
-        self.dismiss()
+    def update_status(self, status: TaskStatus):
+        self.status = status
+        self.label.text = f"Joining Correspondence: {status.name}"
+
+    def terminate(self):
+        self._terminate = True
 
 
 class CorrespondenceItemView(BoxLayout):
@@ -72,7 +157,7 @@ class CorrespondenceItem(CorrespondenceItemView):
             print(f"Label '{self.label.text}' clicked!")
             self.main.chat_page.load_correspondence(self.correspondence)
 
-from .profiles import Profiles
+
 class SideBarView(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -103,17 +188,19 @@ class SideBar(SideBarView):
         super().__init__(**kwargs)
         self.main = main
 
-        self.profile=profile
+        self.profile = profile
 
         self.add_corresp_btn.bind(on_press=self.offer_add_correspondence)
         self.my_profile_btn.bind(on_press=self.open_profile_settings)
         self.open_profiles_btn.bind(on_press=self.open_profiles)
         self.switch_profile(profile)
-    def switch_profile(self, profile:Profile):
-        
-        self.profile=profile
-        
+
+    def switch_profile(self, profile: Profile):
+
+        self.profile = profile
+
         self.reload_correspondences()
+
     def reload_correspondences(self):
         logger.info("Reloading correspondences...")
 
@@ -137,6 +224,7 @@ class SideBar(SideBarView):
             profile=self.profile,
         )
         popup.open()
+
     def open_profiles(self, *args, **kwargs):
         dropdown = Profiles(self.main, self.profile)
         dropdown.open(self.profile_controls_lyt)

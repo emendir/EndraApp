@@ -1,4 +1,8 @@
 # side_bar.py
+from kivy.app import App
+from kivy.uix.label import Label
+from kivy.uix.button import Button
+from endra import JoinFailureError
 from kivy.uix.popup import Popup
 from endra import Profile
 from .utils import InvitationPopupView
@@ -92,12 +96,8 @@ class AddProfilePopupView(Popup):
         self.text_input_txbx = self.ids.text_input_txbx
         self.join_profile_btn = self.ids.join_profile_btn
         self.create_profile_btn = self.ids.create_profile_btn
-from kivy.app import App; 
-from kivy.uix.button import Button; 
-from kivy.uix.popup import Popup; 
-from kivy.uix.label import Label; 
 
-from endra import JoinFailureError
+
 class AddProfilePopup(AddProfilePopupView):
     def __init__(self,  main, profile: Profile, profiles_popup: Profiles, **kwargs):
         super().__init__(**kwargs)
@@ -123,9 +123,10 @@ class AddProfilePopup(AddProfilePopupView):
             return
         except JoinFailureError:
             Popup(
-                title='Profile Join Failure', 
-                content=Label(text='Failed to join profile. Trying again later might work.'), 
-                size_hint=(None,None), size=(300,200)
+                title='Profile Join Failure',
+                content=Label(
+                    text='Failed to join profile. Trying again later might work.'),
+                size_hint=(None, None), size=(300, 200)
             ).open()
             return
         self.profiles_popup.reload_profiles()

@@ -89,3 +89,31 @@
             size_hint_y:1
             text: 'cancel'
             on_release: root.dismiss()
+        ScrollView:
+            id: scroll_view
+            size_hint: 1, 1
+            
+            GridLayout:
+                id: scroll_layout
+                cols: 1
+                spacing: 10
+                size_hint_y: None
+
+<TaskItemView>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    height: 50
+    spacing: 5
+    padding: 5
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1  # background colour
+        Rectangle:
+            size: self.size
+            pos: self.pos
+    Label:
+        id: label
+        font_size: 16
+        color: 0.9, 0.9, 0.9, 1
+        size_hint: 1, 1
+        font_context: 'system://myapp'
