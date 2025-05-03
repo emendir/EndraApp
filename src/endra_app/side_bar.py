@@ -32,16 +32,13 @@ class AddCorrespondencePopup(AddCorrespondencePopupView):
         super().__init__(**kwargs)
         self.main = main
         self.profile = profile
-        self.join_conv_btn.bind(on_press=self.join_correspondence)
+        self.join_conv_btn.bind(on_release=self.join_correspondence)
         self.create_conv_btn.bind(on_press=self.create_correspondence)
 
     def create_correspondence(self, instance=None):
-        logger.info("Creating correspondence...")
-        correspondence = self.profile.create_correspondence()
-        logger.info("Created correspondence!")
-        self.main.side_bar.reload_correspondences()
-        self.main.chat_page.load_correspondence(correspondence)
-        self.dismiss()
+        task = CreateCorrespondenceTask(
+            self.main, self.profile, self)
+        self.scroll_layout.add_widget(task, 0)
 
     def join_correspondence(self, *args, **kwargs):
         try:
@@ -81,12 +78,12 @@ class TaskItemView(BoxLayout):
         self.label = self.ids.label
 
 
-class JoinCorrespondenceTask(TaskItemView):
+class TaskItem(TaskItemView):
+    task_description = "Generic Task"
     def __init__(
         self,
         main,
         profile: Profile,
-        invitation: str,
         popup_window: AddCorrespondencePopup | None = None,
         **kwargs
     ):
@@ -94,11 +91,76 @@ class JoinCorrespondenceTask(TaskItemView):
         self._terminate = False
         self.main = main
         self.profile = profile
-        self.invitation = invitation
         self.popup_window = popup_window
-        self.invitation: str = invitation
-        self.result: str | None = None
         self.status = TaskStatus.initialising
+        self.task_thread = Thread(target=self.run_task)
+        self.task_thread.start()
+
+    def update_status(self, status: TaskStatus):
+        self.status = status
+        self.label.text = f"{self.task_description}: {status.name}"
+
+    def terminate(self):
+        self._terminate = True
+
+
+class CreateCorrespondenceTask(TaskItem):
+    task_description = "Create Correspondence"
+    def __init__(
+        self,
+        main,
+        profile: Profile,
+        popup_window: AddCorrespondencePopup | None = None,
+        **kwargs
+    ):
+        super().__init__(
+            main=main,
+            profile=profile,
+            popup_window=popup_window,
+        )
+        self.task_thread = Thread(target=self.run_task)
+        self.task_thread.start()
+
+    def run_task(self):
+        self.update_status(TaskStatus.in_progress)
+        try:
+            logger.info("Creating correspondence...")
+            correspondence = self.profile.create_correspondence()
+            logger.info("Created correspondence!")
+            self.update_status(TaskStatus.succeeded)
+        except JoinFailureError:
+            pass
+        except Exception as e:
+            error_message = (
+                f"{e}\n"
+                "CreateCorrespondenceTask: error running task"
+            )
+            logger.error(error_message)
+            self.update_status(TaskStatus.error)
+            return
+
+        self.main.side_bar.reload_correspondences()
+        if self.popup_window and self.popup_window._is_open:
+            self.main.chat_page.load_correspondence(correspondence)
+            self.popup_window.dismiss()
+class JoinCorrespondenceTask(TaskItem):
+    task_description = "Join Correspondence"
+    def __init__(
+        self,
+        main,
+        profile: Profile,
+        invitation: str,
+        
+        popup_window: AddCorrespondencePopup | None = None,
+        **kwargs
+    ):
+        super().__init__(
+            main=main,
+            profile=profile,
+            popup_window=popup_window,
+        )
+        self.invitation: str = invitation
+        
         self.task_thread = Thread(target=self.run_task)
         self.task_thread.start()
 
@@ -107,9 +169,7 @@ class JoinCorrespondenceTask(TaskItemView):
         while not self._terminate:
             try:
                 logger.debug("JoinCorrespondenceTask: joining...")
-                correspondence = self.profile.join_correspondence(
-                    self.invitation
-                )
+                correspondence = self.profile.join_correspondence(self.invitation)
                 self.update_status(TaskStatus.succeeded)
                 break
             except JoinFailureError:
@@ -128,14 +188,6 @@ class JoinCorrespondenceTask(TaskItemView):
         if self.popup_window and self.popup_window._is_open:
             self.main.chat_page.load_correspondence(correspondence)
             self.popup_window.dismiss()
-
-    def update_status(self, status: TaskStatus):
-        self.status = status
-        self.label.text = f"Joining Correspondence: {status.name}"
-
-    def terminate(self):
-        self._terminate = True
-
 
 class CorrespondenceItemView(BoxLayout):
     def __init__(self, **kwargs):
