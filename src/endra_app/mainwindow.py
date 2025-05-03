@@ -1,3 +1,4 @@
+from .config import APPDATA_DIR
 from . import config
 import walytis_beta_embedded
 from loguru import logger
@@ -12,7 +13,6 @@ from .side_bar import SideBar
 from kivy.uix.boxlayout import BoxLayout
 from kivy.app import App
 from . import _load_kivy  # IMPORTANT: import this before importing kivy
-from .config import APPDATA_DIR
 import os
 print("mainwindow.py")
 
@@ -30,6 +30,7 @@ TEMP_HARDCODED_KEY = Key(
 class MainApp(App):
     def build(self):
         print("MainApp.build()")
+        
         if not config.USE_BRENTHY:
             walytis_beta_embedded.run_blockchains()
 
@@ -131,16 +132,24 @@ class MainApp(App):
         if len(correspondences) > 0:
             self.chat_page.load_correspondence(
                 self.profile.get_correspondence(list(correspondences)[0]))
-
+    def on_start(self, *args):
+        logger.debug("Mainwindow: Starting...")
+    def on_pause(self, *args):
+        logger.debug("Mainwindow: Pausing...")
+        return True # means we'd like to resume later, not stop the app
+    def on_resume(self, *args):
+        logger.debug("Mainwindow: Resuming...")
     def on_stop(self, *args):
-        logger.debug("Mainwindow: Shutting down...")
+        logger.debug("Mainwindow: Stopping...")
         for profile in self.profiles.values():
             profile.terminate()
         
         if not config.USE_BRENTHY:
             logger.debug("Mainwindow: Terminating Wwalytis_beta_embedded!")
             walytis_beta_embedded.terminate()
-        logger.debug("Mainwindow: Closed!")
+
+        
+        logger.debug("Mainwindow: Stopped!")
 
 
 def run():
