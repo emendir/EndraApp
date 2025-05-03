@@ -1,3 +1,5 @@
 dataclasses-json
 kivy
 kivy-garden.qrcode
+portalocker
+loguru

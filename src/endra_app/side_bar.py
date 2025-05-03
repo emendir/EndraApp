@@ -12,6 +12,8 @@ from kivy.lang import Builder
 from endra import Profile, Correspondence
 import os
 from kivy.uix.popup import Popup
+from kivy.clock import Clock
+
 # Load the KV file
 KV_FILE = os.path.join(os.path.dirname(__file__), "side_bar.kv")
 Builder.load_file(KV_FILE)
@@ -32,7 +34,7 @@ class AddCorrespondencePopup(AddCorrespondencePopupView):
         super().__init__(**kwargs)
         self.main = main
         self.profile = profile
-        self.join_conv_btn.bind(on_release=self.join_correspondence)
+        self.join_conv_btn.bind(on_press=self.join_correspondence)
         self.create_conv_btn.bind(on_press=self.create_correspondence)
 
     def create_correspondence(self, instance=None):
@@ -128,8 +130,6 @@ class CreateCorrespondenceTask(TaskItem):
             correspondence = self.profile.create_correspondence()
             logger.info("Created correspondence!")
             self.update_status(TaskStatus.succeeded)
-        except JoinFailureError:
-            pass
         except Exception as e:
             error_message = (
                 f"{e}\n"
@@ -138,10 +138,10 @@ class CreateCorrespondenceTask(TaskItem):
             logger.error(error_message)
             self.update_status(TaskStatus.error)
             return
-
-        self.main.side_bar.reload_correspondences()
+        Clock.schedule_once(lambda dt:self.main.side_bar.reload_correspondences())
+        
         if self.popup_window and self.popup_window._is_open:
-            self.main.chat_page.load_correspondence(correspondence)
+            Clock.schedule_once(lambda dt:self.main.chat_page.load_correspondence(correspondence))
             self.popup_window.dismiss()
 class JoinCorrespondenceTask(TaskItem):
     task_description = "Join Correspondence"
@@ -184,9 +184,10 @@ class JoinCorrespondenceTask(TaskItem):
                 return
             sleep(1)
 
-        self.main.side_bar.reload_correspondences()
+        Clock.schedule_once(lambda dt:self.main.side_bar.reload_correspondences())
+        
         if self.popup_window and self.popup_window._is_open:
-            self.main.chat_page.load_correspondence(correspondence)
+            Clock.schedule_once(lambda dt:self.main.chat_page.load_correspondence(correspondence))
             self.popup_window.dismiss()
 
 class CorrespondenceItemView(BoxLayout):
