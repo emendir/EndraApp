@@ -38,7 +38,7 @@ version = 0.1
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
 # got python version from buildozer docker image's python version
-requirements = python3,kivy,kivymd,kivy-garden.qrcode,qrcode,cffi,coincurve,pycryptodome==3.20.0,toolz,typing_extensions,eth_typing,eth_hash,cytoolz,eth_utils,eth_keys,eciespy,multi_crypt,ipfs_node,ipfs_tk>=0.1.3,appdirs,termcolor,tqdm,android,walytis_beta_embedded>=0.0.3,ipfs_toolkit==0.6.0rc1,brenthy_tools_beta,walytis_beta_api,rfc3987,decorate_all,py_strict_typing,loguru,dataclasses-json,marshmallow,typing_inspect,mypy_extensions,portalocker
+requirements = python3,kivy,kivymd,kivy-garden.qrcode,qrcode,cffi,coincurve,pycryptodome==3.20.0,toolz,typing_extensions,eth_typing,eth_hash,cytoolz,eth_utils,eth_keys,eciespy,multi_crypt,ipfs_node,ipfs_tk>=0.1.3,appdirs,termcolor,tqdm,android,walytis_beta_embedded>=0.0.3,ipfs_toolkit==0.6.0rc1,brenthy_tools_beta,walytis_beta_api,rfc3987,decorate_all,py_strict_typing,loguru,dataclasses-json,marshmallow,typing_inspect,mypy_extensions,portalocker,walytis_identities,walytis_offchain,walytis_mutability,walytis_beta_embedded,endra,
 
 
 # (str) Custom source folders for requirements

@@ -3,3 +3,9 @@ kivy
 kivy-garden.qrcode
 portalocker
 loguru
+
+walytis_identities
+walytis_offchain
+walytis_mutability
+walytis_beta_embedded
+endra

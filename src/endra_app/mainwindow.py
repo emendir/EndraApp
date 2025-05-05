@@ -4,10 +4,10 @@ import walytis_beta_embedded
 from loguru import logger
 import tempfile
 from datetime import datetime
-from walidentity.did_objects import Key
+from walytis_identities.did_objects import Key
 from endra import Profile
 import shutil
-from walidentity.did_manager import blockchain_id_from_did
+from walytis_identities.did_manager import blockchain_id_from_did
 from .chat_page import MessagePage
 from .side_bar import SideBar
 from kivy.uix.boxlayout import BoxLayout

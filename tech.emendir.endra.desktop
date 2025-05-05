@@ -1,0 +1,9 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Name=Endra
+Exec=endra_app
+Comment=P2P messenger
+Terminal=false
+Icon=tech.emendir.endra
+Type=Application
+Categories=Internet;

@@ -1,0 +1,49 @@
+id: tech.emendir.endra
+runtime: org.freedesktop.Platform
+runtime-version: "24.08"
+sdk: org.freedesktop.Sdk
+command: endra_app
+modules:
+  - name: xsel
+    buildsystem: autotools
+    sources:
+      - type: archive
+        url: https://github.com/kfish/xsel/archive/refs/tags/1.2.1.tar.gz
+        sha256: 18487761f5ca626a036d65ef2db8ad9923bf61685e06e7533676c56d7d60eb14
+    build-commands:
+      - autoreconf
+      - ./configure --prefix=/app
+      - make -j$(nproc)
+      - make install
+  # - name: walytis_beta_embedded
+  #   buildsystem: simple
+  #   sources:
+  #     - type: dir
+  #       path: ../../Brenthy/Deployment/walytis_beta_embedded
+  #   build-commands:
+  #     - pip3 install --no-build-isolation --prefix=/app .
+  - name: endra
+    buildsystem: simple
+    build-commands:
+      - pip3 install --no-build-isolation --prefix=/app .
+    sources:
+      - type: dir
+        path: .
+
+    build-options:
+      build-args: [ "--share=network" ]
+
+finish-args:
+  - --socket=x11
+  - --socket=wayland
+  - --share=network
+  - --filesystem=home
+  - --device=dri
+  - --talk-name=org.freedesktop.ScreenSaver
+  - --share=ipc
+  - --device=all
+  - --talk-name=org.freedesktop.portal.Freedesktop
+  - --talk-name=org.freedesktop.portal.Camera
+  - --socket=session-bus
+  - --device=all
+  

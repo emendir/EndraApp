@@ -5,9 +5,11 @@ import os
 from .utils import ensure_dir_exists
 import os
 from kivy.utils import platform
-# patch for pycryptodome, from https://github.com/kivy/python-for-android/issues/1866#issuecomment-927157780
-# replaces ctypes.PyDLL(None)
-ctypes.pythonapi = ctypes.PyDLL("libpython%d.%d.so" % sys.version_info[:2])
+
+if platform == "android":
+    # patch for pycryptodome, from https://github.com/kivy/python-for-android/issues/1866#issuecomment-927157780
+    # replaces ctypes.PyDLL(None)
+    ctypes.pythonapi = ctypes.PyDLL("libpython%d.%d.so" % sys.version_info[:2])
 
 if platform == 'android':
     from android.storage import app_storage_path
@@ -25,9 +27,12 @@ loguru.logger.add(os.path.join(APPDATA_DIR, "Endra.log"), rotation="1 week")
 
 USE_BRENTHY = False
 
-IPFS_REPO_DIR = ensure_dir_exists(os.path.join(APPDATA_DIR, "ipfs")) # only relevant if USE_BRENTHY==False
-WALYTIS_BETA_DATA_DIR = ensure_dir_exists(os.path.join(APPDATA_DIR, "walytis")) # only relevant if USE_BRENTHY==False
-PRIVATE_BLOCKS_DATA_DIR = ensure_dir_exists(os.path.join(APPDATA_DIR, "private_blocks")) # only relevant if USE_BRENTHY==False
+# only relevant if USE_BRENTHY==False
+IPFS_REPO_DIR = ensure_dir_exists(os.path.join(APPDATA_DIR, "ipfs"))
+WALYTIS_BETA_DATA_DIR = ensure_dir_exists(os.path.join(
+    APPDATA_DIR, "walytis"))  # only relevant if USE_BRENTHY==False
+PRIVATE_BLOCKS_DATA_DIR = ensure_dir_exists(os.path.join(
+    APPDATA_DIR, "private_blocks"))  # only relevant if USE_BRENTHY==False
 
 
 if USE_BRENTHY:
@@ -40,6 +45,17 @@ else:
     os.environ["AUTO_LOAD_BAP_MODULES"] = "false"
     os.environ["WALYTIS_BETA_API_TYPE"] = "WALYTIS_BETA_DIRECT_API"
     os.environ["WALYTIS_BETA_DATA_DIR"] = WALYTIS_BETA_DATA_DIR
+
+    import walytis_beta_embedded
+    walytis_beta_embedded.set_appdata_dir(WALYTIS_BETA_DATA_DIR)
+    from brenthy_tools_beta import log
+    import brenthy_tools_beta
+    
+    # disable excessive logging, is slow in flatpak packages
+    brenthy_tools_beta.RECORD_INFO=False
+    brenthy_tools_beta.RECORD_DEBUG=False
+    
+    print("BRENTHY LOG:", os.path.abspath(os.path.join(log.LOG_DIR, log.LOG_FILENAME)))
+    # print("BRENTHY LOG:",os.path.abspath( log.get_log_file_path()))
 os.environ["PRIVATE_BLOCKS_DATA_DIR"] = PRIVATE_BLOCKS_DATA_DIR
 print("Set environ:", os.environ["WALYTIS_BETA_API_TYPE"])
-

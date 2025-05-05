@@ -9,26 +9,8 @@ import traceback
 
 def main():
     try:
-        # # IMPORT ORDER IS IMPORTANT
-        # if platform == "android":
-        #     print("DELETING ENDRA APPDATA")
-        #     shutil.rmtree(os.path.join(".", "EndraAppdata"))
-
-        # config should be loaded early to configure ipfs & walytis
-        from endra_app.config import APPDATA_DIR
-
-        # app_lock = AppLock(os.path.join(APPDATA_DIR, "endra.lock"))
-        # app_lock.acquire()
-        logger.debug("Getting AppLock...")
-        with portalocker.Lock(os.path.join(APPDATA_DIR, "endra.lock"), timeout=1):
-            import endra_app.logging  # initialise IPFS logging
-            logger.debug("Got AppLock!")
-
-            from endra_app.mainwindow import run
-            print('Running Endra with appdata at', APPDATA_DIR)
-            run()
-        logger.debug("Released AppLock...")
-        # app_lock.release()
+        from endra_app.entry_point import run
+        run()
     except Exception as e:
         from crash_window import CrashWindow
         
