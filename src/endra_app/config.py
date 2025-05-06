@@ -25,7 +25,6 @@ loguru.logger.add(os.path.join(APPDATA_DIR, "Endra.log"), rotation="1 week")
 # APPDATA_DIR = os.path.join(user_data_dir(), "Endra")
 # APPDATA_DIR = os.path.join(".", "EndraAppdata")
 
-USE_BRENTHY = False
 
 # only relevant if USE_BRENTHY==False
 IPFS_REPO_DIR = ensure_dir_exists(os.path.join(APPDATA_DIR, "ipfs"))
@@ -34,7 +33,10 @@ WALYTIS_BETA_DATA_DIR = ensure_dir_exists(os.path.join(
 PRIVATE_BLOCKS_DATA_DIR = ensure_dir_exists(os.path.join(
     APPDATA_DIR, "private_blocks"))  # only relevant if USE_BRENTHY==False
 
-
+# defaults to False
+USE_BRENTHY = os.environ.get("USE_BRENTHY", "").lower() in ["true", "1"]
+print("USE_BRENTHY", USE_BRENTHY)
+    
 if USE_BRENTHY:
     os.environ["USE_IPFS_NODE"] = "false"
     os.environ["WALYTIS_BETA_API_TYPE"] = "WALYTIS_BETA_BRENTHY_API"
