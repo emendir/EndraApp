@@ -25,6 +25,11 @@ loguru.logger.add(os.path.join(APPDATA_DIR, "Endra.log"), rotation="1 week")
 # APPDATA_DIR = os.path.join(user_data_dir(), "Endra")
 # APPDATA_DIR = os.path.join(".", "EndraAppdata")
 
+import brenthy_tools_beta
+
+# disable excessive logging, is slow in flatpak packages
+brenthy_tools_beta.log.RECORD_INFO=False
+brenthy_tools_beta.log.RECORD_DEBUG=False
 
 # only relevant if USE_BRENTHY==False
 IPFS_REPO_DIR = ensure_dir_exists(os.path.join(APPDATA_DIR, "ipfs"))
@@ -51,11 +56,7 @@ else:
     import walytis_beta_embedded
     walytis_beta_embedded.set_appdata_dir(WALYTIS_BETA_DATA_DIR)
     from brenthy_tools_beta import log
-    import brenthy_tools_beta
-    
-    # disable excessive logging, is slow in flatpak packages
-    brenthy_tools_beta.RECORD_INFO=False
-    brenthy_tools_beta.RECORD_DEBUG=False
+
     
     print("BRENTHY LOG:", os.path.abspath(os.path.join(log.LOG_DIR, log.LOG_FILENAME)))
     # print("BRENTHY LOG:",os.path.abspath( log.get_log_file_path()))
