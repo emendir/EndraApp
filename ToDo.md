@@ -3,13 +3,15 @@
 ## DevOps
 
 - [ ] Pakaging for:
-  - [ ] Linux https://kivy.org/doc/stable/api-kivy.tools.packaging.html
+  - [x] Android
+  - [x] Linux
   - [ ] Windows
   - [ ] MacOS
 
 ## UI
 
 - [ ] UI scaling for mobile
+- [ ] rename "correspondence" to "chat"
 
 ## Messenger Features
 
@@ -29,3 +31,8 @@
 
 - TEMP_HARDCODED_KEY
 -
+
+## Dependencies
+
+- walytis codebase cleanup
+  - migrate from setup.py to pyptoject.toml

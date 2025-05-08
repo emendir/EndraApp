@@ -71,6 +71,7 @@ class MainApp(App):
                 os.path.join(self.profiles_dir, dirname), TEMP_HARDCODED_KEY
             )
             profiles.update({profile.did: profile})
+        logger.debug("Loaded profiles!")
         return profiles
 
     def get_profile_ids(self) -> set[str]:
@@ -80,14 +81,17 @@ class MainApp(App):
         logger.debug("Creating profile...")
         tempdir = tempfile.mkdtemp()
         profile = Profile.create(tempdir, TEMP_HARDCODED_KEY, auto_run=False)
-
+        logger.debug("Terminating profile...")
         profile.terminate()
+        
         target_dir = os.path.join(
             self.profiles_dir, blockchain_id_from_did(profile.did))
         shutil.move(tempdir, target_dir)
+        logger.debug("Reloading profile...")
 
         profile = Profile.load(target_dir, TEMP_HARDCODED_KEY)
         self.profiles.update({profile.did: profile})
+        logger.debug("Created profile!")
         return profile
 
     def join_profile(self, invitation: str) -> Profile:

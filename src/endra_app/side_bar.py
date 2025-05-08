@@ -179,6 +179,8 @@ class JoinCorrespondenceTask(TaskItem):
                     f"{e}\n"
                     "JoinCorrespondenceTask: error running task"
                 )
+                import traceback
+                traceback.print_exc()
                 logger.error(error_message)
                 self.update_status(TaskStatus.error)
                 return

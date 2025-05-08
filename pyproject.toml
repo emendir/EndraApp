@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 dynamic = ["dependencies"]
 name = "endra_app"
 authors = [{ name = "emendir" }]
-version = "0.1.1"
+version = "0.1.2"
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
@@ -20,8 +20,7 @@ endra_app = ["*.kv"]
 [tool.setuptools.packages.find]
 where = ["src"]
 include = [
-"endra_app",
-"walytis_beta_embedded", 
+"endra_app"
 ]
 namespaces = false 
 
