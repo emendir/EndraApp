@@ -12,6 +12,7 @@
 
 - [ ] UI scaling for mobile
 - [ ] rename "correspondence" to "chat"
+- [ ] QR scanner for joining chats and profiles
 
 ## Messenger Features
 

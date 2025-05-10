@@ -28,7 +28,7 @@ class AddCorrespondencePopupView(Popup):
         self.scroll_view = self.ids.scroll_view
         self.scroll_layout = self.ids.scroll_layout
 
-
+from threading import Lock
 class AddCorrespondencePopup(AddCorrespondencePopupView):
     def __init__(self,  main, profile: Profile, **kwargs):
         super().__init__(**kwargs)
@@ -36,21 +36,30 @@ class AddCorrespondencePopup(AddCorrespondencePopupView):
         self.profile = profile
         self.join_conv_btn.bind(on_press=self.join_correspondence)
         self.create_conv_btn.bind(on_press=self.create_correspondence)
+        
+        self.side_bar_buttons_lock = Lock()
 
     def create_correspondence(self, instance=None):
-        task = CreateCorrespondenceTask(
-            self.main, self.profile, self)
-        self.scroll_layout.add_widget(task, 0)
+        if self.side_bar_buttons_lock.locked():
+            return
+        with self.side_bar_buttons_lock:
+            task = CreateCorrespondenceTask(
+                self.main, self.profile, self
+            )
+            self.scroll_layout.add_widget(task, 0)
 
     def join_correspondence(self, *args, **kwargs):
-        try:
-            invitation = json.loads(self.text_input_txbx.text)
-        except json.JSONDecodeError:
-            self.text_input_txbx.hint_text = "Invalid Invitation code.\nPaste invitation code here."
+        if self.side_bar_buttons_lock.locked():
             return
-        task = JoinCorrespondenceTask(
-            self.main, self.profile, invitation, self)
-        self.scroll_layout.add_widget(task, 0)
+        with self.side_bar_buttons_lock:
+            try:
+                invitation = json.loads(self.text_input_txbx.text)
+            except json.JSONDecodeError:
+                self.text_input_txbx.hint_text = "Invalid Invitation code.\nPaste invitation code here."
+                return
+            task = JoinCorrespondenceTask(
+                self.main, self.profile, invitation, self)
+            self.scroll_layout.add_widget(task, 0)
         # try:
         #     invitation = json.loads(self.text_input_txbx.text)
         #     correspondence = self.profile.join_correspondence(invitation)
@@ -120,10 +129,10 @@ class CreateCorrespondenceTask(TaskItem):
             profile=profile,
             popup_window=popup_window,
         )
-        self.task_thread = Thread(target=self.run_task)
-        self.task_thread.start()
+
 
     def run_task(self):
+        print("ENDRA: RUNNING TAST")
         self.update_status(TaskStatus.in_progress)
         try:
             logger.info("Creating correspondence...")
@@ -160,9 +169,6 @@ class JoinCorrespondenceTask(TaskItem):
             popup_window=popup_window,
         )
         self.invitation: str = invitation
-        
-        self.task_thread = Thread(target=self.run_task)
-        self.task_thread.start()
 
     def run_task(self):
         self.update_status(TaskStatus.in_progress)
