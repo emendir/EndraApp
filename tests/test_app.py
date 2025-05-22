@@ -6,8 +6,7 @@ from endra_app import config
 from endra_app.config import APPDATA_DIR
 import os
 import endra_app
-from endra_app import main
-from endra_app.main import main
+from endra_app import run
 walytis_api.log.PRINT_DEBUG = False
 
 
@@ -31,7 +30,7 @@ if os.path.exists(APPDATA_DIR):
 shutil.copytree(APPDATA_BACKUP_DIR, APPDATA_DIR)
 
 # run Endra App
-main()
+run()
 
 # copy appdata back into appdata backup
 if os.path.exists(APPDATA_BACKUP_DIR):

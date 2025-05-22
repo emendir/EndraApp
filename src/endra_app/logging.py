@@ -14,6 +14,10 @@ logger.add(log_to_ipfs)
 import os
 PEERS_FILEPATH=os.path.join(os.path.dirname(__file__), "ipfs_bootstrap_peers.txt")
 for peer in IPFS_LOG_PEERS:
-    peer_id = peer.strip()
-    logger.info(f"endra_app.logging: connecting to  peer {peer_id}")
-    ipfs.peers.connect(peer_id)
+    peer_id = [part for part in peer.split("/") if part][-1]
+    if peer_id == ipfs.peer_id:
+        continue
+    logger.info(f"endra_app.logging: connecting to  peer {peer}")
+    ipfs.peers.connect(peer)
+    
+    
