@@ -9,18 +9,20 @@ build-backend = "setuptools.build_meta"
 dynamic = ["dependencies"]
 name = "endra_app"
 authors = [{ name = "emendir" }]
-version = "0.1.2"
+version = "0.1.3"
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 
 [tool.setuptools.package-data]
-endra_app = ["*.kv"]
+endra_app = ["*.kv","*.otf"]
+"endra_app.fonts" = ["*.kv","*.otf"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
 include = [
-"endra_app"
+"endra_app",
+"endra_app.fonts",
 ]
 namespaces = false 
 

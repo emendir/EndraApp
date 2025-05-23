@@ -16,7 +16,7 @@ source.dir = src
 source.include_exts = py,png,jpg,kv,atlas,h,so
 
 # (list) List of inclusions using pattern matching
-#source.include_patterns =
+source.include_patterns = *.otf
 
 # (list) Source files to exclude (let empty to not exclude anything)
 #source.exclude_exts = spec

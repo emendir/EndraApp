@@ -14,10 +14,11 @@
 
     Label:
         id: label
-        font_size: 16
         color: 0.9, 0.9, 0.9, 1
         size_hint: 0.6, 1
+        font_size: sp(18)
         font_context: 'system://myapp'
+        # font_name: 'LibertinusSerif-Regular.otf'
 <MessageEditorView>
     orientation: 'vertical'
     TextInput:
@@ -25,7 +26,9 @@
         background_color: 0.1, 0.1, 0.1, 1  # Dark background
         foreground_color: 0.9, 0.9, 0.9, 1  # Light text color
         hint_text: 'message text'  # Placeholder text
+        font_size: sp(18)
         font_context: 'system://myapp'
+        # font_name: 'LibertinusSerif-Regular.otf'
 <MessagePageView>
     orientation: 'vertical'
     size_hint_x: 0.7
@@ -49,8 +52,10 @@
             text: "invite to this correspondence"
             size_hint: 1, None
             height: 50
-            background_color: 0.8, 0.3, 0.3, 1  # Light red button
-        
+            background_color: 0.8, 0.3, 0.3, 1  # Light red button        
+            font_size: sp(18)
+            font_context: 'system://myapp'
+            # font_name: 'LibertinusSerif-Regular.otf'
     ScrollView:
         id: scroll_view
         size_hint: 1, 1
@@ -75,4 +80,6 @@
             size_hint: 1, None
             height: 50
             background_color: 0.8, 0.3, 0.3, 1  # Light red button
-
+            font_size: sp(18)
+            font_context: 'system://myapp'
+            # font_name: 'LibertinusSerif-Regular.otf'

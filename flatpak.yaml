@@ -1,37 +1,70 @@
-id: tech.emendir.endra
-runtime: org.freedesktop.Platform
-runtime-version: "24.08"
-sdk: org.freedesktop.Sdk
-command: endra_app
+id:                            tech.emendir.endra
+runtime:                       org.freedesktop.Platform
+runtime-version:               "24.08"
+sdk:                           org.freedesktop.Sdk
+command:                       endra_app
 modules:
-  - name: xsel
-    buildsystem: autotools
+  ## required for copying to clipboard (by pyperclip, I think)
+  - name:                      xsel
+    buildsystem:               autotools
     sources:
-      - type: archive
-        url: https://github.com/kfish/xsel/archive/refs/tags/1.2.1.tar.gz
-        sha256: 18487761f5ca626a036d65ef2db8ad9923bf61685e06e7533676c56d7d60eb14
+      - type:                  archive
+        url:                   https://github.com/kfish/xsel/archive/refs/tags/1.2.1.tar.gz
+        sha256:                18487761f5ca626a036d65ef2db8ad9923bf61685e06e7533676c56d7d60eb14
     build-commands:
       - autoreconf
       - ./configure --prefix=/app
       - make -j$(nproc)
       - make install
-  # - name: walytis_beta_embedded
-  #   buildsystem: simple
+      
+  ## required by kivy
+  ## is thtis needed any-more, or is it installed by kivy's build_linux_dependencies.sh?
+  - name:                      mtdev
+    buildsystem:               autotools
+    sources:
+      - type:                  git
+        url:                   https://bitmath.se/org/git/mtdev.git/
+        disable-shallow-clone: true
+    build-commands:
+      - ./autogen.sh
+      - ./configure --prefix=/app
+      - make -j$(nproc)
+      - make install
+  ## compile kivy from source in order to support the pango text provider
+  ## instructions from:        https://kivy.org/doc/stable/gettingstarted/installation.html#from-source
+  - name:                      kivy
+    buildsystem:               simple
+    sources:
+      - type:                  git
+        url:                   https://github.com/kivy/kivy/
+        branch:                stable
+    build-commands:
+      - ./tools/build_linux_dependencies.sh
+      - export KIVY_DEPS_ROOT="./kivy-dependencies"
+      - echo $(realpath $KIVY_DEPS_ROOT)
+      - echo $(ls $KIVY_DEPS_ROOT)
+      - export use_pangoft2=1
+      - pip3 install --prefix=/app .
+    build-options:
+      build-args:              [ "--share=network" ]
+      # - pip3 install "kivy[base] @ https://github.com/kivy/kivy/archive/master.zip"
+  # - name:                    walytis_beta_embedded
+  #   buildsystem:             simple
   #   sources:
-  #     - type: dir
-  #       path: ../../Brenthy/Deployment/walytis_beta_embedded
+  #     - type:                dir
+  #       path:                ../../Brenthy/Deployment/walytis_beta_embedded
   #   build-commands:
   #     - pip3 install --no-build-isolation --prefix=/app .
-  - name: endra
-    buildsystem: simple
+  - name:                      endra
+    buildsystem:               simple
     build-commands:
       - pip3 install --no-build-isolation --prefix=/app .
     sources:
-      - type: dir
-        path: .
+      - type:                  dir
+        path:                  .
 
     build-options:
-      build-args: [ "--share=network" ]
+      build-args:              [ "--share=network" ]
 
 finish-args:
   - --socket=x11

@@ -36,7 +36,8 @@ docker run -v $HOME/.buildozer:/home/user/.buildozer -v $(pwd):/home/user/hostcw
 # SSH_ADDR=phablet@10.42.0.200
 SSH_ADDR=phablet@192.168.189.125
 # ssh -t $SSH_ADDR "rm -f /media/phablet/PhoneSD/waydroid/data/media/0/Download/*.apk"
-# scp bin/nfsApk-0.1-arm64-v8a-debug.apk $SSH_ADDR:/media/phablet/PhoneSD/waydroid/data/media/0/Download/
+# scp bin/EndraApp-0.1-arm64-v8a-debug.apk $SSH_ADDR:/media/phablet/PhoneSD/waydroid/data/media/0/Download/
+cp bin/EndraApp-0.1-arm64-v8a-debug.apk dist/Endra-current-debugging.apk
 
 
 buildozer android deploy run logcat

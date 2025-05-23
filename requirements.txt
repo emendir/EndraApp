@@ -4,8 +4,8 @@ kivy-garden.qrcode
 portalocker
 loguru
 
-walytis_identities
-walytis_offchain
-walytis_mutability
+walytis_identities>=0.1.3
+walytis_offchain>=0.1.3
+walytis_mutability>=0.1.3
 walytis_beta_embedded>=0.0.5
 endra

@@ -52,7 +52,7 @@ if True: # SENSITIVE IMPORT ORDERS
 
     import brenthy_tools_beta # depends on AUTO_LOAD_BAP_MODULES environment var
 
-    # disable excessive logging, is slow in flatpak packages
+    # disable excessive endra_logging, is slow in flatpak packages
     brenthy_tools_beta.log.RECORD_INFO=False
     brenthy_tools_beta.log.RECORD_DEBUG=False
 
