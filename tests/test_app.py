@@ -23,7 +23,7 @@ APPDATA_BACKUP_DIR = os.path.join(
 )
 
 # do something with _load_kivy to stop IDEs from removing the import
-print("Using Pango Font Context:",_load_kivy.USING_PANGO)
+print("Using Pango Font Context:",_load_kivy.using_pango)
 
 
 # replace appdata with appdata backup
