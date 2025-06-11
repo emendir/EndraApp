@@ -9,7 +9,7 @@ cd $SCRIPT_DIR
 
 set -e # Exit if any command fails
 
-sudo apt install libfreetype6-dev libpango1.0-dev libpangoft2-1.0-0
+sudo apt install -y libfreetype6-dev libpango1.0-dev libpangoft2-1.0-0 ninja-build portaudio19-dev freeglut3-dev
 
 cd "$(mktemp -d)"
 curl https://raw.githubusercontent.com/kivy/kivy/master/tools/build_linux_dependencies.sh -o build_kivy_deps.sh
@@ -17,4 +17,4 @@ chmod +x build_kivy_deps.sh
 ./build_kivy_deps.sh
 KIVY_DEPS_ROOT=$(pwd)/kivy-dependencies
 export KIVY_DEPS_ROOT
-python -m pip install "kivy[full]" kivy_examples --no-binary kivy
+python -m pip install "kivy[full]" kivy_examples --no-binary kivy --force-reinstall
