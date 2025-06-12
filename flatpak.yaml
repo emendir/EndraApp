@@ -1,4 +1,4 @@
-id:                            tech.emendir.endra
+id:                            tech.emendir.Endra
 runtime:                       org.freedesktop.Platform
 runtime-version:               "24.08"
 sdk:                           org.freedesktop.Sdk
@@ -55,17 +55,25 @@ modules:
   #       path:                ../../Brenthy/Deployment/walytis_beta_embedded
   #   build-commands:
   #     - pip3 install --no-build-isolation --prefix=/app .
+  - name:                      graphics
+    buildsystem:               simple
+    build-commands:
+      - ./update.sh
+      - install -D endra-icon.svg /app/share/icons/hicolor/scalable/apps/tech.emendir.Endra.svg
+    sources:
+      - type:                  dir
+        path:                  graphics
   - name:                      endra
     buildsystem:               simple
     build-commands:
       - pip3 install --no-build-isolation --prefix=/app .
+      - install -D tech.emendir.Endra.desktop /app/share/applications/tech.emendir.Endra.desktop
     sources:
       - type:                  dir
         path:                  .
 
     build-options:
       build-args:              [ "--share=network" ]
-
 finish-args:
   - --socket=x11
   - --socket=wayland

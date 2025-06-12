@@ -11,6 +11,7 @@
         text: "Invitation code copied to clipboard!\n(Click to copy again)"
         text_size: self.size  # Enable text wrapping
         size_hint_y: 1
+        font_size: sp(16)
         font_context: 'system://myapp'
 
 <InvitationPopupView@Popup>:
@@ -25,4 +26,5 @@
         Button:
             size_hint_y:None
             text: 'Close'
+            font_size: sp(18)
             on_release: root.dismiss()

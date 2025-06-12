@@ -58,7 +58,7 @@ SOURCE_DIR = os.path.join(WORKDIR, "src")
 ENTRY_POINT = os.path.join(SOURCE_DIR, "__main__.py")
 
 DATA_FILES = [
-    os.path.join("endra_app", "tech.emendir.endra.svg")
+    os.path.join("endra_app", "tech.emendir.Endra.svg")
 ]
 
 if os.path.exists("build"):

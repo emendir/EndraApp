@@ -13,7 +13,7 @@
             pos: self.pos
     Label:
         id: label
-        font_size: 16
+        font_size: sp(16)
         color: 0.9, 0.9, 0.9, 1
         size_hint: 0.6, 1
         font_context: 'system://myapp'
@@ -40,6 +40,7 @@
             size_hint: 0.9, None
             height: 50
             background_color: 0.8, 0.3, 0.3, 1  # Light red button
+            font_size: sp(16)
         Button:
             id: open_profiles_btn
             font_context: "system://myapp"
@@ -47,7 +48,7 @@
             size_hint: None, None
             height: 50
             background_color: 0.8, 0.3, 0.3, 1  # Light red button
-    
+            font_size: sp(16)    
     ScrollView:
         id: scroll_view
         size_hint: 1, 1
@@ -64,6 +65,7 @@
         size_hint: 1, None
         height: 50
         background_color: 0.8, 0.3, 0.3, 1  # Light red button
+        font_size: sp(16)
 <AddCorrespondencePopupView@Popup>:
     title:'New Correspondence'
     size_hint: None, None
@@ -79,6 +81,7 @@
         Button:
             id: join_conv_btn
             size_hint_y:1
+            font_size: sp(16)
             text: 'join existing correspondence'
         Button:
             id: create_conv_btn
@@ -113,7 +116,7 @@
             pos: self.pos
     Label:
         id: label
-        font_size: 16
+        font_size: sp(16)
         color: 0.9, 0.9, 0.9, 1
         size_hint: 1, 1
         font_context: 'system://myapp'
