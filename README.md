@@ -1,3 +1,8 @@
+## Endra App
+_P2P Messenger_
+
+Based on IPFS, the Walytis database blockchain, and Walytis-Identities DID management technologies, this peer to peer messenger support multiple devices per user, and group chats.
+
 ## DevOps
 
 For speedy starting and termination of the app, on Linux, install Brenthy to run Walytis & IPFS as a systemd service.

@@ -23,7 +23,8 @@ modules:
     buildsystem:               autotools
     sources:
       - type:                  git
-        url:                   https://bitmath.se/org/git/mtdev.git/
+        url:                   https://bitmath.se/org/git/mtdev.git
+        tag:                   v1.1.7
         disable-shallow-clone: true
     build-commands:
       - ./autogen.sh
@@ -36,8 +37,9 @@ modules:
     buildsystem:               simple
     sources:
       - type:                  git
-        url:                   https://github.com/kivy/kivy/
-        branch:                stable
+        url:                   https://github.com/kivy/kivy.git
+        # branch:              stable
+        tag:                   2.3.1
     build-commands:
       - ./tools/build_linux_dependencies.sh
       - export KIVY_DEPS_ROOT="./kivy-dependencies"
@@ -45,8 +47,8 @@ modules:
       - echo $(ls $KIVY_DEPS_ROOT)
       - export use_pangoft2=1
       - pip3 install --prefix=/app .
-    build-options:
-      build-args:              [ "--share=network" ]
+    # build-options:
+    #   build-args:              [ "--share=network" ]
       # - pip3 install "kivy[base] @ https://github.com/kivy/kivy/archive/master.zip"
   # - name:                    walytis_beta_embedded
   #   buildsystem:             simple
@@ -55,36 +57,33 @@ modules:
   #       path:                ../../Brenthy/Deployment/walytis_beta_embedded
   #   build-commands:
   #     - pip3 install --no-build-isolation --prefix=/app .
-  - name:                      graphics
-    buildsystem:               simple
-    build-commands:
-      - ./update.sh
-      - install -D endra-icon.svg /app/share/icons/hicolor/scalable/apps/tech.emendir.Endra.svg
-    sources:
-      - type:                  dir
-        path:                  graphics
+  
+  - python3-modules.json
   - name:                      endra
     buildsystem:               simple
     build-commands:
       - pip3 install --no-build-isolation --prefix=/app .
-      - install -D tech.emendir.Endra.desktop /app/share/applications/tech.emendir.Endra.desktop
+      - install -D packaging/share/tech.emendir.Endra.desktop /app/share/applications/tech.emendir.Endra.desktop
+      - graphics/update.sh
+      - install -D graphics/endra-icon.svg /app/share/icons/hicolor/scalable/apps/tech.emendir.Endra.svg
     sources:
       - type:                  dir
-        path:                  .
+        path:                  ../..
 
-    build-options:
-      build-args:              [ "--share=network" ]
+    # build-options:
+    #   build-args:              [ "--share=network" ]
 finish-args:
-  - --socket=x11
+
   - --socket=wayland
+  - --socket=fallback-x11
   - --share=network
   - --filesystem=home
   - --device=dri
   - --talk-name=org.freedesktop.ScreenSaver
   - --share=ipc
   - --device=all
-  - --talk-name=org.freedesktop.portal.Freedesktop
-  - --talk-name=org.freedesktop.portal.Camera
-  - --socket=session-bus
+  # - --talk-name=org.freedesktop.portal.Freedesktop
+  # - --talk-name=org.freedesktop.portal.Camera
+  # - --socket=session-bus
   - --device=all
   

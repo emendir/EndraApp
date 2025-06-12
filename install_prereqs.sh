@@ -33,3 +33,12 @@ KIVY_DEPS_ROOT=$(pwd)/kivy-dependencies
 export KIVY_DEPS_ROOT
 export USE_X11=1
 python -m pip install "kivy[full]" kivy_examples --no-binary kivy --force-reinstall
+
+## Buildozer Prereqs
+## https://buildozer.readthedocs.io/en/latest/installation.html
+sudo apt update
+sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 cmake libffi-dev libssl-dev
+# pip3 install --user --upgrade Cython==0.29.33 virtualenv  # the --user should be removed if you do this in a venv
+
+# add the following line at the end of your ~/.bashrc file
+export PATH=$PATH:~/.local/bin/

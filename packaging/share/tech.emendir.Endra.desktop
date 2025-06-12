@@ -6,4 +6,4 @@ Comment=P2P messenger
 Terminal=false
 Icon=tech.emendir.Endra
 Type=Application
-Categories=Internet
+Categories=Chat;InstantMessaging;P2P

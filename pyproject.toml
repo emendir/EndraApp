@@ -8,8 +8,14 @@ build-backend = "setuptools.build_meta"
 [project]
 dynamic = ["dependencies"]
 name = "endra_app"
-authors = [{ name = "emendir" }]
+authors = [{ name = "Emendir" , email = "dev@emendir.tech"}]
 version = "0.1.3"
+license = "CC0-1.0"
+description = "P2P Messenger"
+
+[project.urls]
+Homepage = "https://github.com/emendir/EndraApp"
+Repository = "https://github.com/emendir/EndraApp"
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
