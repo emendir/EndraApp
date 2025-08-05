@@ -22,6 +22,12 @@ It can be used for more than just instant messaging - shared calendars, project 
 
 - higher resource usage on user devices compared to conventional messengers
 
+## Documentation
+
+The thorough documentation for this project and the technologies it's based on live in a dedicated repository:
+
+https://github.com/emendir/WalytisTechnologies
+
 ## Run From Source
 
 Install Prerequisites:
