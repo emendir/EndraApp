@@ -22,11 +22,17 @@ It can be used for more than just instant messaging - shared calendars, project 
 
 - higher resource usage on user devices compared to conventional messengers
 
+## Project Status **EXPERIMENTAL**
+
+This library is very early in its development.
+
+The API of this library IS LIKELY TO CHANGE in the near future!
+
 ## Documentation
 
-The thorough documentation for this project and the technologies it's based on live in a dedicated repository:
+To learn how Endra works, visit the documentation in its dedicated repo at:
 
-https://github.com/emendir/WalytisTechnologies
+https://github.com/emendir/WalytisTechnologies/blob/master/EndraApp/1-IntroToEndraApp.md
 
 ## Run From Source
 
