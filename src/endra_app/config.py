@@ -19,8 +19,6 @@ elif platform in ('linux', 'win', 'macosx'):
     APPDATA_DIR = os.path.join(user_data_dir(), "Endra")
 else:
     raise NotImplementedError(f"Unsupported platform: {platform}")
-import loguru
-loguru.logger.add(os.path.join(APPDATA_DIR, "Endra.log"), rotation="1 week")
 
 # APPDATA_DIR = os.path.join(user_data_dir(), "Endra")
 # APPDATA_DIR = os.path.join(".", "EndraAppdata")

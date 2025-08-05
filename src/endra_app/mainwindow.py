@@ -1,7 +1,7 @@
 from .config import APPDATA_DIR
 from . import config
 import walytis_beta_embedded
-from loguru import logger
+from .log import logger
 import tempfile
 from datetime import datetime
 from walytis_identities.did_objects import Key
@@ -17,7 +17,6 @@ import os
 print("mainwindow.py")
 
 print("Imported components.")
-
 CRYPTO_FAMILY = "EC-secp256k1"
 TEMP_HARDCODED_KEY = Key(
     family=CRYPTO_FAMILY,
@@ -149,7 +148,7 @@ class MainApp(App):
             profile.terminate()
         
         if not config.USE_BRENTHY:
-            logger.debug("Mainwindow: Terminating Wwalytis_beta_embedded!")
+            logger.debug("Mainwindow: Terminating Walytis_beta_embedded!")
             walytis_beta_embedded.terminate()
 
         

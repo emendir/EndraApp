@@ -8,7 +8,7 @@ MAGENTA='\033[0;35m'
 CYAN='\033[0;36m'
 WHITE='\033[0;37m'
 NC='\033[0m' # no colour
-
+set -e
 echo -e "$YELLOW
 REMEMBER: If you've updated dependecies, run:"
 echo -e "$MAGENTA
@@ -37,14 +37,14 @@ if ! [ -e ~/.buildozer ];then
 fi
 
 
-# docker run  \
-#   -v $HOME/.buildozer:/home/user/.buildozer \
-#   -v $WORK_DIR/buildozer.spec:/home/user/hostcwd/buildozer.spec \
-#   -v $WORK_DIR/.buildozer:/home/user/hostcwd/.buildozer \
-#   -v $WORK_DIR/bin:/home/user/hostcwd/bin \
-#   -v $PROJ_DIR/src:/home/user/hostcwd/src \
-#   $DOCKER_IMAGE android debug
-# 
+docker run  \
+  -v $HOME/.buildozer:/home/user/.buildozer \
+  -v $WORK_DIR/buildozer.spec:/home/user/hostcwd/buildozer.spec \
+  -v $WORK_DIR/.buildozer:/home/user/hostcwd/.buildozer \
+  -v $WORK_DIR/bin:/home/user/hostcwd/bin \
+  -v $PROJ_DIR/src:/home/user/hostcwd/src \
+  $DOCKER_IMAGE android debug
+
 
 
 # SSH_ADDR=phablet@10.42.0.200

@@ -8,7 +8,6 @@ from endra_app.config import APPDATA_DIR
 import os
 import endra_app
 from endra_app import run
-walytis_api.log.PRINT_DEBUG = False
 
 
 _testing_utils.assert_is_loaded_from_source(

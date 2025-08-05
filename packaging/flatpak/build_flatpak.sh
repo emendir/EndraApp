@@ -38,7 +38,8 @@ python_packages=$(while IFS= read -r line; do
   [[ $line == PyQt* ]] && continue # skip PyQt cause we're using a PyQt base
   printf '%s ' "$line"
 done < $PROJECT_DIR/requirements.txt)
-# flatpak_pip_generator $python_packages
+flatpak_pip_generator $python_packages
+
 cd $PROJECT_DIR
 # validate Flatpak Manifest
 flatpak run --command=flatpak-builder-lint org.flatpak.Builder manifest "${SCRIPT_DIR}/${APP_ID}.yml"

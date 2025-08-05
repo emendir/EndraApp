@@ -2,7 +2,7 @@
 from endra import Device
 from .utils import InvitationPopupView
 import json
-from loguru import logger
+from .log import logger
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from endra import Profile

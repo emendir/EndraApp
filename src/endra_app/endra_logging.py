@@ -1,19 +1,25 @@
-from loguru import logger
+import logging
+from .log import logger
 from walytis_beta_embedded import ipfs
 from kivy import platform
+import os
+
 IPFS_LOG_TOPIC = f"endra_logs_{platform}"
 IPFS_LOG_PEERS = [
-    
+    "/ip4/192.168.189.106/tcp/4001/p2p/12D3KooWCq7RiBeLTZFeBRX4zmfYDunHPmgT3zZSdQKcx7Es34py",
 ]
 
+class IPFSHandler(logging.Handler):
+    def emit(self, record):
+        log_entry = self.format(record)
+        ipfs.pubsub.publish(IPFS_LOG_TOPIC, f"{log_entry}\n")
 
-def log_to_ipfs(log_message):
-    ipfs.pubsub.publish(IPFS_LOG_TOPIC, log_message)
 
+ipfs_handler = IPFSHandler()
+ipfs_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 
-logger.add(log_to_ipfs)
+logger.addHandler(ipfs_handler)
 
-import os
 PEERS_FILEPATH=os.path.join(os.path.dirname(__file__), "ipfs_bootstrap_peers.txt")
 for peer in IPFS_LOG_PEERS:
     peer_id = [part for part in peer.split("/") if part][-1]
@@ -21,5 +27,4 @@ for peer in IPFS_LOG_PEERS:
         continue
     logger.info(f"endra_app.endra_logging: connecting to  peer {peer}")
     ipfs.peers.connect(peer)
-    
-    
+

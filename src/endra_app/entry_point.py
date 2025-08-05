@@ -1,11 +1,11 @@
 
 import portalocker
-from loguru import logger
 import os
 
 
 def run():
     # # IMPORT ORDER IS IMPORTANT
+    from .log import logger
     from . import _load_kivy
     from kivy import platform
     # if platform == "android":

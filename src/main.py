@@ -1,5 +1,5 @@
 
-from loguru import logger
+from endra_app.log import logger
 import traceback
 
 
