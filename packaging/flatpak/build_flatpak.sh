@@ -1,9 +1,9 @@
 #!/bin/bash
-""":"
 
 # the absolute path of this script's directory
 SCRIPT_DIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 PROJECT_DIR=$(realpath $SCRIPT_DIR/../..)
+DIST_DIR=$PROJECT_DIR/dist/
 
 FLATPAK_BUILD_DIR=$SCRIPT_DIR/build-dir
 FLATPAK_STATE_DIR=$SCRIPT_DIR/.flatpak-builder
@@ -32,13 +32,27 @@ flatpak install -y --user flathub org.flatpak.Builder
 flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 
-## Flatpak Manifest
-## Collect Python Packages
+# Flatpak Manifest
+# Collect Python Packages
+python_packages=$(while IFS= read -r line; do
+  [[ $line == PyQt* ]] && continue # skip PyQt cause we're using a PyQt base
+  printf '%s ' "$line"
+done < $SCRIPT_DIR/requirements-flatpak.txt)
+flatpak_pip_generator $python_packages -o python3-modules-prereqs
+
+python_packages=$(while IFS= read -r line; do
+  [[ $line == PyQt* ]] && continue # skip PyQt cause we're using a PyQt base
+  printf '%s ' "$line"
+done < $SCRIPT_DIR/requirements-flatpak.txt)
+flatpak_pip_generator $python_packages -o python3-modules-flatpak
+
 python_packages=$(while IFS= read -r line; do
   [[ $line == PyQt* ]] && continue # skip PyQt cause we're using a PyQt base
   printf '%s ' "$line"
 done < $PROJECT_DIR/requirements.txt)
-flatpak_pip_generator $python_packages
+flatpak_pip_generator $python_packages -o python3-modules
+
+req2flatpak --requirements-file $SCRIPT_DIR/requirements-flatpak-binary.txt --target-platforms 311-x86_64 311-aarch64 -o python3-modules-flatpak-binary.json
 
 cd $PROJECT_DIR
 # validate Flatpak Manifest
@@ -62,33 +76,22 @@ flatpak run org.flatpak.Builder \
   --repo=$FLATPAK_REPO_DIR \
   --state-dir $FLATPAK_STATE_DIR \
   $FLATPAK_BUILD_DIR \
-  "${SCRIPT_DIR}/${APP_ID}.yml" \
-  # --sandbox \
+  "${SCRIPT_DIR}/${APP_ID}.yml" # \
+  # --sandbox 
   
 cd $SCRIPT_DIR
 
 flatpak build-export $FLATPAK_REPO_DIR $FLATPAK_BUILD_DIR
-flatpak build-bundle $FLATPAK_REPO_DIR $PROJECT_DIR/dist/dist/${APP_ID}_Testing.flatpak $APP_ID 
+flatpak build-bundle $FLATPAK_REPO_DIR $DIST_DIR/${APP_ID}_Testing.flatpak $APP_ID 
 
 
 
 echo "
 To debug the flatpak build, run this from the project directory:
 
-flatpak run org.flatpak.Builder --run \
- --repo=$FLATPAK_REPO_DIR \
- --state-dir $FLATPAK_STATE_DIR \
+flatpak-builder --run \
  $FLATPAK_BUILD_DIR \
- $SCRIPT_DIR/$APP_ID.yml
+ $SCRIPT_DIR/$APP_ID.yml \
+ sh
 "
 
-
-
-
-exit 0
-"""
-import os
-import sys
-
-# Python: re-execute the script in Bash
-os.execvp("bash", ["bash", __file__] + sys.argv[1:])

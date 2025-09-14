@@ -1,8 +1,10 @@
 id:                            tech.emendir.Endra
 runtime:                       org.freedesktop.Platform
-runtime-version:               "24.08"
+runtime-version:               "23.08" # cython version required by kivy is limiting factor
 sdk:                           org.freedesktop.Sdk
 command:                       endra_app
+# sdk-extensions:
+#   - org.freedesktop.Sdk.Extension.python3-devel
 modules:
   ## required for copying to clipboard (by pyperclip, I think)
   - name:                      xsel
@@ -18,58 +20,214 @@ modules:
       - make install
       
   ## required by kivy
-  ## is thtis needed any-more, or is it installed by kivy's build_linux_dependencies.sh?
   - name:                      mtdev
     buildsystem:               autotools
     sources:
-      - type:                  git
-        url:                   https://bitmath.se/org/git/mtdev.git
-        tag:                   v1.1.7
-        disable-shallow-clone: true
+      # - type:                  git
+      #   url:                   https://bitmath.se/org/git/mtdev.git
+      #   tag:                   v1.1.7
+      #   disable-shallow-clone: true
+      - type: archive
+        url: https://bitmath.se/org/code/mtdev/mtdev-1.1.7.tar.gz
+        sha256: a55bd02a9af4dd266c0042ec608744fff3a017577614c057da09f1f4566ea32c
     build-commands:
-      - ./autogen.sh
+      # - ./autogen.sh
       - ./configure --prefix=/app
       - make -j$(nproc)
       - make install
-  ## compile kivy from source in order to support the pango text provider
-  ## instructions from:        https://kivy.org/doc/stable/gettingstarted/installation.html#from-source
-  - name:                      kivy
-    buildsystem:               simple
-    sources:
-      - type:                  git
-        url:                   https://github.com/kivy/kivy.git
-        # branch:              stable
-        tag:                   2.3.1
-    build-commands:
-      - ./tools/build_linux_dependencies.sh
-      - export KIVY_DEPS_ROOT="./kivy-dependencies"
-      - echo $(realpath $KIVY_DEPS_ROOT)
-      - echo $(ls $KIVY_DEPS_ROOT)
-      - export use_pangoft2=1
-      - pip3 install --prefix=/app .
-    # build-options:
-    #   build-args:              [ "--share=network" ]
-      # - pip3 install "kivy[base] @ https://github.com/kivy/kivy/archive/master.zip"
-  # - name:                    walytis_beta_embedded
-  #   buildsystem:             simple
+  # # SDL2 (instead of downloading in build_linux_dependencies.sh)
+  # - name: sdl2
+  #   buildsystem: autotools
   #   sources:
-  #     - type:                dir
-  #       path:                ../../Brenthy/Deployment/walytis_beta_embedded
+  #     - type: archive
+  #       url: https://github.com/libsdl-org/SDL/releases/download/release-2.30.7/SDL2-2.30.7.tar.gz
+  #       sha256: 2508c80438cd5ff3bbeb8fe36b8f3ce7805018ff30303010b61b03bb83ab9694
   #   build-commands:
-  #     - pip3 install --no-build-isolation --prefix=/app .
-  
+  #     - ./configure --prefix=/app --disable-static
+  #     - make -j$(nproc)
+  #     - make install
+  #
+  # # GStreamer core
+  # - name: gstreamer
+  #   buildsystem: meson
+  #   sources:
+  #     - type: archive
+  #       url: https://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.24.6.tar.xz
+  #       sha256: 64342060d7c6f9e36a35e3be38a4f5ac3b41ed93b0853619be45141ef3cc1b9d
+  #
+  #
+  # # GStreamer plugins (base set)
+  # - name: gst-plugins-base
+  #   buildsystem: meson
+  #   sources:
+  #     - type: archive
+  #       url: https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.24.6.tar.xz
+  #       sha256: cf52b535a0ce7ec974756891818f34f06317c2e136abb24149e18c23ecc229b5
+  #
+  #
+  # # GLEW
+  # - name: glew
+  #   buildsystem: simple
+  #   sources:
+  #     - type: archive
+  #       url: https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0.tgz
+  #       sha256: d4fc82893cfb00109578d0a1a2337fb8ca335b3ceccf97b97e5cc7f08e4353e1
+  #   build-commands:
+  #     # Build and install shared library
+  #     - make -j$(nproc) GLEW_DEST=/app LIBDIR=/app/lib
+  #     - make install GLEW_DEST=/app LIBDIR=/app/lib
+  #
+  #
+  # --- SDL3 ---
+  - name: sdl3
+    buildsystem: cmake
+    config-opts:
+      - -DCMAKE_INSTALL_PREFIX=/app
+      - -DCMAKE_INSTALL_LIBDIR=lib
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+    build-commands:
+      - mkdir -p build
+      - cmake -S . -B build ${CMAKE_BUILD_OPTIONS} -DCMAKE_INSTALL_PREFIX=/app -DCMAKE_INSTALL_LIBDIR=lib
+      - cmake --build build --parallel
+      - DESTDIR=/app cmake --install build
+    sources:
+      - type: archive
+        url: https://github.com/libsdl-org/SDL/releases/download/release-3.2.14/SDL3-3.2.14.tar.gz
+        sha256: b7e7dc05011b88c69170fe18935487b2559276955e49113f8c1b6b72c9b79c1f
+
+  # --- libpng ---
+  - name: libpng
+    buildsystem: cmake
+    config-opts:
+      - -DCMAKE_INSTALL_PREFIX=/app
+      - -DCMAKE_INSTALL_LIBDIR=lib
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DPNG_TESTS=OFF
+      - -DPNG_EXECUTABLES=OFF
+    build-commands:
+      - mkdir -p build
+      - cmake -S . -B build ${CMAKE_BUILD_OPTIONS} -DCMAKE_INSTALL_PREFIX=/app -DCMAKE_INSTALL_LIBDIR=lib
+      - cmake --build build --parallel
+      - DESTDIR=/app cmake --install build
+    sources:
+      - type: archive
+        url: https://downloads.sourceforge.net/project/libpng/libpng16/1.6.47/libpng-1.6.47.tar.gz
+        sha256: 084115c62fe023e3d88cd78764a4d8e89763985ee4b4a085825f7a00d85eafbb
+    cleanup:
+      - /share/doc
+      - /share/man
+
+  # --- SDL3_mixer ---
+  - name: sdl3_mixer
+    buildsystem: cmake
+    config-opts:
+      - -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DSDLMIXER_MOD_MODPLUG=ON
+      - -DSDLMIXER_MOD_MODPLUG_SHARED=OFF
+      - -DCMAKE_INSTALL_PREFIX=/app
+      - -DCMAKE_INSTALL_LIBDIR=lib
+      - -DSDLMIXER_VENDORED=OFF
+    build-commands:
+      - mkdir -p build
+      - cmake -S . -B build ${CMAKE_BUILD_OPTIONS} -DCMAKE_INSTALL_PREFIX=/app -DCMAKE_INSTALL_LIBDIR=lib
+      - cmake --build build --parallel
+      - DESTDIR=/app cmake --install build
+    sources:
+      - type: archive
+        url: https://github.com/libsdl-org/SDL_mixer/archive/78a2035cf4cf95066d7d9e6208e99507376409a7.tar.gz
+        sha256: 66b3e74cab9bc90f4e52741de8ab642ff8e52f6ee6738c62e97ba05af33098db
+    cleanup:
+      - /share/doc
+      - /share/man
+
+  # --- SDL3_image ---
+  - name: sdl3_image
+    buildsystem: cmake
+    config-opts:
+      - -DBUILD_SHARED_LIBS=ON
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DSDLIMAGE_TIF_VENDORED=ON
+      - -DSDLIMAGE_WEBP_VENDORED=ON
+      - -DSDLIMAGE_JPG_VENDORED=ON
+      - -DSDLIMAGE_PNG_VENDORED=ON
+      - -DSDLIMAGE_TIF_SHARED=OFF
+      - -DSDLIMAGE_WEBP_SHARED=OFF
+      - -DCMAKE_INSTALL_PREFIX=/app
+      - -DCMAKE_INSTALL_LIBDIR=lib
+      - -DSDLIMAGE_VENDORED=OFF
+    build-commands:
+      - mkdir -p build
+      - cmake -S . -B build ${CMAKE_BUILD_OPTIONS} -DCMAKE_INSTALL_PREFIX=/app -DCMAKE_INSTALL_LIBDIR=lib
+      - cmake --build build --parallel
+      - DESTDIR=/app cmake --install build
+    sources:
+      - type: archive
+        url: https://github.com/libsdl-org/SDL_image/releases/download/release-3.2.4/SDL3_image-3.2.4.tar.gz
+        sha256: a725bd6d04261fdda0dd8d950659e1dc15a8065d025275ef460d32ae7dcfc182
+    cleanup:
+      - /share/doc
+      - /share/man
+
+  # --- SDL3_ttf ---
+  - name: sdl3_ttf
+    buildsystem: cmake
+    config-opts:
+      - -DBUILD_SHARED_LIBS=ON
+      - -DSDLTTF_HARFBUZZ=ON
+      - -DFT_DISABLE_PNG=OFF
+      - -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/app
+      - -DCMAKE_INSTALL_LIBDIR=lib
+      - -DSDLTTF_VENDORED=OFF
+    build-commands:
+      - mkdir -p build-cmake
+      - cmake -S . -B build-cmake ${CMAKE_BUILD_OPTIONS} -DCMAKE_INSTALL_PREFIX=/app -DCMAKE_INSTALL_LIBDIR=lib
+      - cmake --build build-cmake --parallel
+      - DESTDIR=/app cmake --install build-cmake
+    sources:
+      - type: archive
+        url: https://github.com/libsdl-org/SDL_ttf/releases/download/release-3.2.2/SDL3_ttf-3.2.2.tar.gz
+        sha256: 63547d58d0185c833213885b635a2c0548201cc8f301e6587c0be1a67e1e045d
+    cleanup:
+      - /share/doc
+      - /share/man
+
+  # # Optionally: a module to aggregate / adjust RPATH etc
+  # - name: kivy-dependencies
+  #   buildsystem: simple
+  #   build-commands:
+  #     - echo "Dependencies are provided by modules above"
+  #     # Possibly set up environment variables, etc.
+  #   sources: []
+  - python3-modules-prereqs.json
+  - name: kivy
+    buildsystem: simple
+    sources:
+      - type: git
+        url: https://github.com/kivy/kivy.git
+        tag: 2.3.1
+    # sdk-extensions:
+    #   - org.freedesktop.Sdk.Extension.python3-devel
+    build-commands:
+      - export KIVY_DEPS_ROOT=/app
+      - export use_pangoft2=1
+      - pip3 install --no-binary=:all: --prefix=/app .
+  - python3-modules-flatpak.json
+  - python3-modules-flatpak-binary.json 
+  - python3-modules-flatpak-manual.json 
   - python3-modules.json
-  - name:                      endra
+  - name:                      endra_app
     buildsystem:               simple
     build-commands:
-      - pip3 install --no-build-isolation --prefix=/app .
+      - pip3 install --no-cache --force-rebuild --no-binary=:all: --no-deps --prefix=/app  --no-build-isolation --install-scripts=/app/bin .
       - install -D packaging/share/tech.emendir.Endra.desktop /app/share/applications/tech.emendir.Endra.desktop
-      - graphics/update.sh
       - install -D graphics/endra-icon.svg /app/share/icons/hicolor/scalable/apps/tech.emendir.Endra.svg
+      - cp packaging/flatpak/run_endra.sh /app/bin/endra_app
     sources:
       - type:                  dir
         path:                  ../..
-
     # build-options:
     #   build-args:              [ "--share=network" ]
 finish-args:

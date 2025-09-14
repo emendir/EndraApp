@@ -5,7 +5,9 @@ from kivy import platform
 import os
 
 IPFS_LOG_TOPIC = f"endra_logs_{platform}"
-IPFS_LOG_PEERS = []
+IPFS_LOG_PEERS = [
+    "/ip4/192.168.189.106/tcp/4001/p2p/12D3KooWCq7RiBeLTZFeBRX4zmfYDunHPmgT3zZSdQKcx7Es34py",
+]
 
 
 class IPFSHandler(logging.Handler):

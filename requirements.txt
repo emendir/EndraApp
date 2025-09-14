@@ -1,3 +1,4 @@
+hatchling
 dataclasses-json
 kivy
 kivy-garden.qrcode
@@ -9,3 +10,6 @@ walytis_offchain>=0.1.3
 walytis_mutability>=0.1.3
 walytis_beta_embedded>=0.0.5
 endra
+environs
+pytest
+pygments
