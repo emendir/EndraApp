@@ -2,11 +2,13 @@
 
 ## DevOps
 
-- [ ] Pakaging for:
-  - [x] Android
-  - [x] Linux
-  - [ ] Windows
-  - [ ] MacOS
+- [ ] Pakaging: ⏫ 
+	- [x] Android
+	- [x] Linux x86-64
+	- [x] Linux arm-64
+	- [ ] Windows
+	- [ ] MacOS-x86-64
+	- [ ] MacOS-arm-64
 
 ## UI
 
@@ -16,11 +18,15 @@
 
 ## Messenger Features
 
-- [ ] file messages
+- [ ] rich text formatting
 - [ ] multimedia support
-- [ ] file transmission (large files)
-- [ ] audio calls
+- [ ] file transmission (with transmission progress tracking for large files)
+- [ ] audio calls ⏫ 
 - [ ] video calls
+- [ ] camera photos
+- [ ] audio recordings
+- [ ] QR-code scanning
+- [ ] zip-file backups
 
 ## Settings
 

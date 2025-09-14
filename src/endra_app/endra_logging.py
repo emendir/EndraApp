@@ -5,9 +5,8 @@ from kivy import platform
 import os
 
 IPFS_LOG_TOPIC = f"endra_logs_{platform}"
-IPFS_LOG_PEERS = [
-    "/ip4/192.168.189.106/tcp/4001/p2p/12D3KooWCq7RiBeLTZFeBRX4zmfYDunHPmgT3zZSdQKcx7Es34py",
-]
+IPFS_LOG_PEERS = []
+
 
 class IPFSHandler(logging.Handler):
     def emit(self, record):
@@ -16,15 +15,16 @@ class IPFSHandler(logging.Handler):
 
 
 ipfs_handler = IPFSHandler()
-ipfs_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+ipfs_handler.setFormatter(
+    logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+)
 
 logger.addHandler(ipfs_handler)
 
-PEERS_FILEPATH=os.path.join(os.path.dirname(__file__), "ipfs_bootstrap_peers.txt")
+PEERS_FILEPATH = os.path.join(os.path.dirname(__file__), "ipfs_bootstrap_peers.txt")
 for peer in IPFS_LOG_PEERS:
     peer_id = [part for part in peer.split("/") if part][-1]
     if peer_id == ipfs.peer_id:
         continue
     logger.info(f"endra_app.endra_logging: connecting to  peer {peer}")
     ipfs.peers.connect(peer)
-
