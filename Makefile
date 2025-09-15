@@ -51,8 +51,8 @@ test: ## Run test suite
 # ----------------------------
 .PHONY: build clean clean-preview install
 
-build: clean deps ## Build distribution package
-	$(PYTHON) -m build
+# build: clean deps ## Build distribution package
+# 	packaging/flatpak/build_flatpak.sh
 
 clean: ## Remove items from CLEANUP section in .gitignore
 	@tmpfile=$$(mktemp); \
