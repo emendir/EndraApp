@@ -1,36 +1,41 @@
-.ipfs_repo
+# >>> CLEANUP
 
-**/__pycache__
-.mypy_cache
+# This section contains patterns to be deleted by `make clean`
+build
+# dist
+*.egg-info
+**/.mypy_cache/
+__pycache__
+.pytest_cache
+.ruff_cache
+.benchmarks
+.ccls-cache
 
+*.pyc
 *.log
 *.log.*
-run_pyreverse.sh
 *.bkp
-*.dtmp
-*.log
-**/__pycache__
-build
-dist
-**.egg-info
-.obsidian
+
+.ipfs_repo
 .kivy-dependencies
-
-
-
 .buildozer
-bin
-*.xcf
 EndraAppdata
-build-dir
+
+packaging/flatpak/build-dir
+packaging/flatpak/.flatpak-builder
 .flatpak-builder
+packaging/buildozer/bin
+# <<< CLEANUP
+
+run_pyreverse.sh
+dist
+.obsidian
 
 
-*.flatpak
-flatpak-repo
-kivy-dependencies
-build_kivy_deps.sh
 
+
+
+src/endra_app/fonts
 FurtherIdeas.md
 
-*.otf
+*.xcf
