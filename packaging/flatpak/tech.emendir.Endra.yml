@@ -202,22 +202,20 @@ modules:
   #     # Possibly set up environment variables, etc.
   #   sources: []
   - python3-modules-prereqs.json
+  - python3-modules-full.json
+  - python3-modules-force.json
   - name: kivy
     buildsystem: simple
     sources:
       - type: git
         url: https://github.com/kivy/kivy.git
         tag: 2.3.1
-    # sdk-extensions:
-    #   - org.freedesktop.Sdk.Extension.python3-devel
     build-commands:
-      - export KIVY_DEPS_ROOT=/app
-      - export use_pangoft2=1
-      - pip3 install --no-binary=:all: --prefix=/app .
-  - python3-modules-flatpak.json
-  - python3-modules-flatpak-binary.json 
-  - python3-modules-flatpak-manual.json 
-  - python3-modules.json
+      - pip3 show setuptools
+      - |
+        export KIVY_DEPS_ROOT=/app
+        export USE_PANGOFT2=1
+        pip3 install --no-binary=:all: --prefix=/app --no-build-isolation --no-deps --force-reinstall .
   - name:                      endra_app
     buildsystem:               simple
     build-commands:

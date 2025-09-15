@@ -1,3 +1,0 @@
-scikit-build-core
-scikit-build
-cffi==1.17.1

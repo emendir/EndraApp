@@ -12,6 +12,7 @@ set -e # Exit if any command fails
 
 sudo apt-get update
 
+## Kivy-Dev Dependencies
 # Install build tools, and dependencies to perform a full build (including SDL2 dependencies)
 sudo apt-get -y install python3-dev build-essential git make autoconf automake libtool \
       pkg-config cmake ninja-build libasound2-dev libpulse-dev libaudio-dev \
@@ -42,3 +43,9 @@ sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pk
 
 # add the following line at the end of your ~/.bashrc file
 export PATH=$PATH:~/.local/bin/
+
+
+## Endra's DevOps dependencies:
+pip install -r $SCRIPT_DIR/requirements-dev.txt
+
+sudo apt install -y yq
