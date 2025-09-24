@@ -201,9 +201,8 @@ modules:
   #     - echo "Dependencies are provided by modules above"
   #     # Possibly set up environment variables, etc.
   #   sources: []
-  - python3-modules-prereqs.json
-  - python3-modules-full.json
-  - python3-modules-force.json
+  - generated_modules/python3-modules-manual.yml
+  - generated_modules/python3-modules-auto.yml
   - name: kivy
     buildsystem: simple
     sources:
@@ -220,20 +219,17 @@ modules:
     buildsystem:               simple
     build-commands:
       - pip3 install --no-cache --force-rebuild --no-binary=:all: --no-deps --prefix=/app  --no-build-isolation --install-scripts=/app/bin .
-      - install -D packaging/share/tech.emendir.Endra.desktop /app/share/applications/tech.emendir.Endra.desktop
-      - install -D graphics/endra-icon.svg /app/share/icons/hicolor/scalable/apps/tech.emendir.Endra.svg
+      - install -D ./packaging/share/tech.emendir.Endra.desktop /app/share/applications/tech.emendir.Endra.desktop
+      - install -D ./graphics/endra-icon.svg /app/share/icons/hicolor/scalable/apps/tech.emendir.Endra.svg
       - cp packaging/flatpak/run_endra.sh /app/bin/endra_app
     sources:
       - type:                  dir
         path:                  ../..
-    # build-options:
-    #   build-args:              [ "--share=network" ]
 finish-args:
 
   - --socket=wayland
   - --socket=fallback-x11
   - --share=network
-  - --filesystem=home
   - --device=dri
   - --talk-name=org.freedesktop.ScreenSaver
   - --share=ipc
@@ -241,5 +237,4 @@ finish-args:
   # - --talk-name=org.freedesktop.portal.Freedesktop
   # - --talk-name=org.freedesktop.portal.Camera
   # - --socket=session-bus
-  - --device=all
   

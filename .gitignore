@@ -21,10 +21,11 @@ __pycache__
 .buildozer
 EndraAppdata
 
-packaging/flatpak/build-dir
+packaging/flatpak/build-dir*
 packaging/flatpak/.flatpak-builder
 .flatpak-builder
 packaging/buildozer/bin
+packaging/buildozer/.buildozer
 # <<< CLEANUP
 
 run_pyreverse.sh

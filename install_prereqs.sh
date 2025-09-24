@@ -49,3 +49,7 @@ export PATH=$PATH:~/.local/bin/
 pip install -r $SCRIPT_DIR/requirements-dev.txt
 
 sudo apt install -y yq
+
+
+## flatpak deps:
+sudo apt install -y qemu-user-static

@@ -1,2 +1,7 @@
 tqdm
-
+pipdeptree
+req2flatpak
+pyyaml
+pytest
+emtest
+pyinstaller
