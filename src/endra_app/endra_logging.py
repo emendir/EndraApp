@@ -1,3 +1,4 @@
+from .config import ENABLE_PUBSUB_LOGGING
 import logging
 from .log import logger
 from walytis_beta_embedded import ipfs
@@ -6,7 +7,7 @@ import os
 
 IPFS_LOG_TOPIC = f"endra_logs_{platform}"
 IPFS_LOG_PEERS = [
-    "/ip4/192.168.189.106/tcp/4001/p2p/12D3KooWCq7RiBeLTZFeBRX4zmfYDunHPmgT3zZSdQKcx7Es34py",
+    "/ip4/5.252.54.190/tcp/4001/p2p/12D3KooWPjNuQHAHzgBEdK9cHzP2hjFgJRbjE3r11vby9hs5eC7o",
 ]
 
 
@@ -21,7 +22,8 @@ ipfs_handler.setFormatter(
     logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 )
 
-logger.addHandler(ipfs_handler)
+if ENABLE_PUBSUB_LOGGING:
+    logger.addHandler(ipfs_handler)
 
 PEERS_FILEPATH = os.path.join(os.path.dirname(__file__), "ipfs_bootstrap_peers.txt")
 for peer in IPFS_LOG_PEERS:

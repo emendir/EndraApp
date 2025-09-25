@@ -1,4 +1,3 @@
-
 import portalocker
 import os
 
@@ -6,8 +5,10 @@ import os
 def run():
     # # IMPORT ORDER IS IMPORTANT
     from .log import logger
-    from . import _load_kivy
-    from kivy import platform
+    from . import _load_kivy  # noqa load kivy library
+
+    print(_load_kivy.kivy.platform)
+    # from kivy import platform
     # if platform == "android":
     #     print("DELETING ENDRA APPDATA")
     #     shutil.rmtree(os.path.join(".", "EndraAppdata"))
@@ -20,13 +21,14 @@ def run():
     logger.debug("Getting AppLock...")
     with portalocker.Lock(os.path.join(APPDATA_DIR, "endra.lock"), timeout=1):
         from . import endra_logging  # initialise IPFS endra_logging
+
         logger.debug("Got AppLock!")
 
         from .mainwindow import run
-        print('Running Endra with appdata at', APPDATA_DIR)
+
+        print("Running Endra with appdata at", APPDATA_DIR)
         run()
     logger.debug("Released AppLock...")
-
 
 
 if __name__ == "__main__":

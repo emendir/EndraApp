@@ -1,6 +1,8 @@
 ## Endra App
 
-A P2P encrypted messenger supporting multiple devices per user.
+A P2P encrypted messenger for desktop and mobile.
+
+Linux ⋅ Windows ⋅ Android
 
 Endra combines Walytis' peer-to-peer distributed database, WalytisIdentities' identity & cryptography management, and WalytisOffchain's secure data storage & transmission, and WalytisMutability's database editing abstraction to form a fully featured messaging protocol.
 
