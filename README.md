@@ -18,7 +18,6 @@ It can be used for more than just instant messaging - shared calendars, project 
 - multiple profiles per device
 - can be used as a library for embedding into other applications
 - will become part of an expandable ecosystem incl. calendar and file-sharing
-- [app for desktop and mobile](https://github.com/emendir/EndraApp) (tested on Linux (Ubuntu x86-64) and Android (arm-64))
 
 #### Features Coming Soon
 So far the main focus of Endra has been its foundational architecture, so until now little work has been invested in essential higher-level messaging features.
@@ -80,6 +79,28 @@ To reset the appdata, run:
 ```sh
 rm -rf tests/appdata
 ```
+
+## OS Compatibility & Download
+
+The Endra app is designed to be cross-platform for desktop and mobile.
+So far, it has been tested on Linux (Ubuntu 24), Android, and Windows 11.
+
+Package build pipelines have been developed for the below listed formats, and can be [downloaded here](https://github.com/emendir/EndraApp/releases).
+### Linux
+- flatpak for x86-64
+
+Coming soon: Nix, AUR, arm64
+### Android
+- APK for arm-64
+### MacOS
+Coming soon...
+
+### iOS
+probably coming later, in [Phase IV of the Endra Roadmap](../RoadMap.md#Phase%20IV%20-%20Transform%20into%20Production-Grade%20Software), unless
+
+### Windows
+- portable EXE
+
 
 ## Documentation
 
