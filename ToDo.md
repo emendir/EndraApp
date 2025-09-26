@@ -4,9 +4,10 @@
 
 - [ ] Pakaging: ⏫ 
 	- [x] Android
+    - build recipe to support wheels newer versions of ipfs_node
 	- [x] Linux x86-64
 	- [x] Linux arm-64
-	- [ ] Windows
+	- [x] Windows
 	- [ ] MacOS-x86-64
 	- [ ] MacOS-arm-64
 

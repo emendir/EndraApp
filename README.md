@@ -86,12 +86,15 @@ The Endra app is designed to be cross-platform for desktop and mobile.
 So far, it has been tested on Linux (Ubuntu 24), Android, and Windows 11.
 
 Package build pipelines have been developed for the below listed formats, and can be [downloaded here](https://github.com/emendir/EndraApp/releases).
+
 ### Linux
 - flatpak for x86-64
 
 Coming soon: Nix, AUR, arm64
+
 ### Android
 - APK for arm-64
+
 ### MacOS
 Coming soon...
 

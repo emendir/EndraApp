@@ -219,12 +219,12 @@ modules:
     buildsystem:               simple
     build-commands:
       - pip3 install --no-cache --force-rebuild --no-binary=:all: --no-deps --prefix=/app  --no-build-isolation --install-scripts=/app/bin .
-      - install -D ./packaging/share/tech.emendir.Endra.desktop /app/share/applications/tech.emendir.Endra.desktop
-      - install -D ./graphics/endra-icon.svg /app/share/icons/hicolor/scalable/apps/tech.emendir.Endra.svg
+      - install -D graphics/endra-icon.svg /app/share/icons/hicolor/scalable/apps/tech.emendir.Endra.svg
+      - install -D packaging/share/tech.emendir.Endra.desktop /app/share/applications/tech.emendir.Endra.desktop
       - cp packaging/flatpak/run_endra.sh /app/bin/endra_app
     sources:
       - type:                  dir
-        path:                  ../..
+        path:                  ../../..
 finish-args:
 
   - --socket=wayland

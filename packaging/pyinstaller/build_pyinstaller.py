@@ -24,6 +24,9 @@ SOURCE_DIR = os.path.join("src")
 ENTRY_POINT = os.path.join(SOURCE_DIR, "main.py")
 assert os.path.exists(os.path.abspath(ENTRY_POINT)), "WRONG PROJECT PATH"
 
+ICON_PATH = os.path.join("packaging", "share", "endra-icon.ico")
+assert os.path.exists(ICON_PATH)
+
 if True:
     import kivy_garden.qrcode
     import libkubo
@@ -99,7 +102,7 @@ if platform.system().lower() == "windows":
     )
     print("- restart (Oh boy, Windows!)")
     cmd = (
-        f"{sys.executable} -m PyInstaller --name={project_name} --windowed --onefile "
+        f"{sys.executable} -m PyInstaller --name={project_name} --windowed --onefile -i {ICON_PATH} "
         f"{ENTRY_POINT} {command_appendages}"
     )
 

@@ -53,3 +53,7 @@ sudo apt install -y yq
 
 ## flatpak deps:
 sudo apt install -y qemu-user-static
+
+
+## icon processing:
+sudo apt -y install icnsutils

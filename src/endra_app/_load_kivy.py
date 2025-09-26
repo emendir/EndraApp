@@ -54,9 +54,8 @@ if ENV_USE_PANGO:
             USE_PANGO = True
         case _:
             raise ValueError(
-                f"The environment variable USE_PANGO should have a value from [0,1,True,False], not {
-                    ENV_USE_PANGO
-                }"
+                "The environment variable USE_PANGO should have a value from [0,1,True,False], "
+                f" not {ENV_USE_PANGO}"
             )
 else:
     USE_PANGO = DEF_USE_PANGO

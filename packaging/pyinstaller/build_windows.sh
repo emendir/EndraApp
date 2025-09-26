@@ -10,7 +10,7 @@ PROJ_DIR=$(realpath $SCRIPT_DIR/../..)
 
 echo "$PROJ_DIR"
 
-PYINST_SPEC_NAME=EndraApp.spec
+# PYINST_SPEC_NAME=EndraApp.spec
 PYINST_SPEC=$SCRIPT_DIR/$PYINST_SPEC_NAME
 
 cp -r $PROJ_DIR/src $tempdir
@@ -18,7 +18,8 @@ cp -r $PROJ_DIR/*.toml $tempdir
 cp -r $PROJ_DIR/*.txt $tempdir
 mkdir $tempdir/packaging
 cp -r $PROJ_DIR/packaging/pyinstaller $tempdir/packaging
-cp $PYINST_SPEC $tempdir
+cp -r $PROJ_DIR/packaging/share $tempdir/packaging
+# cp $PYINST_SPEC $tempdir
 
 # download UPX
 tempdir2=$(mktemp -d)
@@ -34,3 +35,4 @@ ls -la
 IPFS_TK_MODE=EMBEDDED WALYTIS_BETA_API_TYPE=WALYTIS_BETA_DIRECT_API python packaging/pyinstaller/build_pyinstaller.py
 
 echo $tempdir/dist
+cp $tempdir/dist/*.exe $PROJ_DIR/dist/
