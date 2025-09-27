@@ -22,12 +22,4 @@ typing_inspect
 brenthy_tools_beta==4.0.10
 
 
-appdirs
-eciespy
-environs
-marshmallow
-iniconfig
-pluggy
 pygments
-pytest
-decorate-all

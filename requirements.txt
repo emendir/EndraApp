@@ -21,3 +21,10 @@ mypy_extensions
 py_strict_typing
 typing_extensions
 typing_inspect
+pytest
+decorate-all
+eciespy
+environs
+packaging
+py_strict_typing
+typing_inspect
