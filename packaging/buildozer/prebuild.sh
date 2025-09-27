@@ -26,22 +26,22 @@ if ! [ -e "$BUILDOZER_SPEC" ]; then
   exit 1
 fi
 
-pip install $PROJECT_DIR --force-reinstall
-# reinstall python packages that are editable installs (needed for listing dependencies)
-pkgs=$(pipdeptree --packages $PY_PACKAGE_NAME -f --warn silence \
-  | sed 's/^[[:space:]]*//' \
-  | sort -u \
-  | grep -v "$PY_PACKAGE_NAME" \
-  | grep -i "@" || true \
-  | awk '{print $1}')
-if [ -n "$pkgs" ]; then
-    echo "$pkgs" | while read -r pkg_name; do
-        echo "Reinstalling $pkg_name"
-        pip install --force-reinstall "$pkg_name"
-    done
-else
-    echo "No packages to reinstall."
-fi
+# pip install $PROJECT_DIR --force-reinstall
+# # reinstall python packages that are editable installs (needed for listing dependencies)
+# pkgs=$(pipdeptree --packages $PY_PACKAGE_NAME -f --warn silence \
+#   | sed 's/^[[:space:]]*//' \
+#   | sort -u \
+#   | grep -v "$PY_PACKAGE_NAME" \
+#   | grep -i "@" || true \
+#   | awk '{print $1}')
+# if [ -n "$pkgs" ]; then
+#     echo "$pkgs" | while read -r pkg_name; do
+#         echo "Reinstalling $pkg_name"
+#         pip install --force-reinstall "$pkg_name"
+#     done
+# else
+#     echo "No packages to reinstall."
+# fi
 
 # list all python dependencies recursively with versions
 pipdeptree --packages $PY_PACKAGE_NAME -f --warn silence \
@@ -52,6 +52,7 @@ pipdeptree --packages $PY_PACKAGE_NAME -f --warn silence \
   | grep -v "Editable" \
   | tee $REQS_AUTO
 
+echo "Filtering from exclusions..."
 ## Filter auto-generated python dependencies using exclusions list
 if [ -e "$REQS_EXCLUSIONS" ]; then
   tmp_file="$(mktemp)"
@@ -60,7 +61,7 @@ if [ -e "$REQS_EXCLUSIONS" ]; then
   # Build grep pattern from exclusions (anchor to start of line, match until ==)
   if [[ -n "$exclusions" ]]; then
     pattern=$(printf '%s\n' $exclusions | sed 's/^/^/; s/$/==/' | paste -sd'|' -)
-    grep -Ev "$pattern" "$REQS_AUTO" > "$tmp_file"
+    grep -Ev "$pattern" "$REQS_AUTO" | tee "$tmp_file"
   else
     # No exclusions, just copy
     cp "$REQS_AUTO" "$tmp_file"
@@ -68,15 +69,18 @@ if [ -e "$REQS_EXCLUSIONS" ]; then
   mv "$tmp_file" "$REQS_AUTO"
 fi
 
+echo "Filtering from manual specifications..."
 ## Filter auto-generated python dependencies using exclusions list
 if [ -e "$REQS_MANUAL" ]; then
   tmp_file="$(mktemp)"
   # Normalize exclusions: strip version part if present (keep only package name)
   exclusions=$(sed -E 's/[[:space:]]*#.*//; s/[[:space:]]*$//; /^$/d; s/==.*$//' "$REQS_MANUAL")
   # Build grep pattern from exclusions (anchor to start of line, match until ==)
+  echo "HERE"
   if [[ -n "$exclusions" ]]; then
     pattern=$(printf '%s\n' $exclusions | sed 's/^/^/; s/$/==/' | paste -sd'|' -)
-    grep -Ev "$pattern" "$REQS_AUTO" > "$tmp_file"
+    echo "grep -Ev '$pattern' $REQS_AUTO > $tmp_file"
+    grep -Ev "$pattern" "$REQS_AUTO" | tee "$tmp_file"
   else
     # No exclusions, just copy
     cp "$REQS_AUTO" "$tmp_file"
@@ -84,6 +88,7 @@ if [ -e "$REQS_MANUAL" ]; then
   mv "$tmp_file" "$REQS_AUTO"
 fi
 
+echo "Prepending manual specifications..."
 ## Prepend manual requirements to auto-generated ones
 if [ -e "$REQS_MANUAL" ]; then
   tmp_file="$(mktemp)"
@@ -91,6 +96,7 @@ if [ -e "$REQS_MANUAL" ]; then
   mv "$tmp_file" "$REQS_AUTO"
 fi
 
+echo "Updating buildozer.spec"
 ## Update buildozer.spec requires=
 # Convert requirements.txt to comma-separated list
 reqs=$(paste -sd',' "$REQS_AUTO")
