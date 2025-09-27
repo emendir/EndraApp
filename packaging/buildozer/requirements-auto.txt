@@ -1,5 +1,9 @@
+
+
+
 android
 appdirs
+brenthy_tools_beta==4.0.10
 cffi
 coincurve
 cytoolz
@@ -26,7 +30,9 @@ mypy_extensions
 pluggy
 portalocker==3.2.0
 pycryptodome==3.23.0
+pygments
 py_strict_typing
+pytest
 python3
 python-dotenv==1.1.1
 qrcode==8.2
