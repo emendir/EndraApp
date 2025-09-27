@@ -96,6 +96,10 @@ if [ -e "$REQS_MANUAL" ]; then
   mv "$tmp_file" "$REQS_AUTO"
 fi
 
+sort $REQS_AUTO -o $REQS_AUTO
+
+# exit 1
+
 echo "Updating buildozer.spec"
 ## Update buildozer.spec requires=
 # Convert requirements.txt to comma-separated list

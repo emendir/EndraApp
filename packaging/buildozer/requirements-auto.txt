@@ -8,6 +8,7 @@ cffi
 coincurve
 cytoolz
 dataclasses-json==0.6.7
+decorate-all
 eciespy
 emtest==0.0.4
 endra==0.1.1
