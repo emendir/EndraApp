@@ -28,3 +28,5 @@ environs
 packaging
 py_strict_typing
 typing_inspect
+typing_extensions
+mypy_extensions

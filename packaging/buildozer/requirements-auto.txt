@@ -27,13 +27,13 @@ kivymd
 loguru==0.7.3
 marshmallow==3.26.1
 multi_crypt==0.0.3
-mypy_extensions
+mypy_extensions==1.1.0
 packaging==25.0
 pluggy==1.5.0
 portalocker==3.2.0
 pycryptodome==3.23.0
 pygments
-py_strict_typing
+py-strict-typing==0.1.1
 pytest==8.4.2
 python3
 python-dotenv==1.1.1
@@ -42,8 +42,8 @@ rfc3987==1.3.8
 termcolor==3.1.0
 toolz
 tqdm==4.67.1
-typing_extensions
-typing_inspect
+typing_extensions==4.15.0
+typing-inspect==0.9.0
 walytis_beta==2.4.19
 walytis_beta_embedded==0.0.8
 walytis_identities==0.1.5

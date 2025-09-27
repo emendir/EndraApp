@@ -12,13 +12,9 @@ ipfs_toolkit==0.6.0rc1
 kivy
 kivy-garden.qrcode
 kivymd
-mypy_extensions
 python3
 toolz
-typing_extensions
 
-py_strict_typing
-typing_inspect
 brenthy_tools_beta==4.0.10
 
 
