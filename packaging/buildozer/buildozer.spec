@@ -38,7 +38,7 @@ version = 0.1
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
 # got python version from buildozer docker image's python version
-requirements = android,appdirs,brenthy_tools_beta,cffi,coincurve,cytoolz,dataclasses-json,decorate_all,eciespy,emtest,endra,environs,eth_hash,eth_keys,eth_typing,eth_utils,iniconfig,ipfs_node==0.1.9,ipfs_tk==0.1.3,ipfs_toolkit==0.6.0rc1,kivy,kivy-garden.qrcode,kivymd,loguru,marshmallow,multi_crypt,mypy_extensions,pluggy,portalocker,pycryptodome==3.23.0,pygments,py_strict_typing,pytest,python3,python-dotenv,qrcode,rfc3987,termcolor,toolz,tqdm,typing_extensions,typing_inspect,walytis_beta==2.4.19,walytis_beta_embedded==0.0.8,walytis_identities,walytis_mutability,walytis_offchain
+requirements = android,appdirs,cffi,cytoolz,coincurve,eciespy,environs,eth_hash,eth_keys,eth_typing,eth_utils,iniconfig,ipfs_node==0.1.9,ipfs_tk==0.1.3,ipfs_toolkit==0.6.0rc1,kivy,kivy-garden.qrcode,kivymd,marshmallow,mypy_extensions,pluggy,py_strict_typing,python3,toolz,typing_extensions,typing_inspect,dataclasses-json==0.6.7,emtest==0.0.4,endra==0.1.1,loguru==0.7.3,multi_crypt==0.0.3,portalocker==3.2.0,pycryptodome==3.23.0,python-dotenv==1.1.1,qrcode==8.2,rfc3987==1.3.8,termcolor==3.1.0,tqdm==4.67.1,walytis_beta==2.4.19,walytis_beta_embedded==0.0.8,walytis_identities==0.1.5,walytis_mutability==0.1.5,walytis_offchain==0.1.5
 
 
 # (str) Custom source folders for requirements
