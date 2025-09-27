@@ -1,5 +1,9 @@
 #!/bin/bash
 
+set -e
+
+APP_NAME="Endra" # leave empty to read from pyproject.toml
+
 # DOCKER_IMAGE=ghcr.io/kivy/buildozer
 DOCKER_IMAGE=ghcr.io/kivy/buildozer@sha256:75a1ed9d378489eb281733ae61b1e144ce45443c12c6f424f5d847623e28fc68
 # DOCKER_IMAGE=local/buildozer
@@ -10,7 +14,13 @@ cd $SCRIPT_DIR
 
 PROJ_DIR=$(realpath $SCRIPT_DIR/../..)
 WORK_DIR=$SCRIPT_DIR
-APK_PATH=$PROJ_DIR/dist/Endra-current-debugging.apk
+
+PY_PACKAGE_NAME=$(grep -E '^name\s*=' $PROJECT_DIR/pyproject.toml | sed -E 's/name\s*=\s*"(.*)"/\1/')
+if [ -z $APP_NAME ];then # allow optional overriding variable using declaration above
+  APP_NAME=$PY_PACKAGE_NAME
+fi
+APP_VERSION=$(grep -E '^version\s*=' $PROJ_DIR/pyproject.toml | sed -E 's/version\s*=\s*"(.*)"/\1/')
+APK_PATH=$PROJ_DIR/dist/${APP_NAME}_v${APP_VERSION}_android_28_arm64_v8a.apk
 
 
 BLACK='\033[0;30m'

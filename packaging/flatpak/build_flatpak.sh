@@ -14,8 +14,9 @@ FLATPAK_BUILD_DIR_AARCH=$SCRIPT_DIR/build-dir-aarch
 FLATPAK_BUILD_DIR_X86=$SCRIPT_DIR/build-dir-x86
 FLATPAK_STATE_DIR=$SCRIPT_DIR/.flatpak-builder
 
+PY_PACKAGE_NAME=$(grep -E '^name\s*=' $PROJECT_DIR/pyproject.toml | sed -E 's/name\s*=\s*"(.*)"/\1/')
 if [ -z $APP_NAME ];then # allow optional overriding variable using declaration above
-  APP_NAME=$(grep -E '^name\s*=' $PROJECT_DIR/pyproject.toml | sed -E 's/name\s*=\s*"(.*)"/\1/')
+  APP_NAME=$PY_PACKAGE_NAME
 fi
 APP_VERSION=$(grep -E '^version\s*=' $PROJECT_DIR/pyproject.toml | sed -E 's/version\s*=\s*"(.*)"/\1/')
 
@@ -55,10 +56,10 @@ REQS_MANUAL=$SCRIPT_DIR/requirements-manual.txt
 REQS_EXCLUSIONS=$SCRIPT_DIR/requirements-exclusions.txt
 pip install $PROJECT_DIR --force-reinstall
 # reinstall python packages that are editable installs (needed for listing dependencies)
-pkgs=$(pipdeptree --packages . -f --warn silence \
+pkgs=$(pipdeptree --packages $PY_PACKAGE_NAME -f --warn silence \
   | sed 's/^[[:space:]]*//' \
   | sort -u \
-  | grep -v "$APP_NAME" \
+  | grep -v "$PY_PACKAGE_NAME" \
   | grep -i "@" || true \
   | awk '{print $1}')
 if [ -n "$pkgs" ]; then
@@ -75,24 +76,42 @@ if [ -e $MANIFEST_GEN_DIR ];then
 fi
 mkdir -p $MANIFEST_GEN_DIR
 # list all python dependencies recursively with versions
-pipdeptree --packages $APP_NAME -f --warn silence \
+pipdeptree --packages $PY_PACKAGE_NAME -f --warn silence \
   | sed 's/^[[:space:]]*//' \
   | sort -u \
-  | grep -v -i "^$APP_NAME" \
+  | grep -v -i "^$PY_PACKAGE_NAME" \
   | grep -v "/"  \
   | grep -v "Editable" \
   | tee $REQS_AUTO
 
-## Filter auto-generated python dependecies using exclusions list
-if [ -e $REQS_EXCLUSIONS ];then
+## Filter auto-generated python dependencies using exclusions list
+if [ -e "$REQS_EXCLUSIONS" ]; then
   tmp_file="$(mktemp)"
-  # Build grep pattern from exclusions (anchored at start of line, before ==)
-  pattern=$(sed 's/^/^/; s/$/==/' "$REQS_EXCLUSIONS" | paste -sd'|' -)
-  # If pattern is empty (no exclusions), just copy the file
-  if [[ -z "$pattern" ]]; then
-      cp "$REQS_AUTO" "$tmp_file"
+  # Normalize exclusions: strip version part if present (keep only package name)
+  exclusions=$(sed -E 's/[[:space:]]*#.*//; s/[[:space:]]*$//; /^$/d; s/==.*$//' "$REQS_EXCLUSIONS")
+  # Build grep pattern from exclusions (anchor to start of line, match until ==)
+  if [[ -n "$exclusions" ]]; then
+    pattern=$(printf '%s\n' $exclusions | sed 's/^/^/; s/$/==/' | paste -sd'|' -)
+    grep -Ev "$pattern" "$REQS_AUTO" > "$tmp_file"
   else
-      grep -Ev "$pattern" "$REQS_AUTO" > "$tmp_file"
+    # No exclusions, just copy
+    cp "$REQS_AUTO" "$tmp_file"
+  fi
+  mv "$tmp_file" "$REQS_AUTO"
+fi
+
+## Filter auto-generated python dependencies using exclusions list
+if [ -e "$REQS_MANUAL" ]; then
+  tmp_file="$(mktemp)"
+  # Normalize exclusions: strip version part if present (keep only package name)
+  exclusions=$(sed -E 's/[[:space:]]*#.*//; s/[[:space:]]*$//; /^$/d; s/==.*$//' "$REQS_MANUAL")
+  # Build grep pattern from exclusions (anchor to start of line, match until ==)
+  if [[ -n "$exclusions" ]]; then
+    pattern=$(printf '%s\n' $exclusions | sed 's/^/^/; s/$/==/' | paste -sd'|' -)
+    grep -Ev "$pattern" "$REQS_AUTO" > "$tmp_file"
+  else
+    # No exclusions, just copy
+    cp "$REQS_AUTO" "$tmp_file"
   fi
   mv "$tmp_file" "$REQS_AUTO"
 fi

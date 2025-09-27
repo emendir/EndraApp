@@ -5,6 +5,7 @@
 - [ ] Pakaging: ⏫ 
 	- [x] Android
     - build recipe to support wheels newer versions of ipfs_node
+    - implement auto-generated requierements like in flatpak
 	- [x] Linux x86-64
 	- [x] Linux arm-64
 	- [x] Windows

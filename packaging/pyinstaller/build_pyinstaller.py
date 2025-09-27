@@ -10,7 +10,7 @@ import toml
 
 
 HIDDEN_IMPORTS = ["kivy_garden", "kivy_garden.qrcode"]
-EXCLUDED_IMPORTS = []
+EXCLUDED_IMPORTS = ["PyQt6"]
 
 
 WORK_DIR = os.path.dirname(__file__)
