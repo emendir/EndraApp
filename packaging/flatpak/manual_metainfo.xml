@@ -1,0 +1,20 @@
+<screenshots>
+  <screenshot type="default">
+    <image></image>
+    <caption>screenshot of Endra</caption>
+  </screenshot>
+</screenshots>
+<icon type="stock">tech.emendir.Endra</icon>
+<categories>
+  <category>Chat</category>
+  <category>InstantMessaging</category>
+</categories>
+
+<keywords>
+  <keyword>IPFS</keyword>
+  <keyword>P2P</keyword>
+  <keyword>Walytis</keyword>
+  <keyword>messaging</keyword>
+  <keyword>messenger</keyword>
+  <keyword>communication</keyword>
+</keywords>

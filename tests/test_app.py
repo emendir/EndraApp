@@ -1,8 +1,6 @@
-
 import _testing_utils
-from endra_app import _load_kivy # load kivy with better font handling
+from endra_app import _load_kivy  # load kivy with better font handling
 import shutil
-import walytis_beta_api as walytis_api
 from endra_app import config
 from endra_app.config import APPDATA_DIR
 import os
@@ -17,12 +15,10 @@ _testing_utils.assert_is_loaded_from_source(
     source_dir=os.path.join(os.path.dirname(__file__), "..", ".."), module=endra_app
 )
 WORKING_DIR = os.path.join(os.path.dirname(__file__))
-APPDATA_BACKUP_DIR = os.path.join(
-    WORKING_DIR, "appdata"
-)
+APPDATA_BACKUP_DIR = os.path.join(WORKING_DIR, "appdata")
 
 # do something with _load_kivy to stop IDEs from removing the import
-print("Using Pango Font Context:",_load_kivy.using_pango)
+print("Using Pango Font Context:", _load_kivy.using_pango)
 
 
 # replace appdata with appdata backup

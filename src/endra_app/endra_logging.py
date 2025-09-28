@@ -1,4 +1,5 @@
-from .config import ENABLE_PUBSUB_LOGGING
+from threading import Thread
+from .config import ENABLE_PUBSUB_LOGGING, APPDATA_DIR
 import logging
 from .log import logger
 from walytis_beta_embedded import ipfs
@@ -26,9 +27,19 @@ if ENABLE_PUBSUB_LOGGING:
     logger.addHandler(ipfs_handler)
 
 PEERS_FILEPATH = os.path.join(os.path.dirname(__file__), "ipfs_bootstrap_peers.txt")
-for peer in IPFS_LOG_PEERS:
-    peer_id = [part for part in peer.split("/") if part][-1]
-    if peer_id == ipfs.peer_id:
-        continue
-    logger.info(f"endra_app.endra_logging: connecting to  peer {peer}")
-    ipfs.peers.connect(peer)
+
+
+def connect_to_bootstrap_peers(_arg=None):
+    Thread(_connect_to_bootstrap_peers).start()
+
+
+def _connect_to_bootstrap_peers(_arg=None):
+    for peer in IPFS_LOG_PEERS:
+        peer_id = [part for part in peer.split("/") if part][-1]
+        if peer_id == ipfs.peer_id:
+            continue
+        logger.info(f"endra_app.endra_logging: connecting to  peer {peer}")
+        ipfs.peers.connect(peer)
+
+
+connect_to_bootstrap_peers()

@@ -3,16 +3,17 @@ name: python3-package-installation
 buildsystem: simple
 build-commands:
 - pip3 install --verbose --exists-action=i --no-index --find-links="file://${PWD}"
-  --prefix=${FLATPAK_DEST} --no-build-isolation anyio appdirs async-generator attrs
-  base58 cachetools certifi cffi charset-normalizer coincurve dataclasses-json decorate-all
-  dnspython docutils eciespy emtest endra environs h11 httpcore httpx idna importlib_metadata
-  ipfs_node ipfs_tk ipfs_toolkit Kivy Kivy-Garden kivy-garden.qrcode loguru marshmallow
-  morphys multiaddr multi_crypt mypy_extensions netaddr outcome pluggy psutil py-cid
-  pycparser pycryptodome Pygments py-multibase py-multicodec pymultihash py-strict-typing
-  python-baseconv python-dotenv pyzbar qrcode requests rfc3987 six sniffio sortedcontainers
-  toml tqdm trio trio-typing typing_extensions typing-inspect urllib3 varint walytis_beta
-  walytis_beta_api walytis_beta_embedded walytis_identities walytis_mutability walytis_offchain
-  zipp
+  --prefix=${FLATPAK_DEST} --no-build-isolation annotated-types anyio appdirs async-generator
+  attrs base58 cachetools certifi cffi charset-normalizer coincurve cytoolz dataclasses-json
+  decorate-all dnspython docutils eciespy emtest endra environs eth-hash eth-keys
+  eth-typing eth-utils h11 httpcore httpx idna importlib_metadata iniconfig ipfs_node
+  ipfs_tk ipfs_toolkit Kivy Kivy-Garden kivy-garden.qrcode loguru marshmallow morphys
+  multiaddr multi_crypt mypy_extensions netaddr outcome pluggy psutil py-cid pycparser
+  pycryptodome pydantic pydantic_core Pygments py-multibase py-multicodec pymultihash
+  py-strict-typing pytest python-baseconv python-dotenv pyzbar qrcode requests rfc3987
+  six sniffio sortedcontainers toolz tqdm trio trio-typing typing_extensions typing-inspect
+  typing-inspection urllib3 varint walytis_beta walytis_beta_api walytis_beta_embedded
+  walytis_identities walytis_mutability walytis_offchain zipp
 sources:
 - type: file
   url: https://files.pythonhosted.org/packages/03/ac/f5021a35b61f36910a2f38741f28a3e2384c7865c5bf7948cc82371dfe74/Kivy-2.3.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
@@ -30,6 +31,9 @@ sources:
 - type: file
   url: https://files.pythonhosted.org/packages/c7/21/705964c7812476f378728bdf590ca4b771ec72385c533964653c68e86bdc/pygments-2.19.2-py3-none-any.whl
   sha256: 86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b
+- type: file
+  url: https://files.pythonhosted.org/packages/78/b6/6307fbef88d9b5ee7421e68d78a9f162e0da4900bc5f5793f6d3d0e34fb8/annotated_types-0.7.0-py3-none-any.whl
+  sha256: 1f02e8b43a8fbbc3f3e0d4f0f4bfc8131bcb4eebe8849b8e5c773f3a1c582a53
 - type: file
   url: https://files.pythonhosted.org/packages/15/b3/9b1a8074496371342ec1e796a96f99c82c945a339cd81a8e73de28b4cf9e/anyio-4.11.0-py3-none-any.whl
   sha256: 0287e96f4d26d4149305414d4e3bc32f0dcd0862365a4bddea19d7a1ec38c4fc
@@ -82,6 +86,16 @@ sources:
   only-arches:
   - x86_64
 - type: file
+  url: https://files.pythonhosted.org/packages/e4/73/9034827907c7f85c7c484c9494e905d022fb8174526004e9ef332570349e/cytoolz-1.0.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+  sha256: 1f546a96460a7e28eb2ec439f4664fa646c9b3e51c6ebad9a59d3922bbe65e30
+  only-arches:
+  - aarch64
+- type: file
+  url: https://files.pythonhosted.org/packages/fc/a9/a5b4a3ff5d22faa1b60293bfe97362e2caf4a830c26d37ab5557f60d04b2/cytoolz-1.0.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  sha256: f5ebaf419acf2de73b643cf96108702b8aef8e825cf4f63209ceb078d5fbbbfd
+  only-arches:
+  - x86_64
+- type: file
   url: https://files.pythonhosted.org/packages/c3/be/d0d44e092656fe7a06b55e6103cbce807cdbdee17884a5367c68c9860853/dataclasses_json-0.6.7-py3-none-any.whl
   sha256: 0dbf33f26c8d5305befd61b39d2b3414e8a407bedc2834dea9b8d642666fb40a
 - type: file
@@ -103,8 +117,20 @@ sources:
   url: https://files.pythonhosted.org/packages/72/ff/25f44cb39555844b1fd1c6cb8d8ea6ef6988328ce543015ae721f5294123/endra-0.1.1-py3-none-any.whl
   sha256: 0b950b8002ca719dc7c9bc1b17102044232d08ee7c02978996355b5296add1ec
 - type: file
-  url: https://files.pythonhosted.org/packages/5b/75/e309b90c6f95a6e01aa86425ff567d3c634eea33bde915f3ceb910092461/environs-14.2.0-py3-none-any.whl
-  sha256: 22669a58d53c5b86a25d0231c4a41a6ebeb82d3942b8fbd9cf645890c92a1843
+  url: https://files.pythonhosted.org/packages/ad/e3/98d8567eb438c7856a4dcedd97a8a7c6707120a5ada6f7d84ace44fd8591/environs-14.3.0-py3-none-any.whl
+  sha256: 91e4c4ea964be277855cdd83a588f6375f10fad9fa452660ecb9f503c230f26a
+- type: file
+  url: https://files.pythonhosted.org/packages/eb/db/f8775490669d28aca24871c67dd56b3e72105cb3bcae9a4ec65dd70859b3/eth_hash-0.7.1-py3-none-any.whl
+  sha256: 0fb1add2adf99ef28883fd6228eb447ef519ea72933535ad1a0b28c6f65f868a
+- type: file
+  url: https://files.pythonhosted.org/packages/4d/25/0ae00f2b0095e559d61ad3dc32171bd5a29dfd95ab04b4edd641f7c75f72/eth_keys-0.7.0-py3-none-any.whl
+  sha256: b0cdda8ffe8e5ba69c7c5ca33f153828edcace844f67aabd4542d7de38b159cf
+- type: file
+  url: https://files.pythonhosted.org/packages/30/72/c370bbe4c53da7bf998d3523f5a0f38867654923a82192df88d0705013d3/eth_typing-5.2.1-py3-none-any.whl
+  sha256: b0c2812ff978267563b80e9d701f487dd926f1d376d674f3b535cfe28b665d3d
+- type: file
+  url: https://files.pythonhosted.org/packages/bf/4d/257cdc01ada430b8e84b9f2385c2553f33218f5b47da9adf0a616308d4b7/eth_utils-5.3.1-py3-none-any.whl
+  sha256: 1f5476d8f29588d25b8ae4987e1ffdfae6d4c09026e476c4aad13b32dda3ead0
 - type: file
   url: https://files.pythonhosted.org/packages/04/4b/29cac41a4d98d144bf5f6d33995617b185d14b22401f75ca86f384e87ff1/h11-0.16.0-py3-none-any.whl
   sha256: 63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86
@@ -120,6 +146,9 @@ sources:
 - type: file
   url: https://files.pythonhosted.org/packages/20/b0/36bd937216ec521246249be3bf9855081de4c5e06a0c9b4219dbeda50373/importlib_metadata-8.7.0-py3-none-any.whl
   sha256: e5dd1551894c77868a30651cef00984d50e1002d06942a7101d34870c5f02afd
+- type: file
+  url: https://files.pythonhosted.org/packages/2c/e1/e6716421ea10d38022b952c159d5161ca1193197fb744506875fbb87ea7b/iniconfig-2.1.0-py3-none-any.whl
+  sha256: 9deba5723312380e77435581c6bf4935c94cbfab9b1ed33ef8d238ea168eb760
 - type: file
   url: https://files.pythonhosted.org/packages/03/d7/78551d27bc26eb45085b06690263f2029269a0fb40440d318aa7cd3ed451/ipfs_node-0.1.11-py3-none-any.whl
   sha256: cc1d6fb7bd52623c405f7a93630c15b2bb5f0d3f59c8f2b6da7e8ed19260207d
@@ -157,8 +186,8 @@ sources:
   url: https://files.pythonhosted.org/packages/55/8b/5ab7257531a5d830fc8000c476e63c935488d74609b50f9384a643ec0a62/outcome-1.3.0.post0-py2.py3-none-any.whl
   sha256: e771c5ce06d1415e356078d3bdd68523f284b4ce5419828922b6871e65eda82b
 - type: file
-  url: https://files.pythonhosted.org/packages/88/5f/e351af9a41f866ac3f1fac4ca0613908d9a41741cfcf2228f4ad853b697d/pluggy-1.5.0-py3-none-any.whl
-  sha256: 44e1ad92c8ca002de6377e165f3e0f1be63266ab4d554740532335b9d75ea669
+  url: https://files.pythonhosted.org/packages/54/20/4d324d65cc6d9205fabedc306948156824eb9f0ee1633355a8f7ec5c66bf/pluggy-1.6.0-py3-none-any.whl
+  sha256: e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746
 - type: file
   url: https://files.pythonhosted.org/packages/f4/58/c4f976234bf6d4737bc8c02a81192f045c307b72cf39c9e5c5a2d78927f6/psutil-7.1.0-cp36-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
   sha256: 7d4a113425c037300de3ac8b331637293da9be9713855c4fc9d2d97436d7259d
@@ -195,8 +224,24 @@ sources:
   only-arches:
   - x86_64
 - type: file
+  url: https://files.pythonhosted.org/packages/3e/d3/108f2006987c58e76691d5ae5d200dd3e0f532cb4e5fa3560751c3a1feba/pydantic-2.11.9-py3-none-any.whl
+  sha256: c42dd626f5cfc1c6950ce6205ea58c93efa406da65f479dcb4029d5934857da2
+- type: file
+  url: https://files.pythonhosted.org/packages/b3/d3/4ae42d33f5e3f50dd467761304be2fa0a9417fbf09735bc2cce003480f2a/pydantic_core-2.33.2-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+  sha256: dc46a01bf8d62f227d5ecee74178ffc448ff4e5197c756331f71efcc66dc980f
+  only-arches:
+  - aarch64
+- type: file
+  url: https://files.pythonhosted.org/packages/47/bc/cd720e078576bdb8255d5032c5d63ee5c0bf4b7173dd955185a1d658c456/pydantic_core-2.33.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  sha256: 881b21b5549499972441da4758d662aeea93f1923f953e9cbaff14b8b9565aef
+  only-arches:
+  - x86_64
+- type: file
   url: https://files.pythonhosted.org/packages/1e/1c/570697fafd87adcec479b9ad34dc8371a363aa14bd9edaece5f0b8066903/pymultihash-0.8.2-py3-none-any.whl
   sha256: f7fa840b24bd6acbd6b073fcd330f10e15619387297babf1dd13ca4dae6e8209
+- type: file
+  url: https://files.pythonhosted.org/packages/a8/a4/20da314d277121d6534b3a980b29035dcd51e6744bd79075a6ce8fa4eb8d/pytest-8.4.2-py3-none-any.whl
+  sha256: 872f880de3fc3a5bdc88a11b39c9710c3497a547cfa9320bc3c5e62fbf272e79
 - type: file
   url: https://files.pythonhosted.org/packages/33/d0/9297d7d8dd74767b4d5560d834b30b2fff17d39987c23ed8656f476e0d9b/python-baseconv-1.2.2.tar.gz
   sha256: 0539f8bd0464013b05ad62e0a1673f0ac9086c76b43ebf9f833053527cd9931b
@@ -225,8 +270,8 @@ sources:
   url: https://files.pythonhosted.org/packages/32/46/9cb0e58b2deb7f82b84065f37f3bffeb12413f947f9388e4cac22c4621ce/sortedcontainers-2.4.0-py2.py3-none-any.whl
   sha256: a163dcaede0f1c021485e957a39245190e74249897e2ae4b2aa38595db237ee0
 - type: file
-  url: https://files.pythonhosted.org/packages/44/6f/7120676b6d73228c96e17f1f794d8ab046fc910d781c8d151120c3f1569e/toml-0.10.2-py2.py3-none-any.whl
-  sha256: 806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b
+  url: https://files.pythonhosted.org/packages/03/98/eb27cc78ad3af8e302c9d8ff4977f5026676e130d28dd7578132a457170c/toolz-1.0.0-py3-none-any.whl
+  sha256: 292c8f1c4e7516bf9086f8850935c799a874039c8bcf959d47b600e4c44a6236
 - type: file
   url: https://files.pythonhosted.org/packages/d0/30/dc54f88dd4a2b5dc8a0279bdd7270e735851848b762aeb1c1184ed1f6b14/tqdm-4.67.1-py3-none-any.whl
   sha256: 26445eca388f82e72884e0d580d5464cd801a3ea01e63e5601bdff9ba6a48de2
@@ -239,6 +284,9 @@ sources:
 - type: file
   url: https://files.pythonhosted.org/packages/65/f3/107a22063bf27bdccf2024833d3445f4eea42b2e598abfbd46f6a63b6cb0/typing_inspect-0.9.0-py3-none-any.whl
   sha256: 9ee6fc59062311ef8547596ab6b955e1b8aa46242d854bfc78f4f6b0eff35f9f
+- type: file
+  url: https://files.pythonhosted.org/packages/17/69/cd203477f944c353c31bade965f880aa1061fd6bf05ded0726ca845b6ff7/typing_inspection-0.4.1-py3-none-any.whl
+  sha256: 389055682238f53b04f7badcb49b989835495a96700ced5dab2d8feae4b26f51
 - type: file
   url: https://files.pythonhosted.org/packages/18/67/36e9267722cc04a6b9f15c7f3441c2363321a3ea07da7ae0c0707beb2a9c/typing_extensions-4.15.0-py3-none-any.whl
   sha256: f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548

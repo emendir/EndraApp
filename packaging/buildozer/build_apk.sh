@@ -15,7 +15,7 @@ cd $SCRIPT_DIR
 PROJ_DIR=$(realpath $SCRIPT_DIR/../..)
 WORK_DIR=$SCRIPT_DIR
 
-PY_PACKAGE_NAME=$(grep -E '^name\s*=' $PROJECT_DIR/pyproject.toml | sed -E 's/name\s*=\s*"(.*)"/\1/')
+PY_PACKAGE_NAME=$(grep -E '^name\s*=' $PROJ_DIR/pyproject.toml | sed -E 's/name\s*=\s*"(.*)"/\1/')
 if [ -z $APP_NAME ];then # allow optional overriding variable using declaration above
   APP_NAME=$PY_PACKAGE_NAME
 fi

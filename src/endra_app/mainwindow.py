@@ -1,3 +1,4 @@
+from . import endra_logging
 from .config import APPDATA_DIR
 from . import config
 import walytis_beta_embedded
@@ -14,6 +15,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.app import App
 from . import _load_kivy  # IMPORTANT: import this before importing kivy
 import os
+from kivy.clock import Clock
 
 print("mainwindow.py")
 
@@ -57,7 +59,9 @@ class MainApp(App):
 
         root.add_widget(self.side_bar)
         root.add_widget(self.chat_page)
-
+        self.timer = Clock.schedule_interval(
+            endra_logging.connect_to_bootstrap_peers, 30
+        )
         print("MainApp.build")
         return root
 

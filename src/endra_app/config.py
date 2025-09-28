@@ -47,6 +47,7 @@ if True:  # SENSITIVE IMPORT ORDERS
         os.environ["AUTO_LOAD_BAP_MODULES"] = "false"
         os.environ["WALYTIS_BETA_API_TYPE"] = "WALYTIS_BETA_DIRECT_API"
         os.environ["WALYTIS_BETA_DATA_DIR"] = WALYTIS_BETA_DATA_DIR
+    print("Set environ:", os.environ["WALYTIS_BETA_API_TYPE"])
 
     import brenthy_tools_beta  # depends on AUTO_LOAD_BAP_MODULES environment var
 
@@ -65,4 +66,3 @@ if True:  # SENSITIVE IMPORT ORDERS
         )
         # print("BRENTHY LOG:",os.path.abspath( log.get_log_file_path()))
 os.environ["PRIVATE_BLOCKS_DATA_DIR"] = PRIVATE_BLOCKS_DATA_DIR
-print("Set environ:", os.environ["WALYTIS_BETA_API_TYPE"])

@@ -7,11 +7,10 @@ from kivy.lang import Builder
 from endra import Message, Correspondence, MessageContent
 import os
 from .utils import InvitationPopupView
+
 # Load the KV file
 KV_FILE = os.path.join(os.path.dirname(__file__), "chat_page.kv")
 Builder.load_file(KV_FILE)
-
-
 
 
 class MessageEditorView(BoxLayout):
@@ -26,10 +25,7 @@ class MessageEditor(MessageEditorView):
         super().__init__(**kwargs)
 
     def get_message_content(self):
-        return MessageContent(
-            text=self.text_input_txbx.text,
-            file_data=None
-        )
+        return MessageContent(text=self.text_input_txbx.text, file_data=None)
 
 
 class MessageView(BoxLayout):
@@ -60,9 +56,7 @@ class MessagePageView(BoxLayout):
         self.scroll_layout = self.ids.scroll_layout
         self.add_message_btn = self.ids.add_message_btn
         self.invite_btn = self.ids.invite_btn
-        self.scroll_layout.bind(
-            minimum_height=self.scroll_layout.setter('height')
-        )
+        self.scroll_layout.bind(minimum_height=self.scroll_layout.setter("height"))
 
         self.message_editor = MessageEditor()
         self.ids.add_message_btn_lyt.add_widget(self.message_editor)
@@ -75,12 +69,13 @@ class MessagePageView(BoxLayout):
 
     def remove_widget_from_scroll(self, index):
         if 0 <= index < len(self.scroll_layout.children):
-            self.scroll_layout.remove_widget(
-                self.scroll_layout.children[index])
+            self.scroll_layout.remove_widget(self.scroll_layout.children[index])
 
     def remove_all_widgets(self):
-        while (len(self.scroll_layout.children)):
+        while len(self.scroll_layout.children):
             self.scroll_layout.remove_widget(self.scroll_layout.children[0])
+
+
 class MessagePage(MessagePageView):
     def __init__(self, main, correspondence: Correspondence | None, **kwargs):
         super().__init__(**kwargs)
@@ -111,17 +106,14 @@ class MessagePage(MessagePageView):
 
         self.remove_all_widgets()
         if self.correspondence:
-            print("Number of messages:", len(
-                self.correspondence.get_messages()))
+            print("Number of messages:", len(self.correspondence.get_messages()))
             for message in self.correspondence.get_messages():
-                print(message.content.text)
+                # print(message.content.text)
                 self.add_widget_to_scroll(message)
 
     def create_message(self, instance=None):
         logger.info("Creating message...")
-        self.correspondence.add_message(
-            self.message_editor.get_message_content()
-        )
+        self.correspondence.add_message(self.message_editor.get_message_content())
         self.message_editor.text_input_txbx.text = ""
         self.reload_messages()
 
@@ -137,9 +129,7 @@ class MessagePage(MessagePageView):
     def add_widget_to_scroll(self, message):
         widget = MessageWidget(message=message)
         self.scroll_layout.add_widget(widget)
-    
+
     def reset(self):
         self.remove_all_widgets()
         self.deactivate()
-
-

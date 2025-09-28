@@ -63,8 +63,11 @@ def generate_metainfo(pyproject_path: str, app_id: str, output_path):
     summary = summary_raw.rstrip(".")  # Flathub requires no trailing dot
     version = project.get("version", "0.1.0")
     homepage = project.get("urls", {}).get("Homepage", "")
+    repository = project.get("urls", {}).get("Repository", "")
+    donate = project.get("urls", {}).get("Donate", "")
+    issues = project.get("urls", {}).get("Issues", "")
     authors = project.get("authors", [])
-    license = project.get("license", [])
+    license = project.get("license.text", "")
     author_name = authors[0]["name"] if authors else "Unknown Developer"
     author_id = authors[0]["email"].split("@")[-1] if authors else "Unknown Developer"
 
@@ -72,6 +75,7 @@ def generate_metainfo(pyproject_path: str, app_id: str, output_path):
     root = ET.Element("component", type="desktop")
     ET.SubElement(root, "id").text = app_id
     ET.SubElement(root, "metadata_license").text = license
+    ET.SubElement(root, "project_license").text = license
     ET.SubElement(root, "name").text = name
     ET.SubElement(root, "summary").text = summary
 
@@ -89,6 +93,20 @@ def generate_metainfo(pyproject_path: str, app_id: str, output_path):
     if homepage:
         url_elem = ET.SubElement(root, "url", type="homepage")
         url_elem.text = homepage
+    # Repository
+    if repository:
+        url_elem = ET.SubElement(root, "url", type="vcs-browser")
+        url_elem.text = repository
+
+    # Donate
+    if donate:
+        url_elem = ET.SubElement(root, "url", type="donation")
+        url_elem.text = donate
+
+    # Issues
+    if issues:
+        url_elem = ET.SubElement(root, "url", type="bugtracker")
+        url_elem.text = issues
 
     # Launchable
     ET.SubElement(root, "launchable", type="desktop-id").text = f"{app_id}.desktop"
@@ -104,6 +122,13 @@ def generate_metainfo(pyproject_path: str, app_id: str, output_path):
         releases_elem, "release", version=version, date=date.today().isoformat()
     )
 
+    # Load manual metadata if available
+    manual_path = os.path.join(os.path.dirname(__file__), "manual_metainfo.xml")
+    if os.path.exists(manual_path):
+        append_manual_metainfo(root, manual_path)
+    else:
+        print("SKIPPING appending manual metainfo")
+
     # Output to file
     tree = ET.ElementTree(root)
     ET.indent(tree, space="  ")
@@ -111,9 +136,30 @@ def generate_metainfo(pyproject_path: str, app_id: str, output_path):
     print(f"Generated {output_path} with Flathub-compatible metadata.")
 
 
+def append_manual_metainfo(root, manual_path: str):
+    """Load and append extra XML fragments under the <component> root."""
+    if not os.path.isfile(manual_path):
+        return
+
+    with open(manual_path, "rb") as f:
+        content = f.read().strip()
+
+    try:
+        # Wrap in a dummy root so we can parse multiple top-level tags
+        wrapper = f"<extra>{content.decode('utf-8')}</extra>"
+        extra_root = ET.fromstring(wrapper)
+    except ET.ParseError as e:
+        raise ValueError(f"Invalid XML in {manual_path}: {e}")
+
+    for child in list(extra_root):
+        root.append(child)
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 4:
-        print("Usage: python generate_metainfo.py pyproject.toml com.example.MyApp")
+        print(
+            "Usage: python generate_metainfo.py pyproject.toml com.example.MyApp com.example.MyApp.desktop"
+        )
         sys.exit(1)
     # print(sys.argv)
     generate_metainfo(sys.argv[1], sys.argv[2], sys.argv[3])

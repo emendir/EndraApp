@@ -218,10 +218,9 @@ modules:
   - name:                      endra_app
     buildsystem:               simple
     build-commands:
-      - pip3 install --no-cache --force-rebuild --no-binary=:all: --no-deps --prefix=/app  --no-build-isolation --install-scripts=/app/bin .
+      - pip3 install --no-build-isolation --prefix=/app  --no-deps .
       - install -D graphics/endra-icon.svg /app/share/icons/hicolor/scalable/apps/tech.emendir.Endra.svg
       - install -D packaging/share/tech.emendir.Endra.desktop /app/share/applications/tech.emendir.Endra.desktop
-      - cp packaging/flatpak/run_endra.sh /app/bin/endra_app
     sources:
       - type:                  dir
         path:                  ../../..
