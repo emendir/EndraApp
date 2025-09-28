@@ -32,6 +32,9 @@
 
 ## Settings
 
+## Other
+- [ ] improve bootstrap peer management with IPFS-TK PeerMonitor
+
 ## Bugs
 
 - on app crashing, cursor doesn't work anywhere on all screens
@@ -44,4 +47,3 @@
 ## Dependencies
 
 - walytis codebase cleanup
-  - migrate from setup.py to pyptoject.toml

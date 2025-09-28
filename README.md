@@ -6,8 +6,6 @@ Linux ⋅ Windows ⋅ Android
 
 Endra combines Walytis' peer-to-peer distributed database, WalytisIdentities' identity & cryptography management, and WalytisOffchain's secure data storage & transmission, and WalytisMutability's database editing abstraction to form a fully featured messaging protocol.
 
-It can be used for more than just instant messaging - shared calendars, project management tools and an endless amount of distributed communications systems can be built using it.
-
 
 ## Features
 
@@ -33,6 +31,38 @@ However, now is the time where some of these will start being developed and test
 ### Disadvantages
 
 - higher resource usage on user devices compared to conventional messengers
+
+## Usage Notes
+
+- Patience - The app is slow to start, and the communication is not neccesarily something you'd call 'instant messaging'.
+- Battery drain - On mobile devices, keep an eye on your battery level, as this app's P2P networking engine uses a fair amount of power.
+
+![](docs/EndraDemo.jpg)
+
+## OS Compatibility & Download
+
+The Endra app is designed to be cross-platform for desktop and mobile.
+So far, it has been tested on Linux (Ubuntu 24), Android, and Windows 11.
+
+Package build pipelines have been developed for the below listed formats, and can be [downloaded here](https://github.com/emendir/EndraApp/releases).
+
+### Linux
+- flatpak for x86-64
+
+Coming soon: Nix, AUR, arm64
+
+### Android
+- APK for arm-64
+
+### MacOS
+Coming soon...
+
+### iOS
+probably coming later, in [Phase IV of the Endra Roadmap](../RoadMap.md#Phase%20IV%20-%20Transform%20into%20Production-Grade%20Software), unless
+
+### Windows
+- portable EXE
+
 
 ## Run From Source
 
@@ -79,31 +109,6 @@ To reset the appdata, run:
 ```sh
 rm -rf tests/appdata
 ```
-
-## OS Compatibility & Download
-
-The Endra app is designed to be cross-platform for desktop and mobile.
-So far, it has been tested on Linux (Ubuntu 24), Android, and Windows 11.
-
-Package build pipelines have been developed for the below listed formats, and can be [downloaded here](https://github.com/emendir/EndraApp/releases).
-
-### Linux
-- flatpak for x86-64
-
-Coming soon: Nix, AUR, arm64
-
-### Android
-- APK for arm-64
-
-### MacOS
-Coming soon...
-
-### iOS
-probably coming later, in [Phase IV of the Endra Roadmap](../RoadMap.md#Phase%20IV%20-%20Transform%20into%20Production-Grade%20Software), unless
-
-### Windows
-- portable EXE
-
 
 ## Documentation
 
