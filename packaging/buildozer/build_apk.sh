@@ -40,7 +40,8 @@ echo -e "$MAGENTA
 buildozer android clean
 $NC"
 
-./prebuild.sh
+# update buildozer.spec `requirements` field
+./get_python_deps.sh
 
 
 if ! [ -e ~/.buildozer ];then
