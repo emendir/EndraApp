@@ -20,8 +20,6 @@ def run():
     # app_lock.acquire()
     logger.debug("Getting AppLock...")
     with portalocker.Lock(os.path.join(APPDATA_DIR, "endra.lock"), timeout=1):
-        from . import endra_logging  # initialise IPFS endra_logging
-
         logger.debug("Got AppLock!")
 
         from .mainwindow import run

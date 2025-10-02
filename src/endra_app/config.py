@@ -23,6 +23,8 @@ else:
 print(f"Appdata Dir: {APPDATA_DIR}")
 
 ENABLE_PUBSUB_LOGGING = False
+BOOTSTRAP_PEERS_PATH = os.path.join(APPDATA_DIR, "BOOTSTRAP_PEERS.txt")
+PEER_MONITOR_PATH = os.path.join(APPDATA_DIR, "ipfs_bootstrap_peer_monitor.json")
 
 # only relevant if USE_BRENTHY==False
 IPFS_REPO_DIR = ensure_dir_exists(os.path.join(APPDATA_DIR, "ipfs"))
@@ -51,7 +53,7 @@ if True:  # SENSITIVE IMPORT ORDERS
 
     import brenthy_tools_beta  # depends on AUTO_LOAD_BAP_MODULES environment var
 
-    # disable excessive endra_logging, is slow in flatpak packages
+    # disable excessive logging, is slow in flatpak packages
     brenthy_tools_beta.log.RECORD_INFO = False
     brenthy_tools_beta.log.RECORD_DEBUG = False
 
@@ -65,4 +67,8 @@ if True:  # SENSITIVE IMPORT ORDERS
             "BRENTHY LOG:", os.path.abspath(os.path.join(log.LOG_DIR, log.LOG_FILENAME))
         )
         # print("BRENTHY LOG:",os.path.abspath( log.get_log_file_path()))
+
+    from .ipfs_logging import ENABLE_PUBSUB_LOGGING
+
+    print("IPFS Logging:", ENABLE_PUBSUB_LOGGING)
 os.environ["PRIVATE_BLOCKS_DATA_DIR"] = PRIVATE_BLOCKS_DATA_DIR

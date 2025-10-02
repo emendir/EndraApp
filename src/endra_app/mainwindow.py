@@ -1,4 +1,4 @@
-from . import endra_logging
+from .peering import bootstrap_peer_monitor
 from .config import APPDATA_DIR
 from . import config
 import walytis_beta_embedded
@@ -59,9 +59,6 @@ class MainApp(App):
 
         root.add_widget(self.side_bar)
         root.add_widget(self.chat_page)
-        self.timer = Clock.schedule_interval(
-            endra_logging.connect_to_bootstrap_peers, 30
-        )
         print("MainApp.build")
         return root
 
@@ -155,6 +152,7 @@ class MainApp(App):
 
     def on_stop(self, *args):
         logger.debug("Mainwindow: Stopping...")
+        bootstrap_peer_monitor.terminate()
         for profile in self.profiles.values():
             profile.terminate()
 
