@@ -1,0 +1,14 @@
+python3
+kivy
+kivy-garden.qrcode
+kivymd
+
+cffi
+coincurve
+eth-hash
+
+pygments
+
+ipfs_node==0.1.9
+walytis_identities==0.1.5
+
