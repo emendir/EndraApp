@@ -6,3 +6,8 @@ pytest
 emtest
 pyinstaller
 pyperclip
+
+
+# MacOS
+docopt
+sh

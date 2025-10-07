@@ -41,7 +41,7 @@ buildozer android clean
 $NC"
 
 # update buildozer.spec `requirements` field
-./get_python_deps.sh
+#./get_python_deps.sh
 
 
 if ! [ -e ~/.buildozer ];then
@@ -70,7 +70,7 @@ docker run  \
   -v $WORK_DIR/.buildozer:/home/user/hostcwd/.buildozer \
   -v $WORK_DIR/bin:/home/user/hostcwd/bin \
   -v $PROJ_DIR/src:/home/user/hostcwd/src \
-  $DOCKER_IMAGE android debug
+  $DOCKER_IMAGE osx debug
 
 # tempdir=$(mktemp -d)
 # cp -r $WORK_DIR/buildozer.spec $tempdir/
