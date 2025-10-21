@@ -22,10 +22,14 @@ os.chdir(PROJ_DIR)
 print("PROJ DIR:", os.path.abspath(PROJ_DIR))
 SOURCE_DIR = os.path.join("src")
 ENTRY_POINT = os.path.join(SOURCE_DIR, "main.py")
+DIST_DIR=os.path.join(PROJ_DIR, "dist")
 assert os.path.exists(os.path.abspath(ENTRY_POINT)), "WRONG PROJECT PATH"
 
 ICON_PATH = os.path.join("packaging", "share", "endra-icon.ico")
 assert os.path.exists(ICON_PATH)
+print("DIST_DIR", DIST_DIR)
+if not os.path.exists(DIST_DIR):
+    os.makedirs(DIST_DIR)
 
 if True:
     import kivy_garden.qrcode
@@ -95,51 +99,88 @@ for file, dest in DATA_FILES:
         # '."'
     )
 
-if platform.system().lower() == "windows":
-    print("DON'T FORGET:")
-    print(
-        "- download and install https://www.microsoft.com/en-US/download/details.aspx?id=40784"
-    )
-    print("- restart (Oh boy, Windows!)")
-    cmd = (
-        f"{sys.executable} -m PyInstaller --name={project_name} --windowed --onefile -i {ICON_PATH} "
-        f"{ENTRY_POINT} {command_appendages}"
-    )
-
-    import pyzbar
-
-    pyzbardir = os.path.dirname(pyzbar.__file__)
-    cmd += f' --add-binary="{pyzbardir}\\libiconv.dll;."'
-    cmd += f' --add-binary="{pyzbardir}\\libzbar-64.dll;."'
-    assert os.path.exists(os.path.join(pyzbardir, "libzbar-64.dll"))
-    assert os.path.exists(os.path.join(pyzbardir, "libiconv.dll"))
-    print(cmd)
-    os.system(cmd)
-    dest_dir = os.path.abspath(
-        os.path.join(
-            "dist",
-            f"{project_name}_v{version}_{platform.system().lower()}_"
-            f"{platform.machine().lower()}.exe",
+match platform.system().lower():
+    case "windows":
+        print("DON'T FORGET:")
+        print(
+            "- download and install https://www.microsoft.com/en-US/download/details.aspx?id=40784"
         )
-    )
-    shutil.move(os.path.join("dist", f"{project_name}.exe"), dest_dir)
-    pyperclip.copy(dest_dir)
-else:
-    cmd = (
-        f"pyinstaller --name={project_name} --windowed --onefile "
-        f"{ENTRY_POINT} {command_appendages}"
-    )
-    cmd = "export QT_DEBUG_PLUGINS=1;" + cmd
-    print(cmd)
-    os.system(cmd)
-    dest_dir = os.path.abspath(
-        os.path.join(
-            "dist",
-            f"{project_name}_v{version}_{platform.system().lower()}_"
-            f"{platform.machine().lower()}.AppImage",
+        print("- restart (Oh boy, Windows!)")
+        upx_download_cmd="""
+ORG_DIR=$(pwd)
+tempdir=$(mktemp -d)
+cd $tempdir
+curl -L https://github.com/upx/upx/releases/download/v5.0.2/upx-5.0.2-win64.zip -o upx.zip
+unzip upx.zip
+mv $tempdir/upx.exe $ORG_DIR
+        """
+        os.system(upx_download_cmd)
+        cmd = (
+            f"{sys.executable} -m PyInstaller --name={project_name} --windowed --onefile -i {ICON_PATH} "
+            f"{ENTRY_POINT} {command_appendages}"
         )
-    )
-    shutil.move(
-        os.path.join("dist", project_name),
-    )
-    pyperclip.copy(dest_dir)
+
+        import pyzbar
+
+        pyzbardir = os.path.dirname(pyzbar.__file__)
+        cmd += f' --add-binary="{pyzbardir}\\libiconv.dll;."'
+        cmd += f' --add-binary="{pyzbardir}\\libzbar-64.dll;."'
+        assert os.path.exists(os.path.join(pyzbardir, "libzbar-64.dll"))
+        assert os.path.exists(os.path.join(pyzbardir, "libiconv.dll"))
+        print(cmd)
+        os.system(cmd)
+        dest_path = os.path.abspath(
+            os.path.join(
+                DIST_DIR,
+                f"{project_name}_v{version}_{platform.system().lower()}_"
+                f"{platform.machine().lower()}.exe",
+            )
+        )
+        shutil.move(os.path.join("dist", f"{project_name}.exe"), dest_path)
+        pyperclip.copy(dest_path)
+    case "linux":
+        cmd = (
+            f"pyinstaller --name={project_name} --windowed --onefile "
+            f"{ENTRY_POINT} {command_appendages}"
+        )
+        cmd = "export QT_DEBUG_PLUGINS=1;" + cmd
+        print(cmd)
+        os.system(cmd)
+        dest_path = os.path.abspath(
+            os.path.join(
+                DIST_DIR,
+                f"{project_name}_v{version}_{platform.system().lower()}_"
+                f"{platform.machine().lower()}.AppImage",
+            )
+        )
+        shutil.move(os.path.join("dist", f"{project_name}.AppImage"), dest_path)
+        pyperclip.copy(dest_path)
+    case "darwin":
+        import platform
+        arch_switch="--target-arch="
+        match platform.processor():
+            case "i386":
+                arch_switch+="x86_64"
+            case  "arm":
+                arch_switch+="arm64"
+            case _:
+                raise Exception(f"Unsupported procesor {platform.processor()}")
+        cmd = (
+            f"pyinstaller --name={project_name} --windowed --onefile "
+            f"{ENTRY_POINT} {command_appendages} {arch_switch}"
+        )
+        cmd = "export QT_DEBUG_PLUGINS=1;" + cmd
+        print(cmd)
+        os.system(cmd)
+        dest_path = os.path.abspath(
+            os.path.join(
+                DIST_DIR,
+                f"{project_name}_v{version}_{platform.system().lower()}_"
+                f"{platform.machine().lower()}",
+            )
+        )
+        shutil.move(os.path.join("dist", f"{project_name}"), dest_path)
+        shutil.move(os.path.join("dist", f"{project_name}.app"), f"{dest_path}.app")
+        pyperclip.copy(dest_path)
+    case _:
+        raise Exception("Unknown OS")
