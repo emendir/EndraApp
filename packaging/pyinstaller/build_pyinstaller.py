@@ -13,6 +13,8 @@ HIDDEN_IMPORTS = ["kivy_garden", "kivy_garden.qrcode"]
 EXCLUDED_IMPORTS = ["PyQt6"]
 
 
+print("PYTHON", sys.executable)
+
 WORK_DIR = os.path.dirname(__file__)
 # os.chdir(os.path.dirname(__file__))
 PROJ_DIR = os.path.abspath(os.path.join(WORK_DIR, "..", ".."))
