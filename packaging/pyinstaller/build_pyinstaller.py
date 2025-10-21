@@ -24,7 +24,7 @@ os.chdir(PROJ_DIR)
 print("PROJ DIR:", os.path.abspath(PROJ_DIR))
 SOURCE_DIR = os.path.join("src")
 ENTRY_POINT = os.path.join(SOURCE_DIR, "main.py")
-DIST_DIR=os.path.join(PROJ_DIR, "dist")
+DIST_DIR = os.path.join(PROJ_DIR, "dist")
 assert os.path.exists(os.path.abspath(ENTRY_POINT)), "WRONG PROJECT PATH"
 
 ICON_PATH = os.path.join("packaging", "share", "endra-icon.ico")
@@ -61,15 +61,6 @@ with open(os.path.join(PROJ_DIR, "pyproject.toml"), "r") as file:
     project_name = data["project"]["name"]
     version = data["project"]["version"]
 
-# # converting *.ui files to *.py files
-# for dirname, dirnames, filenames in os.walk("."):
-#     if dirname == "./Plugins" or "./.git" in dirname:
-#         continue
-#     for filename in filenames:
-#         path = os.path.join(dirname, filename)
-#         if (filename[-2:] == "ui"):
-#             print(filename)
-#             os.system(f"pyuic6 {path} -o {path[:-2]}py")
 if os.path.exists("build"):
     shutil.rmtree("build")
 # shutil.rmtree("dist")
@@ -108,7 +99,7 @@ match platform.system().lower():
             "- download and install https://www.microsoft.com/en-US/download/details.aspx?id=40784"
         )
         print("- restart (Oh boy, Windows!)")
-        upx_download_cmd="""
+        upx_download_cmd = """
 ORG_DIR=$(pwd)
 tempdir=$(mktemp -d)
 cd $tempdir
@@ -118,7 +109,9 @@ mv $tempdir/upx.exe $ORG_DIR
         """
         os.system(upx_download_cmd)
         cmd = (
-            f"{sys.executable} -m PyInstaller --name={project_name} --windowed --onefile -i {ICON_PATH} "
+            f"{sys.executable} -m PyInstaller --name={
+                project_name
+            } --windowed --onefile -i {ICON_PATH} "
             f"{ENTRY_POINT} {command_appendages}"
         )
 
@@ -152,19 +145,20 @@ mv $tempdir/upx.exe $ORG_DIR
             os.path.join(
                 DIST_DIR,
                 f"{project_name}_v{version}_{platform.system().lower()}_"
-                f"{platform.machine().lower()}.AppImage",
+                f"{platform.machine().lower()}",
             )
         )
-        shutil.move(os.path.join("dist", f"{project_name}.AppImage"), dest_path)
+        shutil.move(os.path.join("dist", f"{project_name}"), dest_path)
         pyperclip.copy(dest_path)
     case "darwin":
         import platform
-        arch_switch="--target-arch="
+
+        arch_switch = "--target-arch="
         match platform.processor():
             case "i386":
-                arch_switch+="x86_64"
-            case  "arm":
-                arch_switch+="arm64"
+                arch_switch += "x86_64"
+            case "arm":
+                arch_switch += "arm64"
             case _:
                 raise Exception(f"Unsupported procesor {platform.processor()}")
         cmd = (

@@ -8,3 +8,12 @@ pyzmq==27.1.0
 termcolor==3.1.0
 brenthy_tools_beta==4.0.10
 portalocker==3.2.0
+cffi==2.0.0
+pycparser==2.23
+tqdm==4.67.1
+ipfs_node==0.1.11
+walytis_beta_embedded==0.0.8
+walytis_beta_api==2.4.9
+ipfs_tk==0.1.4
+walytis-beta==2.4.19
+ipfs_toolkit==0.6.0rc2

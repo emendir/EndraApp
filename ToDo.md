@@ -9,8 +9,9 @@
 	- [x] Linux x86-64
 	- [x] Linux arm-64
 	- [x] Windows
-	- [ ] MacOS-x86-64
-	- [ ] MacOS-arm-64
+	- [x] MacOS-x86-64
+	- [x] MacOS-arm-64
+  - [ ] flatpak merge manual and auto requirements lists
 
 ## UI
 

@@ -19,11 +19,11 @@
     <content_attribute id="language-profanity">none</content_attribute>
   </content_rating>
   <releases>
-    <release version="0.1.5" date="2025-09-28" />
+    <release version="0.1.6" date="2025-10-21" />
   </releases>
   <screenshots>
     <screenshot type="default">
-      <image />
+      <image>https://raw.githubusercontent.com/emendir/EndraApp/refs/heads/master/docs/EndraDemo.jpg</image>
       <caption>screenshot of Endra</caption>
     </screenshot>
   </screenshots>
