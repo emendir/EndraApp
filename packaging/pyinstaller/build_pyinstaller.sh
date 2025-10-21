@@ -19,6 +19,7 @@ echo "$PROJ_DIR"
 
 PYINST_SPEC=$SCRIPT_DIR/$PYINST_SPEC_NAME
 PYTHON="${PYTHON:-python3}"
+echo $PYTHON
 
 if ! command -v "$PYTHON" >/dev/null 2>&1; then
     echo "Error: '$PYTHON' command not found. Set the environment variable `PYTHON` to you python command."
@@ -35,8 +36,10 @@ cp -r $PROJ_DIR/packaging/share $tempdir/packaging
 
 cd $tempdir
 ls -la
-
-IPFS_TK_MODE=EMBEDDED WALYTIS_BETA_API_TYPE=WALYTIS_BETA_DIRECT_API $PYTHON packaging/pyinstaller/build_pyinstaller.py
+$PYTHON -m virtualenv .venv
+source .venv/bin/activate
+pip install -r requirements.txt -r requirements-dev.txt
+IPFS_TK_MODE=EMBEDDED WALYTIS_BETA_API_TYPE=WALYTIS_BETA_DIRECT_API python packaging/pyinstaller/build_pyinstaller.py
 
 echo $tempdir/dist
 cp -r $tempdir/dist/* $PROJ_DIR/dist/
