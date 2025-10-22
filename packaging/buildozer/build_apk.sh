@@ -22,6 +22,15 @@ fi
 APP_VERSION=$(grep -E '^version\s*=' $PROJ_DIR/pyproject.toml | sed -E 's/version\s*=\s*"(.*)"/\1/')
 APK_PATH=$PROJ_DIR/dist/${APP_NAME}_v${APP_VERSION}_android_28_arm64_v8a.apk
 
+# script for generating python requirements
+GET_PYTHON_DEPS=$PROJ_DIR/packaging/share/get_python_deps.sh
+
+BUILDOZER_SPEC=$SCRIPT_DIR/buildozer.spec
+
+if ! [ -e "$BUILDOZER_SPEC" ]; then
+  echo "Can't find $BUILDOZER_SPEC"
+  exit 1
+fi
 
 BLACK='\033[0;30m'
 RED='\033[0;31m'
@@ -40,15 +49,11 @@ echo -e "$MAGENTA
 buildozer android clean
 $NC"
 
-# update buildozer.spec `requirements` field
-./get_python_deps.sh
 
 
 if ! [ -e ~/.buildozer ];then
   mkdir ~/.buildozer
 fi
-
-
 if ! [ -e $WORK_DIR/bin ];then
   mkdir $WORK_DIR/bin
   chmod -R 777 $WORK_DIR/bin
@@ -60,6 +65,36 @@ fi
 if ! [ -e $HOME/.buildozer ];then
   mkdir $HOME/.buildozer
   chmod -R 777 $HOME/.buildozer
+fi
+
+## export variables used by the $GET_PYTHON_DEPS script
+# general project requirements
+export REQS_MAIN=$PROJ_DIR/requirements.txt
+# requirements specific to this build pipeline
+export REQS_MANUAL=$SCRIPT_DIR/requirements-manual.txt
+# final generated requirements list
+export REQS_AUTO=$SCRIPT_DIR/requirements-auto.txt
+# requirements to be excluded in this build pipeline
+REQS_EXCLUSIONS=$SCRIPT_DIR/requirements-exclusions.txt
+REQS_BUILDOZER=$SCRIPT_DIR/requirements-buildozer.txt
+
+# make $GET_PYTHON_DEPS exclude from both $REQS_EXCLUSIONS and $REQS_BUILDOZER
+tmp_file="$(mktemp)"
+cat "$REQS_EXCLUSIONS" "$REQS_BUILDOZER" | grep -v "^#" | grep -v "^$" > "$tmp_file"
+export REQS_EXCLUSIONS=$tmp_file
+$GET_PYTHON_DEPS
+# update buildozer.spec `requirements` field
+echo "Updating buildozer.spec"
+## Update buildozer.spec requires=
+# Convert requirements.txt to comma-separated list
+reqs=$(paste -sd',' "$REQS_AUTO")
+reqs_buildozer=$(paste -sd',' "$REQS_BUILDOZER")
+
+# Replace (or add if missing) requires= line in buildozer.spec
+if grep -q '^requirements = ' "$BUILDOZER_SPEC"; then
+  sed -i "s|^requirements = .*|requirements = $reqs_buildozer,$reqs|" "$BUILDOZER_SPEC"
+else
+  echo "requirements = $reqs_buildozer,$reqs" >> "$BUILDOZER_SPEC"
 fi
 
 docker pull $DOCKER_IMAGE

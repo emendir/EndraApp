@@ -202,7 +202,6 @@ modules:
   #     # Possibly set up environment variables, etc.
   #   sources: []
   - generated_modules/python3-modules-auto.yml
-  - generated_modules/python3-modules-manual.yml
   - name: kivy
     buildsystem: simple
     sources:

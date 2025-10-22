@@ -1,15 +1,13 @@
-python3
 kivy
 kivy-garden.qrcode
 kivymd
 
-android
 cffi
-coincurve
+coincurve==21.0.0
 eth-hash
 
 pygments
 
+# own libraries
 ipfs_node==0.1.9
 walytis_identities==0.1.5
-
