@@ -4,5 +4,6 @@ coincurve
 cffi
 kivy
 kivy-garden
-pygments
-pycryptodome
+kivy-garden.qrcode
+Pygments
+eth-hash

@@ -21,3 +21,4 @@ eth_keys
 eth_typing
 eth_utils
 pygments
+qrcode
