@@ -2,3 +2,7 @@ python3
 android
 coincurve
 cffi
+kivy
+kivy-garden
+pygments
+pycryptodome

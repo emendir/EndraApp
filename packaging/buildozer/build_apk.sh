@@ -68,6 +68,9 @@ if ! [ -e $HOME/.buildozer ];then
 fi
 
 ## export variables used by the $GET_PYTHON_DEPS script
+export PY_VENV_DIR=$(mktemp -d)
+virtualenv $PY_VENV_DIR
+source $PY_VENV_DIR/bin/activate
 # general project requirements
 export REQS_MAIN=$PROJ_DIR/requirements.txt
 # requirements specific to this build pipeline

@@ -1,4 +1,4 @@
-pygments==2.19.1
+pygments==2.19.2
 setuptools==69.2.0
 wheel==0.45.1
 packaging==25.0

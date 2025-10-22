@@ -29,6 +29,12 @@ if ! [ -e "$REQS_EXCLUSIONS" ]; then
   "REQS_MANUAL not found: $REQS_EXCLUSIONS"
   exit 1
 fi
+if ! [ -d "$PY_VENV_DIR" ]; then
+  "PY_VENV_DIR not found: $PY_VENV_DIR"
+  exit 1
+fi
+virtualenv $PY_VENV_DIR
+source $PY_VENV_DIR/bin/activate
 
 function filter_reqs(){
   REQS_BASE=$1
@@ -74,10 +80,6 @@ fi
 
 # sort $REQS_AUTO -o $REQS_AUTO
 
-tempdir=$(mktemp -d)
-cd $tempdir
-virtualenv $tempdir
-source $tempdir/bin/activate
 pip install pipdeptree
 
 # get packages needed in this venv that are not part of this project's requirements
@@ -93,7 +95,7 @@ python -m pipdeptree -f --warn silence \
 filter_reqs $reqs_venv $REQS_AUTO $reqs_venv
 
 
-pip install -r $REQS_AUTO
+pip install --ignore-installed -r $REQS_AUTO
 # list all python dependencies recursively with versions
 reqs_installed=$(mktemp)
 python -m pipdeptree -f --warn silence \

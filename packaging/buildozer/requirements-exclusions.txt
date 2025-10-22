@@ -1,7 +1,4 @@
-Kivy
-Kivy-Garden
 pyzmq
-Pygments
 walytis_beta_api
 
 annotated-types

@@ -1,13 +1,11 @@
-kivy
 kivy-garden.qrcode
-kivymd
 
-cffi
-coincurve==21.0.0
 eth-hash
 
 pygments
+packaging
 
 # own libraries
 ipfs_node==0.1.9
 walytis_identities==0.1.5
+

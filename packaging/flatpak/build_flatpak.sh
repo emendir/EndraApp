@@ -69,12 +69,23 @@ if [ -e $MANIFEST_GEN_DIR ];then
 fi
 mkdir -p $MANIFEST_GEN_DIR
 
+export PY_VENV_DIR=$(mktemp -d)
+virtualenv $PY_VENV_DIR
+source $PY_VENV_DIR/bin/activate
+pip install req2flatpak
+pip install flatpak_pip_generator
+pip install pyyaml
+
 # generate $REQS_AUTO file with python dependencies
 $GET_PYTHON_DEPS
-## Generate Flatpak modules from requirements files
-PYVER="${PYTHON_VERSION//./}"
-req2flatpak --requirements-file $REQS_AUTO --target-platforms $PYVER-x86_64 $PYVER-aarch64 -o $MANIFEST_GEN_DIR/python3-modules-auto.yml
 
+# Generate Flatpak modules from requirements files
+PYVER="${PYTHON_VERSION//./}"
+PY_REQS_MANIFEST=$MANIFEST_GEN_DIR/python3-modules-auto.yml
+python3 -m req2flatpak --requirements-file $REQS_AUTO --target-platforms $PYVER-x86_64 $PYVER-aarch64 -o $PY_REQS_MANIFEST
+
+# patch PY_REQS_MANIFEST
+sed -i 's/pip3 install/pip3 install --ignore-installed/g' $PY_REQS_MANIFEST
 
 cd $PROJ_DIR
 # validate Flatpak Manifest
@@ -107,21 +118,21 @@ flatpak build-export $FLATPAK_REPO_DIR $FLATPAK_BUILD_DIR_X86
 flatpak build-bundle $FLATPAK_REPO_DIR $DIST_DIR/${APP_NAME}_v${APP_VERSION}_linux_x86_64.flatpak $APP_ID --arch=x86_64
 
 
-# # aarch64 build
-# flatpak run org.flatpak.Builder \
-#   --arch=aarch64 \
-#   --force-clean --ccache \
-#   --user --install \
-#   --install-deps-from=flathub \
-#   --mirror-screenshots-url=https://dl.flathub.org/media/ \
-#   --repo=$FLATPAK_REPO_DIR \
-#   --state-dir=$FLATPAK_STATE_DIR \
-#   $FLATPAK_BUILD_DIR_AARCH \
-#   $MANIFEST_FILE  # \
-#   # --sandbox 
-# flatpak build-export $FLATPAK_REPO_DIR $FLATPAK_BUILD_DIR_AARCH
-# # bundle for aarch64
-# flatpak build-bundle $FLATPAK_REPO_DIR $DIST_DIR/${APP_NAME}_v${APP_VERSION}_linux_aarch64.flatpak $APP_ID --arch=aarch64
+# aarch64 build
+flatpak run org.flatpak.Builder \
+  --arch=aarch64 \
+  --force-clean --ccache \
+  --user --install \
+  --install-deps-from=flathub \
+  --mirror-screenshots-url=https://dl.flathub.org/media/ \
+  --repo=$FLATPAK_REPO_DIR \
+  --state-dir=$FLATPAK_STATE_DIR \
+  $FLATPAK_BUILD_DIR_AARCH \
+  $MANIFEST_FILE  # \
+  # --sandbox 
+flatpak build-export $FLATPAK_REPO_DIR $FLATPAK_BUILD_DIR_AARCH
+# bundle for aarch64
+flatpak build-bundle $FLATPAK_REPO_DIR $DIST_DIR/${APP_NAME}_v${APP_VERSION}_linux_aarch64.flatpak $APP_ID --arch=aarch64
 
 
 

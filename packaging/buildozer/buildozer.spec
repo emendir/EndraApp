@@ -38,7 +38,7 @@ version = 0.1
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
 # got python version from buildozer docker image's python version
-requirements = python3,android,coincurve,cffi,appdirs==1.4.4,brenthy_tools_beta==4.0.10,cytoolz==1.1.0,dataclasses-json==0.6.7,decorate-all==0.1.1,eciespy==0.4.6,emtest==0.0.5,endra==0.1.1,environs==14.3.0,eth-hash==0.7.1,eth-keys==0.7.0,eth-typing==5.2.1,eth-utils==5.3.1,iniconfig==2.3.0,ipfs_node==0.1.9,ipfs_tk==0.1.4,ipfs_toolkit==0.6.0rc2,kivy-garden.qrcode==2021.314,kivymd==1.2.0,loguru==0.7.3,marshmallow==3.26.1,multi_crypt==0.0.4,mypy_extensions==1.1.0,pillow==12.0.0,pluggy==1.6.0,portalocker==3.2.0,pycryptodome==3.23.0,py-strict-typing==0.1.1,pytest==8.4.2,python-dotenv==1.1.1,qrcode==8.2,rfc3987==1.3.8,termcolor==3.1.0,toolz==1.1.0,tqdm==4.67.1,typing_extensions==4.15.0,typing-inspect==0.9.0,walytis_beta==2.4.19,walytis_beta_embedded==0.0.8,walytis_identities==0.1.5,walytis_mutability==0.1.5,walytis_offchain==0.1.5
+requirements = python3,android,coincurve,cffi,kivy,kivy-garden,pygments,pycryptodome,appdirs==1.4.4,brenthy_tools_beta==4.0.10,cytoolz==1.1.0,dataclasses-json==0.6.7,decorate-all==0.1.1,eciespy==0.4.6,emtest==0.0.5,endra==0.1.1,environs==14.3.0,eth-hash==0.7.1,eth-keys==0.7.0,eth-typing==5.2.1,eth-utils==5.3.1,iniconfig==2.3.0,ipfs_node==0.1.9,ipfs_tk==0.1.4,ipfs_toolkit==0.6.0rc2,loguru==0.7.3,marshmallow==3.26.1,multi_crypt==0.0.4,mypy_extensions==1.1.0,packaging==25.0,pluggy==1.6.0,portalocker==3.2.0,Pygments==2.19.2,py-strict-typing==0.1.1,pytest==8.4.2,python-dotenv==1.1.1,rfc3987==1.3.8,termcolor==3.1.0,toolz==1.1.0,tqdm==4.67.1,typing_extensions==4.15.0,typing-inspect==0.9.0,walytis_beta==2.4.19,walytis_beta_embedded==0.0.8,walytis_identities==0.1.5,walytis_mutability==0.1.5,walytis_offchain==0.1.5
 
 
 # (str) Custom source folders for requirements
@@ -327,6 +327,7 @@ p4a.branch = develop
 
 # (str) python-for-android specific commit to use, defaults to HEAD, must be within p4a.branch
 #p4a.commit = HEAD
+p4a.commit = 5aa97321ebf7339edf04e707beccbf94a284f4c9
 
 # (str) python-for-android git clone directory (if empty, it will be automatically cloned from github)
 #p4a.source_dir =

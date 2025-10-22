@@ -54,7 +54,7 @@ pycparser==2.23
 pycryptodome==3.23.0
 pydantic==2.12.3
 pydantic_core==2.41.4
-Pygments==2.19.1
+Pygments==2.19.2
 py-multibase==1.0.3
 py-multicodec==0.2.1
 pymultihash==0.8.2

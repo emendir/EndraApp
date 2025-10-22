@@ -194,13 +194,6 @@ modules:
       - /share/doc
       - /share/man
 
-  # # Optionally: a module to aggregate / adjust RPATH etc
-  # - name: kivy-dependencies
-  #   buildsystem: simple
-  #   build-commands:
-  #     - echo "Dependencies are provided by modules above"
-  #     # Possibly set up environment variables, etc.
-  #   sources: []
   - generated_modules/python3-modules-auto.yml
   - name: kivy
     buildsystem: simple
