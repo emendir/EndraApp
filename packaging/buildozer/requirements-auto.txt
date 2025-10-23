@@ -7,7 +7,7 @@ cytoolz==1.0.1
 dataclasses-json==0.6.7
 decorate-all==0.1.1
 eciespy==0.4.6
-emtest==0.0.4
+emtest==0.0.5
 endra==0.1.1
 environs==14.3.0
 eth-hash
@@ -23,7 +23,7 @@ kivy-garden.qrcode
 kivymd
 loguru==0.7.3
 marshmallow==3.26.1
-multi_crypt==0.0.3
+multi_crypt==0.0.4
 mypy_extensions==1.1.0
 packaging==25.0
 pluggy==1.6.0
