@@ -82,22 +82,29 @@ REQS_EXCLUSIONS=$SCRIPT_DIR/requirements-exclusions.txt
 REQS_BUILDOZER=$SCRIPT_DIR/requirements-buildozer.txt
 
 # make $GET_PYTHON_DEPS exclude from both $REQS_EXCLUSIONS and $REQS_BUILDOZER
-tmp_file="$(mktemp)"
-cat "$REQS_EXCLUSIONS" "$REQS_BUILDOZER" | grep -v "^#" | grep -v "^$" > "$tmp_file"
-export REQS_EXCLUSIONS=$tmp_file
-$GET_PYTHON_DEPS
+tmp_excl="$(mktemp)"
+cat "$REQS_EXCLUSIONS" "$REQS_BUILDOZER" | grep -v "^#" | grep -v "^$" > "$tmp_excl"
+export REQS_EXCLUSIONS=$tmp_excl
+
+# $GET_PYTHON_DEPS
+
+# # merge generated requirements $REQS_AUTO with $REQS_BUILDOZER
+# tmp_output="$(mktemp)"
+# cat "$REQS_AUTO" "$REQS_BUILDOZER" | grep -v "^#" | grep -v "^$" > "$tmp_output"
+# mv $tmp_output $REQS_AUTO
+# sort $REQS_AUTO -o $REQS_AUTO
+
 # update buildozer.spec `requirements` field
 echo "Updating buildozer.spec"
 ## Update buildozer.spec requires=
 # Convert requirements.txt to comma-separated list
 reqs=$(paste -sd',' "$REQS_AUTO")
-reqs_buildozer=$(paste -sd',' "$REQS_BUILDOZER")
 
 # Replace (or add if missing) requires= line in buildozer.spec
 if grep -q '^requirements = ' "$BUILDOZER_SPEC"; then
-  sed -i "s|^requirements = .*|requirements = $reqs_buildozer,$reqs|" "$BUILDOZER_SPEC"
+  sed -i "s|^requirements = .*|requirements = $reqs|" "$BUILDOZER_SPEC"
 else
-  echo "requirements = $reqs_buildozer,$reqs" >> "$BUILDOZER_SPEC"
+  echo "requirements = $reqs" >> "$BUILDOZER_SPEC"
 fi
 
 docker pull $DOCKER_IMAGE
