@@ -18,7 +18,8 @@ echo "$PROJ_DIR"
 
 
 PYINST_SPEC=$SCRIPT_DIR/$PYINST_SPEC_NAME
-PYTHON="${PYTHON:-python3}"
+PYTHON="${PYTHON:-python}"
+OS=$($PYTHON -c "import platform;print(platform.system())")
 echo $PYTHON
 
 if ! command -v "$PYTHON" >/dev/null 2>&1; then
@@ -37,7 +38,11 @@ cp -r $PROJ_DIR/packaging/share $tempdir/packaging
 cd $tempdir
 ls -la
 $PYTHON -m virtualenv .venv
-source .venv/bin/activate
+if [ $OS = "Windows" ];then
+    source .venv/Scripts/activate
+else
+    source .venv/bin/activate
+fi
 pip install -r requirements.txt -r requirements-dev.txt
 IPFS_TK_MODE=EMBEDDED WALYTIS_BETA_API_TYPE=WALYTIS_BETA_DIRECT_API python packaging/pyinstaller/build_pyinstaller.py
 
