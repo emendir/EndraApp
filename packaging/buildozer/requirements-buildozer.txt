@@ -3,7 +3,7 @@ android
 coincurve
 cffi
 kivy
-kivy-garden
 kivy-garden.qrcode
-Pygments
+kivymd
+pygments
 eth-hash

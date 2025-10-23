@@ -86,13 +86,13 @@ tmp_excl="$(mktemp)"
 cat "$REQS_EXCLUSIONS" "$REQS_BUILDOZER" | grep -v "^#" | grep -v "^$" > "$tmp_excl"
 export REQS_EXCLUSIONS=$tmp_excl
 
-# $GET_PYTHON_DEPS
+$GET_PYTHON_DEPS
 
-# # merge generated requirements $REQS_AUTO with $REQS_BUILDOZER
-# tmp_output="$(mktemp)"
-# cat "$REQS_AUTO" "$REQS_BUILDOZER" | grep -v "^#" | grep -v "^$" > "$tmp_output"
-# mv $tmp_output $REQS_AUTO
-# sort $REQS_AUTO -o $REQS_AUTO
+# merge generated requirements $REQS_AUTO with $REQS_BUILDOZER
+tmp_output="$(mktemp)"
+cat "$REQS_AUTO" "$REQS_BUILDOZER" | grep -v "^#" | grep -v "^$" > "$tmp_output"
+mv $tmp_output $REQS_AUTO
+sort $REQS_AUTO -o $REQS_AUTO
 
 # update buildozer.spec `requirements` field
 echo "Updating buildozer.spec"
@@ -106,6 +106,7 @@ if grep -q '^requirements = ' "$BUILDOZER_SPEC"; then
 else
   echo "requirements = $reqs" >> "$BUILDOZER_SPEC"
 fi
+
 
 docker pull $DOCKER_IMAGE
 

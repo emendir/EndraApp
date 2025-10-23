@@ -1,5 +1,6 @@
 pyzmq
 walytis_beta_api
+Pygments
 
 annotated-types
 anyio
