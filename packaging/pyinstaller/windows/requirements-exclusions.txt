@@ -1,0 +1,2 @@
+# Windows-specific exclusions
+# Add packages that should be excluded from the Windows build

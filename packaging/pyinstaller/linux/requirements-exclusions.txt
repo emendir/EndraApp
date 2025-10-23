@@ -1,0 +1,2 @@
+# Linux-specific exclusions
+# Add packages that should be excluded from the Linux build

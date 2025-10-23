@@ -15,6 +15,9 @@ set -e
 # the absolute path of this script's directory
 SCRIPT_DIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
+PYTHON="${PYTHON:-python}"
+# whether to remove packages that are already installed from output
+FILTER_EXISTING_PACKAGES="${FILTER_EXISTING_PACKAGES:-1}"
 
 
 if ! [ -e "$REQS_MANUAL" ]; then
@@ -33,8 +36,13 @@ if ! [ -d "$PY_VENV_DIR" ]; then
   "PY_VENV_DIR not found: $PY_VENV_DIR"
   exit 1
 fi
-virtualenv $PY_VENV_DIR
-source $PY_VENV_DIR/bin/activate
+OS=$($PYTHON -c "import platform;print(platform.system())")
+echo $PY_VENV_DIR
+if [ $OS = "Windows" ];then
+    source $PY_VENV_DIR/Scripts/activate
+else
+    source $PY_VENV_DIR/bin/activate
+fi
 
 function filter_reqs(){
   REQS_BASE=$1
@@ -105,8 +113,11 @@ python -m pipdeptree -f --warn silence \
   | grep -v "Editable" \
   | tee $reqs_installed
 
+
 # remove packages in $reqs_installed that are included in $reqs_venv
-filter_reqs $reqs_installed $reqs_venv $reqs_installed
+if [ $FILTER_EXISTING_PACKAGES -eq 1 ];then
+  filter_reqs $reqs_installed $reqs_venv $reqs_installed
+fi
 
 
 # remove packages in $reqs_installed that are included in $REQS_EXCLUSIONS
