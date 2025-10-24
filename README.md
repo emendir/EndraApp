@@ -41,27 +41,30 @@ However, now is the time where some of these will start being developed and test
 
 ## OS Compatibility & Download
 
-The Endra app is designed to be cross-platform for desktop and mobile.
-So far, it has been tested on Linux (Ubuntu 24), Android, and Windows 11.
+The Endra application is designed to be cross-platform for desktop and mobile.
+So far, it has been tested on Linux (Ubuntu 24 x86-64 & arm64), Android (arm64), Windows 11 (x86-64) and MacOS (x86-64 & arm64).
 
-Package build pipelines have been developed for the below listed formats, and can be [downloaded here](https://github.com/emendir/EndraApp/releases).
+Package build pipelines have been developed for the below listed formats.
+You can [download these application packages here](https://github.com/emendir/EndraApp/releases).
 
 ### Linux
-- flatpak for x86-64
+- flatpak for x86-64 and arm64
+- executable binary for x86-64 and arm64
 
-Coming soon: Nix, AUR, arm64
+Coming soon: Nix, AUR
 
 ### Android
-- APK for arm-64
+- APK for arm64
 
 ### MacOS
-Coming soon...
+- executable binary for x86-64 and arm64
+- .app package for x86-64 and arm64
 
 ### iOS
 probably coming later, in [Phase IV of the Endra Roadmap](../RoadMap.md#Phase%20IV%20-%20Transform%20into%20Production-Grade%20Software), unless
 
 ### Windows
-- portable EXE
+- portable EXE for x86-64
 
 
 ## Run From Source
@@ -75,21 +78,22 @@ pip install -r requirements-dev.txt
 ```
 
 ```sh
-USE_PANGO=0 python .
+python .
 ```
 
 ### Environment Variables
 
-- `USE_PANGO` (defaults to true on Linux): Use the Pango text provider to enable broader character & emoji text rendering support
+- `USE_PANGO` (defaults to false): Use the Pango text provider to enable broader character & emoji text rendering support
 - `USE_BRENTHY` (defaults to false): Instead of running an embedded IPFS and Walytis node, use the separately running system services for IPFS and Walytis. This enables faster loading times. To set up IPFS & Walytis in this way, [install Brenthy](https://github.com/emendir/BrenthyAndWalytis)
 - `KIVY_NO_CONSOLELOG` (defaults to false): stop kivy logging to console
+
 ## DevOps
 
 For speedy starting and termination of the app, on Linux, [install Brenthy](https://github.com/emendir/BrenthyAndWalytis) to run Walytis & IPFS as a systemd service.
 Then run Endra with:
 
 ```sh
-USE_PANGO=0 USE_BRENTHY=1 python tests/test_app.py
+USE_BRENTHY=1 python tests/test_app.py
 ```
 
 Pressing Ctrl+C in the terminal should promptly close the Endra app.
@@ -191,3 +195,4 @@ This is the networking foundation which Walytis builds upon.
 ### Alternative Technologies
 
 - [Berty](https://berty.tech/messenger): a P2P messenger for mobile phones built on [IPFS](https://ipfs.tech) & [OrbitDB](https://orbitdb.org/)
+
