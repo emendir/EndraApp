@@ -8,7 +8,8 @@
 ## - and their dependencies recursively
 ## - filtered by $REQS_EXCLUSIONS
 
-set -e
+set -euo pipefail
+
 
 
 
@@ -16,8 +17,6 @@ set -e
 SCRIPT_DIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
 PYTHON="${PYTHON:-python}"
-# whether to remove packages that are already installed from output
-FILTER_EXISTING_PACKAGES="${FILTER_EXISTING_PACKAGES:-1}"
 
 
 if ! [ -e "$REQS_MANUAL" ]; then
@@ -103,22 +102,26 @@ python -m pipdeptree -f --warn silence \
 filter_reqs $reqs_venv $REQS_AUTO $reqs_venv
 
 
+echo "Installing packages..."
 pip install --ignore-installed -r $REQS_AUTO
-# list all python dependencies recursively with versions
-reqs_installed=$(mktemp)
-python -m pipdeptree -f --warn silence \
+
+echo "Installed packages!"
+
+# Read package names (ignoring comments and empty lines)
+packages=$(grep -vE '^\s*(#|$)' "$REQS_AUTO" | cut -d'>' -f1 | cut -d'<' -f1 | cut -d'=' -f1 | tr '\n' ',' | sed 's/,$//')
+
+echo "Generating recursive dependencies..."
+# # Generate dependency tree only for these packages, recursively
+python -m pipdeptree -f --warn silence -p "$packages" \
   | sed 's/^[[:space:]]*//' \
   | sort -u \
-  | grep -v "/"  \
+  | grep -v "/" \
   | grep -v "Editable" \
-  | tee $reqs_installed
+  | tee "$REQS_AUTO"
 
 
-# remove packages in $reqs_installed that are included in $reqs_venv
-if [ $FILTER_EXISTING_PACKAGES -eq 1 ];then
-  filter_reqs $reqs_installed $reqs_venv $reqs_installed
-fi
 
 
+echo "Filtering by exclusions..."
 # remove packages in $reqs_installed that are included in $REQS_EXCLUSIONS
-filter_reqs $reqs_installed $REQS_EXCLUSIONS $REQS_AUTO
+filter_reqs $REQS_AUTO $REQS_EXCLUSIONS $REQS_AUTO

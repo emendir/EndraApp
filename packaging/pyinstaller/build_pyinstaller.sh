@@ -1,7 +1,8 @@
 ## Performs the PyInstaller build in a temporary directory
 
 ## On Windows, run this script using MINGW-Bash
-set -e
+
+set -euo pipefail
 
 tempdir=$(mktemp -d)
 
@@ -17,7 +18,6 @@ fi
 echo "$PROJ_DIR"
 
 
-PYINST_SPEC=$SCRIPT_DIR/$PYINST_SPEC_NAME
 PYTHON="${PYTHON:-python}"
 OS=$($PYTHON -c "import platform;print(platform.system())")
 echo "Platform: $OS"
@@ -89,14 +89,8 @@ $PYTHON -m pip install -r $PROJ_DIR/requirements-dev.txt
 # and install them in venv
 echo "Generating requirements for $PLATFORM_DIR..."
 
-# don't filter any packages from requirements-dev.txt from final output,
-# because we won't notice if any of them are used in the app
-export FILTER_EXISTING_PACKAGES=0
+# installs requirements in virtualenv, and documents the recursive list of dependencies
 $GET_PYTHON_DEPS
-
-# # Install platform-specific requirements
-# echo "Installing platform-specific requirements from $REQS_AUTO..."
-# $PYTHON -m pip install -r $REQS_AUTO -r requirements-dev.txt
 
 # Build with PyInstaller
 IPFS_TK_MODE=EMBEDDED WALYTIS_BETA_API_TYPE=WALYTIS_BETA_DIRECT_API $PYTHON packaging/pyinstaller/build_pyinstaller.py
