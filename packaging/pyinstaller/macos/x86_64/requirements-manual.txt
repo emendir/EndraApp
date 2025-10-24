@@ -1,0 +1,2 @@
+# macOS-specific manual requirements
+# These packages will be included with specific versions for macOS builds

@@ -17,5 +17,3 @@ walytis_beta_api==2.4.9
 ipfs_tk==0.1.4
 walytis-beta==2.4.19
 ipfs_toolkit==0.6.0rc2
-
-packaging
