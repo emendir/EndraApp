@@ -35,7 +35,7 @@ try:
         # result = subprocess.run("pkg-config --modversion pango", shell=True, capture_output=True)
         # print(result.stdout)
         # if len(result.stdout.strip().decode().split(".")) == 3:
-        DEF_USE_PANGO = True
+        DEF_USE_PANGO = False
         pass
 except Exception as e:
     traceback.print_exc()

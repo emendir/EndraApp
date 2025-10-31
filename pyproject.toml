@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 dynamic = ["dependencies"]
 name = "endra_app"
 authors = [{ name = "Emendir" , email = "dev@emendir.tech"}]
-version = "0.1.6"
+version = "0.2.0"
 license = {text="MIT-0 OR CC0-1.0"}
 description = "P2P Messenger"
 

@@ -2,7 +2,7 @@
 
 ## DevOps
 
-- [ ] Pakaging: ⏫ 
+- [x] Pakaging: ⏫ 
 	- [x] Android
     - build recipe to support wheels newer versions of ipfs_node
     - implement auto-generated requierements like in flatpak
@@ -11,7 +11,8 @@
 	- [x] Windows
 	- [x] MacOS-x86-64
 	- [x] MacOS-arm-64
-  - [ ] flatpak merge manual and auto requirements lists
+  - [x] flatpak merge manual and auto requirements lists
+  - [ ] flatpak USE_PANGO=1 by default
 
 ## UI
 
@@ -32,6 +33,8 @@
 - [ ] zip-file backups
 
 ## Settings
+
+- [ ] read from config file as alternative to environment variables
 
 ## Other
 - [ ] improve bootstrap peer management with IPFS-TK PeerMonitor
