@@ -14,7 +14,11 @@ def run():
     #     shutil.rmtree(os.path.join(".", "EndraAppdata"))
 
     # config should be loaded early to configure ipfs & walytis
-    from .config import APPDATA_DIR
+    from .config import APPDATA_DIR  # noqa
+    from ._load_ipfs_waly import USE_BRENTHY  # noqa
+
+    # do something with imported _load_ipfs_waly
+    print(f"Loaded IPFS and Waly. Using Brenthy {USE_BRENTHY}")
 
     # app_lock = AppLock(os.path.join(APPDATA_DIR, "endra.lock"))
     # app_lock.acquire()

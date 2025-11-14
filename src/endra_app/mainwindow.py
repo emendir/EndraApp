@@ -4,8 +4,8 @@ from . import config
 import walytis_beta_embedded
 from .log import logger
 import tempfile
-from datetime import datetime
-from walytis_identities.did_objects import Key
+from datetime import datetime, UTC
+from walytis_identities.key_objects import Key
 from endra import Profile
 import shutil
 from walytis_identities.did_manager import blockchain_id_from_did
@@ -25,7 +25,7 @@ TEMP_HARDCODED_KEY = Key(
     family=CRYPTO_FAMILY,
     public_key=b"\x04\xa6#\x1a\xcf\xa7\xbe\xa8\xbf\xd9\x7fd\xa7\xab\xba\xeb{Wj\xe2\x8fH\x08*J\xda\xebS\x94\x06\xc9\x02\x8c9>\xf45\xd3=Zg\x92M\x84\xb3\xc2\xf2\xf4\xe6\xa8\xf9i\x82\xdb\xd8\x82_\xcaIT\x14\x9cA\xd3\xe1",
     private_key=b"\xd9\xd1\\D\x80\xd7\x1a\xe6E\x0bt\xdf\xd0z\x88\xeaQ\xe8\x04\x91\x11\xaf\\%wC\x83~\x0eGP\xd8",
-    creation_time=datetime(2024, 11, 6, 19, 17, 45, 713000),
+    creation_time=datetime(2024, 11, 6, 19, 17, 45, 713000, tzinfo=UTC),
 )
 
 

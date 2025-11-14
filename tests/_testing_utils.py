@@ -7,25 +7,54 @@ from types import ModuleType
 from termcolor import colored as coloured
 from tqdm import TMonitor, tqdm
 
-sys.path.insert(0, os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src"
-))
-sys.path.insert(0, os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "..", "PrivateBlocks", "src"
-))
-sys.path.insert(0, os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "..", "Mutablock", "src"
-))
-sys.path.insert(0, os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "..", "WalIdentity", "src"
-))
-sys.path.insert(0, os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-    "..", "Endra", "src"
-))
+sys.path.insert(
+    0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src")
+)
+sys.path.insert(
+    0,
+    os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "..",
+        "PrivateBlocks",
+        "src",
+    ),
+)
+sys.path.insert(
+    0,
+    os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "..",
+        "Mutablock",
+        "src",
+    ),
+)
+sys.path.insert(
+    0,
+    os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "..",
+        "WalIdentity",
+        "src",
+    ),
+)
+sys.path.insert(
+    0,
+    os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "..",
+        "Endra",
+        "src",
+    ),
+)
+sys.path.insert(
+    0,
+    os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "..",
+        "EndraApp",
+        "src",
+    ),
+)
 BREAKPOINTS = False
 PYTEST = True  # whether or not this script is being run by pytest
 
@@ -51,7 +80,7 @@ def mark(success: bool, message: str, error: Exception | None = None) -> None:
         if PYTEST:
             if error:
                 raise error
-            raise Exception(f'Failed at test: {message}')
+            raise Exception(f"Failed at test: {message}")
         if error:
             print(str(error))
         if BREAKPOINTS:
@@ -62,9 +91,7 @@ def test_threads_cleanup() -> None:
     """Test that all threads have exited."""
     for i in range(2):
         polite_wait(5)
-        threads = [
-            x for x in threading.enumerate() if not isinstance(x, TMonitor)
-        ]
+        threads = [x for x in threading.enumerate() if not isinstance(x, TMonitor)]
         success = len(threads) == 1
         if success:
             break
@@ -93,9 +120,7 @@ def assert_is_loaded_from_source(source_dir: str, module: ModuleType) -> None:
     """
     module_path = os.path.abspath(module.__file__)
     source_path = os.path.abspath(source_dir)
-    assert (
-        source_path in module_path
-    ), (
+    assert source_path in module_path, (
         f"The module `{module.__name__}` has been loaded from an installion, not this "
         " source code!\n"
         f"Desired source dir: {source_path}\n"
