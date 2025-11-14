@@ -1,13 +1,9 @@
-endra==0.2.0
-walytis_beta==2.4.21
-brenthy_tools_beta==4.0.10
+endra>=0.3.0,<0.4.0
 ipfs_node==0.1.12rc5
 ipfs_tk>=0.1.6
 
 appdirs==1.4.4
 pyzbar==0.1.9
-walytis_beta_api==2.4.10
-walytis_beta_embedded==0.0.9
 portalocker==3.2.0
 kivy-garden.qrcode==2021.314
 kivy==2.3.1
