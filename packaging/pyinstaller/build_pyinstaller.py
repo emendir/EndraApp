@@ -8,6 +8,7 @@ import os
 import platform
 import toml
 
+from pyinstaller_utils import get_oqs_lib_path
 
 HIDDEN_IMPORTS = ["kivy_garden", "kivy_garden.qrcode"]
 EXCLUDED_IMPORTS = ["PyQt6"]
@@ -120,6 +121,7 @@ mv $tempdir/upx.exe $ORG_DIR
         pyzbardir = os.path.dirname(pyzbar.__file__)
         cmd += f' --add-binary="{pyzbardir}\\libiconv.dll;."'
         cmd += f' --add-binary="{pyzbardir}\\libzbar-64.dll;."'
+        cmd += f' --add-binary="{get_oqs_lib_path()};."'
         assert os.path.exists(os.path.join(pyzbardir, "libzbar-64.dll"))
         assert os.path.exists(os.path.join(pyzbardir, "libiconv.dll"))
         print(cmd)

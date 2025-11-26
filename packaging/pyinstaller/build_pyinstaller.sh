@@ -17,44 +17,10 @@ fi
 
 echo "$PROJ_DIR"
 
-
 PYTHON="${PYTHON:-python}"
-OS=$($PYTHON -c "import platform;print(platform.system())")
-ARCH=$($PYTHON -c "import platform;print(platform.machine())")
-echo "Platform: $OS"
-echo "Architecture: $ARCH"
-echo "Python: $PYTHON"
 
-# Determine platform-specific requirements directory
-case "$OS" in
-    Linux)
-        PLATFORM_BASE="linux"
-        ;;
-    Darwin)
-        PLATFORM_BASE="macos"
-        ;;
-    Windows)
-        PLATFORM_BASE="windows"
-        ;;
-    *)
-        echo "Error: Unsupported platform: $OS"
-        exit 1
-        ;;
-esac
+source $PROJ_DIR/packaging/share/os_prereqs/os_package_utils.sh
 
-# Normalize architecture names
-case "$ARCH" in
-    x86_64|AMD64|amd64)
-        ARCH_DIR="x86_64"
-        ;;
-    aarch64|arm64|ARM64)
-        ARCH_DIR="arm64"
-        ;;
-    *)
-        echo "Error: Unsupported architecture: $ARCH"
-        exit 1
-        ;;
-esac
 
 PLATFORM_DIR="$PLATFORM_BASE/$ARCH_DIR"
 
@@ -106,8 +72,7 @@ cd $tempdir
 ls -la
 export PY_VENV_DIR=$tempdir/.venv
 if [ $USE_VENV -eq 1 ];then
-    $PYTHON -m pip install -qq virtualenv
-    $PYTHON -m virtualenv $PY_VENV_DIR
+    $PYTHON -m venv $PY_VENV_DIR
     if [ $OS = "Windows" ];then
         source $PY_VENV_DIR/Scripts/activate
     else

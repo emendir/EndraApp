@@ -6,6 +6,14 @@ command:                       endra_app
 # sdk-extensions:
 #   - org.freedesktop.Sdk.Extension.python3-devel
 modules:
+  - name: liboqs
+    buildsystem: cmake
+    config-opts:
+      - -DBUILD_SHARED_LIBS=ON
+    sources:
+      - type: git
+        url: https://github.com/open-quantum-safe/liboqs.git
+        tag: 0.14.0
   ## required for copying to clipboard (by pyperclip, I think)
   - name:                      xsel
     buildsystem:               autotools
@@ -216,8 +224,12 @@ modules:
     sources:
       - type:                  dir
         path:                  ../../..
+cleanup:
+  - /share
+  - /lib/cmake
+  - /lib/pkgconfig
+  # - /include
 finish-args:
-
   - --socket=wayland
   - --socket=fallback-x11
   - --share=network
