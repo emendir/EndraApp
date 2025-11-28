@@ -26,6 +26,7 @@ packaging/flatpak/.flatpak-builder
 .flatpak-builder
 packaging/buildozer/bin
 packaging/buildozer/.buildozer
+packaging/buildozer/.gradle
 # <<< CLEANUP
 
 run_pyreverse.sh

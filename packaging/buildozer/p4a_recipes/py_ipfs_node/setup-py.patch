@@ -1,0 +1,94 @@
+diff --git a/setup.py b/setup.py
+index e0f3f57..6e85ab8 100644
+--- a/setup.py
++++ b/setup.py
+@@ -1,12 +1,39 @@
+-from setuptools import setup, find_packages, Extension, Distribution
+ import subprocess
+ import os
+ import platform
+ import sys
+ import glob
+-from setuptools.command.build_py import build_py
+-from setuptools.command.install import install
+-from setuptools.command.develop import develop
++
++try:
++    from setuptools import find_packages, Distribution
++    from setuptools.command.build_py import build_py
++    from setuptools.command.install import install
++    from setuptools import Extension, Command, setup
++except ImportError:
++    from distutils.command.build_py import build_py
++    from distutils.command.install import install
++    from distutils.core import Extension, Command, setup
++    from distutils.util import convert_path
++    from distutils.dist import Distribution
++
++    def find_packages(where, *args, **kwargs):
++        base_path = convert_path(where)
++        found = []
++        for root, dirs, files in os.walk(base_path, followlinks=True):
++            dirs[:] = [
++                d for d in dirs if d[0] != "." and d not in ("ez_setup", "__pycache__")
++            ]
++            relpath = os.path.relpath(root, base_path)
++            parent = relpath.replace(os.sep, ".").lstrip(".")
++            if relpath != "." and parent not in found:
++                # foo.bar package but no foo package, skip
++                continue
++            for dir in dirs:
++                if os.path.isfile(os.path.join(root, dir, "__init__.py")):
++                    package = ".".join((parent, dir)) if parent else dir
++                    found.append(package)
++        return found
++
+ 
+ try:
+     from wheel.bdist_wheel import bdist_wheel
+@@ -229,14 +256,6 @@ class InstallCommand(install):
+         super().run()
+ 
+ 
+-class DevelopCommand(develop):
+-    """Custom develop command to compile Go code during development installation."""
+-
+-    def run(self):
+-        compile_go_library()
+-        super().run()
+-
+-
+ if bdist_wheel:
+ 
+     class CustomBdistWheel(bdist_wheel):
+@@ -253,22 +272,6 @@ else:
+     CustomBdistWheel = None
+ 
+ 
+-# Install requirements during setup (only in development mode)
+-if "--develop" in sys.argv or "develop" in sys.argv:
+-    try:
+-        subprocess.check_call(
+-            [
+-                sys.executable,
+-                "-m",
+-                "pip",
+-                "install",
+-                "-r",
+-                os.path.join(PROJ_DIR, "requirements.txt"),
+-            ]
+-        )
+-    except subprocess.CalledProcessError:
+-        print("Warning: Failed to install requirements.txt dependencies")
+-
+ # Get platform-specific library files
+ platform_libraries = get_platform_libraries()
+ print(f"Including platform-specific libraries: {platform_libraries}")
+@@ -285,7 +288,6 @@ setup(
+     cmdclass={
+         "build_py": BuildGoLibraryCommand,
+         "install": InstallCommand,
+-        "develop": DevelopCommand,
+         **({} if CustomBdistWheel is None else {"bdist_wheel": CustomBdistWheel}),
+     },
+ )

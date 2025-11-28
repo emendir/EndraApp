@@ -7,3 +7,8 @@ kivy-garden.qrcode
 kivymd
 pygments
 eth-hash
+
+liboqs
+liboqs-python
+py_ipfs_node
+

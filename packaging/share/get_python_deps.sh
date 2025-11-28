@@ -49,14 +49,18 @@ function filter_reqs(){
   REQS_OUTPUT=$3
   # Normalize exclusions: strip version part if present (keep only package name)
   exclusions=$(sed -E 's/[[:space:]]*#.*//; s/[[:space:]]*$//; /^$/d; s/==.*$//; /^$/d; s/>=.*$//; /^$/d; s/<=.*$//' "$REQS_FILTER")
+  # echo "Got exclusions "
   # Build grep pattern from exclusions (anchor to start of line, match until ==)
-  if [[ -n "$exclusions" ]]; then
+  if [[ -n "$exclusions" ]] && [[ -s $REQS_FILTER ]] && [[ -s $REQS_BASE ]]; then
     local tmp_file="$(mktemp)"
     pattern=$(printf '%s\n' $exclusions | sed 's/^/^/; s/$//' | paste -sd'|' -)
-    grep -Ev "$pattern" "$REQS_BASE" | tee "$tmp_file"
-    # echo $(cat $tmp_file)
+    # echo "got pattern"
+    # echo $pattern
+    # echo "grep -Ev \"$pattern\" \"$REQS_BASE\" | tee \"$tmp_file\""
+    grep -Ev "$pattern" "$REQS_BASE" | tee "$tmp_file" || true
+    # echo "ran filter"
     mv $tmp_file $REQS_OUTPUT
-    # echo $(cat $REQS_OUTPUT)
+
   else
     # No exclusions, just copy
     if ! [ $REQS_BASE = $REQS_OUTPUT ];then
@@ -108,7 +112,14 @@ pip install --ignore-installed -r $REQS_AUTO
 echo "Installed packages!"
 
 # Read package names (ignoring comments and empty lines)
+echo "
+packages=\$(grep -vE '^\s*(#|$)' \"$REQS_AUTO\" | cut -d'>' -f1 | cut -d'<' -f1 | cut -d'=' -f1 | tr '\n' ',' | sed 's/,$//')
+"
+if [ -s "$REQS_AUTO" ]; then
 packages=$(grep -vE '^\s*(#|$)' "$REQS_AUTO" | cut -d'>' -f1 | cut -d'<' -f1 | cut -d'=' -f1 | tr '\n' ',' | sed 's/,$//')
+else
+    packages=""
+fi
 
 echo "Generating recursive dependencies..."
 # # Generate dependency tree only for these packages, recursively

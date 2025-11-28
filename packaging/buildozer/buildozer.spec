@@ -38,7 +38,7 @@ version = 0.1
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
 # got python version from buildozer docker image's python version
-requirements = android,appdirs==1.4.4,brenthy_tools_beta==4.0.10,cffi,coincurve,cytoolz==1.0.1,dataclasses-json==0.6.7,decorate-all==0.1.1,eciespy==0.4.6,emtest==0.0.5,endra==0.1.1,environs==14.3.0,eth-hash,eth-keys==0.7.0,eth-typing==5.2.1,eth-utils==5.3.1,iniconfig==2.1.0,ipfs_node==0.1.9,ipfs_tk==0.1.4,ipfs_toolkit==0.6.0rc2,kivy,kivy-garden.qrcode,kivymd,loguru==0.7.3,marshmallow==3.26.1,multi_crypt==0.0.4,mypy_extensions==1.1.0,packaging==25.0,pluggy==1.6.0,portalocker==3.2.0,pycryptodome==3.23.0,pygments,py-strict-typing==0.1.1,pytest==8.4.2,python3,python-dotenv==1.1.1,qrcode==8.2,rfc3987==1.3.8,termcolor==3.1.0,toolz==1.0.0,tqdm==4.67.1,typing_extensions==4.15.0,typing-inspect==0.9.0,walytis_beta==2.4.19,walytis_beta_embedded==0.0.8,walytis_identities==0.1.5,walytis_mutability==0.1.5,walytis_offchain==0.1.5
+requirements = android,appdirs==1.4.4,brenthy_tools_beta==4.0.11,cffi,coincurve,cytoolz==1.0.1,dataclasses-json==0.6.7,decorate-all==0.1.1,eciespy==0.4.6,emtest==0.0.7,endra==0.4.1,environs==14.5.0,eth-hash,eth-keys==0.7.0,eth-typing==5.2.1,eth-utils==5.3.1,iniconfig==2.1.0,ipfs_tk==0.1.9,ipfs_toolkit==0.6.0rc7,kivy,kivy-garden.qrcode,kivymd,liboqs,liboqs-python,loguru==0.7.3,marshmallow==3.26.1,multi_crypt==0.1.3,mypy_extensions==1.1.0,packaging==25.0,pathspec==0.12.1,pluggy==1.6.0,portalocker==3.2.0,pycryptodome==3.23.0,pygments,py_ipfs_node,py-multihash==2.0.1,py-strict-typing==0.1.1,pytest==9.0.1,python3,python-dotenv==1.2.1,qrcode==8.2,rfc3987==1.3.8,termcolor==3.2.0,toolz==1.0.0,tqdm==4.67.1,typing_extensions==4.15.0,typing-inspect==0.9.0,walytis_beta==2.4.30,walytis_beta_embedded==0.0.12,walytis_identities==0.4.2,walytis_mutability==0.1.5,walytis_offchain==0.4.0
 
 
 # (str) Custom source folders for requirements
@@ -334,6 +334,7 @@ p4a.commit = 5aa97321ebf7339edf04e707beccbf94a284f4c9
 
 # (str) The directory in which python-for-android should look for your own build recipes (if any)
 #p4a.local_recipes =
+p4a.local_recipes = p4a_recipes
 
 # (str) Filename to the hook for p4a
 #p4a.hook =

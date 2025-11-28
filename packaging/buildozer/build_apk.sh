@@ -54,6 +54,10 @@ $NC"
 if ! [ -e ~/.buildozer ];then
   mkdir ~/.buildozer
 fi
+if ! [ -e $WORK_DIR/.gradle ];then
+  mkdir $WORK_DIR/.gradle
+  chmod -R 777 $WORK_DIR/.gradle
+fi
 if ! [ -e $WORK_DIR/bin ];then
   mkdir $WORK_DIR/bin
   chmod -R 777 $WORK_DIR/bin
@@ -86,7 +90,9 @@ tmp_excl="$(mktemp)"
 cat "$REQS_EXCLUSIONS" "$REQS_BUILDOZER" | grep -v "^#" | grep -v "^$" > "$tmp_excl"
 export REQS_EXCLUSIONS=$tmp_excl
 
-$GET_PYTHON_DEPS
+if [ -z $SKIP_PYTHON_DEPS_UPDATE ];then
+    $GET_PYTHON_DEPS
+fi
 
 # merge generated requirements $REQS_AUTO with $REQS_BUILDOZER
 tmp_output="$(mktemp)"
@@ -114,8 +120,10 @@ docker run  \
   -v $HOME/.buildozer:/home/user/.buildozer \
   -v $WORK_DIR/buildozer.spec:/home/user/hostcwd/buildozer.spec \
   -v $WORK_DIR/.buildozer:/home/user/hostcwd/.buildozer \
+  -v $WORK_DIR/.gradle:/home/user/.gradle \
   -v $WORK_DIR/bin:/home/user/hostcwd/bin \
   -v $PROJ_DIR/src:/home/user/hostcwd/src \
+  -v $WORK_DIR/p4a_recipes:/home/user/hostcwd/p4a_recipes \
   $DOCKER_IMAGE android debug
 
 # tempdir=$(mktemp -d)

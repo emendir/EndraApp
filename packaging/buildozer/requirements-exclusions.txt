@@ -1,6 +1,7 @@
 pyzmq
 walytis_beta_api
 Pygments
+ipfs_node
 
 annotated-types
 anyio
