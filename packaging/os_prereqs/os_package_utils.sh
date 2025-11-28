@@ -3,7 +3,7 @@
 
 # the absolute path of this script's directory
 _SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 ; pwd -P )"
-PROJ_DIR="$( cd -- "${_SCRIPT_DIR}/../../../" >/dev/null 2>&1 ; pwd -P )"
+PROJ_DIR="$( cd -- "${_SCRIPT_DIR}/../../" >/dev/null 2>&1 ; pwd -P )"
 
 
 check_commands() {

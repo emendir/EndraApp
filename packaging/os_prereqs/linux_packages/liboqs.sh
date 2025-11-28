@@ -7,7 +7,7 @@ set -euo pipefail # Exit if any command/script fails
 LIBOQS_REPO="https://github.com/open-quantum-safe/liboqs.git"
 LIBOQS_TAG="0.14.0"            # adjust if needed
 LIBOQS_INSTALL_PREFIX="/usr/local/lib/"   
-export LD_LIBRARY_PATH="/usr/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export LD_LIBRARY_PATH="/usr/local/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 # Number of parallel build jobs
 NPROC=$(( $(nproc) - 1 ))
 
