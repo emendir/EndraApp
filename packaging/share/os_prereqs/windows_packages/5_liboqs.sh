@@ -1,23 +1,27 @@
 #!/usr/bin/env bash
-set -e # Exit if any command fails
+# Compile and install liboqs
 
-# Configuration: you can change these
+set -euo pipefail # Exit if any command/script fails
+
+# Compilation configuration
 LIBOQS_REPO="https://github.com/open-quantum-safe/liboqs.git"
 LIBOQS_TAG="0.14.0"            # adjust if needed
 # LIBOQS_INSTALL_PREFIX="/mingw64/liboqs"   # or another prefix visible to your MSYS2 / MinGW
 LIBOQS_INSTALL_PREFIX="C:/Program Files/liboqs"   # or another prefix visible to your MSYS2 / MinGW
-
 # Number of parallel build jobs
-NPROC=$(nproc)
+NPROC=$(( $(nproc) - 1 ))
+
 
 # the absolute path of this script's directory
 SCRIPT_DIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 cd $SCRIPT_DIR
+source $SCRIPT_DIR/../os_package_utils.sh
 
-WORK_DIR=/tmp/liboqs
+
+
+WORK_DIR=/tmp/EndraAppBuildLiboqs
 LIBOQS_BUILD_DIR="$WORK_DIR/liboqs-build"
 
-source $SCRIPT_DIR/../os_package_utils.sh
 
 if [ -e "$LIBOQS_INSTALL_PREFIX/bin/liboqs.dll" ]; then 
     echo "Liboqs is already installed, skipping."
@@ -40,7 +44,6 @@ echo "=== Configure and build liboqs ==="
 rm -rf "${LIBOQS_BUILD_DIR}"
 mkdir -p "${LIBOQS_BUILD_DIR}"
 
-echo "CMAKE 1"
 echo "$(which cmake)"
 cmake -S $WORK_DIR -B $LIBOQS_BUILD_DIR \
     -DCMAKE_INSTALL_PREFIX="$LIBOQS_INSTALL_PREFIX" \
@@ -49,10 +52,9 @@ cmake -S $WORK_DIR -B $LIBOQS_BUILD_DIR \
     -DBUILD_SHARED_LIBS=ON \
     -DOQS_BUILD_ONLY_LIB=ON \
     -DOQS_OPT_TARGET=generic
-echo "CMAKE 2"
-cmake --build $LIBOQS_BUILD_DIR --parallel
 
-echo "CMAKE 3"
+cmake --build $LIBOQS_BUILD_DIR --parallel $NPROC
+
 cmake --build $LIBOQS_BUILD_DIR  --target install
 
 add_to_windows_system_path "$LIBOQS_INSTALL_PREFIX/bin"

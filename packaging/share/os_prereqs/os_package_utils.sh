@@ -5,6 +5,7 @@
 _SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 ; pwd -P )"
 PROJ_DIR="$( cd -- "${_SCRIPT_DIR}/../../../" >/dev/null 2>&1 ; pwd -P )"
 
+
 check_commands() {
     local missing=()
 
@@ -25,7 +26,7 @@ check_commands() {
 # check_commands curl git jq
 # check_commands "${required_commands[@]}"
 
-PYTHON="${PYTHON:-python}"
+export PYTHON="${PYTHON:-python}"
 OS=$($PYTHON -c "import platform;print(platform.system())")
 ARCH=$($PYTHON -c "import platform;print(platform.machine())")
 echo "Platform: $OS"

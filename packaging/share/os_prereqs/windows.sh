@@ -7,7 +7,7 @@ source $SCRIPT_DIR/os_package_utils.sh
 
 export PATH="/mingw64/bin:$PATH"
 
-PYTHON="${PYTHON:-python}"
+export PYTHON="${PYTHON:-python}"
 
 REQUIRED_COMMANDS=(
         git
