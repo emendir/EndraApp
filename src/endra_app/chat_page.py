@@ -1,16 +1,22 @@
 # side_bar.py
+from enum import Enum
 from kivy.clock import Clock
 import json
 from .log import logger
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
-from endra import Message, Correspondence, MessageContent
+from endra import Message, Correspondence, MessageContent, MessageContentPart
 import os
 from .utils import InvitationPopupView
 
 # Load the KV file
 KV_FILE = os.path.join(os.path.dirname(__file__), "chat_page.kv")
 Builder.load_file(KV_FILE)
+
+
+class MediaType(Enum):
+    TEXT_MARKDOWN = "text/markdown"
+    IMAGE_PNG = "image/png"
 
 
 class MessageEditorView(BoxLayout):
@@ -25,7 +31,17 @@ class MessageEditor(MessageEditorView):
         super().__init__(**kwargs)
 
     def get_message_content(self):
-        return MessageContent(text=self.text_input_txbx.text, file_data=None)
+        return MessageContent(
+            metadata={},
+            message_parts=[
+                MessageContentPart(
+                    part_id=0,  # part_id will be automatically adjusted
+                    media_type=MediaType.TEXT_MARKDOWN.value,
+                    metadata={},
+                    payload=self.text_input_txbx.text.encode(),
+                )
+            ],
+        )
 
 
 class MessageView(BoxLayout):
@@ -37,8 +53,15 @@ class MessageView(BoxLayout):
 class MessageWidget(MessageView):
     def __init__(self, message: Message, **kwargs):
         super().__init__(**kwargs)
+        self.label.text = ""
+        for content_part in message.content.message_parts:
+            if content_part.media_type == MediaType.TEXT_MARKDOWN.value:
+                self.label.text += content_part.payload.decode()
+            else:
+                logger.debug(
+                    f"Unhandled message part MediaType: {content_part.media_type}"
+                )
         self.message = message
-        self.label.text = self.message.content.text
         # Bind events
         self.label.bind(on_touch_down=self.on_label_click)
 
