@@ -11,17 +11,20 @@ Endra combines Walytis' peer-to-peer distributed database, WalytisIdentities' id
 
 - fully peer to peer, no servers of any kind
 - can function independently of internet connectivity
+- multiple devices per profile (user account)
+- multiple profiles per device
 - cryptography:
+	- full end-to-end encryption
 	- key rotation
 	- hybrid cryptography combining classical and post-quantum algorithms
 	- cryptographic agility (upgradable to novel algorithms)
 	- perfect forward and backward secrecy for transmissions
-- multiple devices per profile (user account)
-- multiple profiles per device
 - can be used as a library for embedding into other applications
 - will become part of an expandable ecosystem incl. calendar and file-sharing
+- [app for desktop and mobile](https://github.com/emendir/EndraApp) (builds for Linux (Ubuntu 24 x86-64 & arm64), Android (arm64), Windows 11 (x86-64) and MacOS (x86-64 & arm64))
 
 #### Features Coming Soon
+
 So far the main focus of Endra has been its foundational architecture, so until now little work has been invested in essential higher-level messaging features.
 However, now is the time where some of these will start being developed and tested:
 - rich text formatting (markdown as default, perhaps others too)
@@ -149,12 +152,11 @@ To support me in my work on this and other projects, you can make donations with
 
 - **Bitcoin:** `BC1Q45QEE6YTNGRC5TSZ42ZL3MWV8798ZEF70H2DG0`
 - **Ethereum:** `0xA32C3bBC2106C986317f202B3aa8eBc3063323D4`
-- [**Fiat** (via Credit or Debit Card, Apple Pay, Google Pay, Revolut Pay)](https://checkout.revolut.com/pay/4e4d24de-26cf-4e7d-9e84-ede89ec67f32)
+- [Credit Card, Debit Card, Bank Transfer, Apple Pay, Google Pay, Revolut Pay)](https://checkout.revolut.com/pay/4e4d24de-26cf-4e7d-9e84-ede89ec67f32)
 
 Donations help me:
 - dedicate more time to developing and maintaining open-source projects
-- cover costs for IT infrastructure
-- finance projects requiring additional hardware & compute
+- cover costs for IT resources
 
 ## About the Developer
 
