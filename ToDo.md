@@ -13,11 +13,11 @@
 	- [x] MacOS-arm-64
   - [x] flatpak merge manual and auto requirements lists
   - [ ] flatpak USE_PANGO=1 by default
+- [ ] linux prereqs: build only if necessary
 
 ## UI
 
 - [ ] UI scaling for mobile
-- [ ] rename "correspondence" to "chat"
 - [ ] QR scanner for joining chats and profiles
 
 ## Messenger Features
@@ -25,7 +25,7 @@
 - [ ] rich text formatting
 - [ ] multimedia support
 - [ ] file transmission (with transmission progress tracking for large files)
-- [ ] audio calls ⏫ 
+- [ ] audio calls
 - [ ] video calls
 - [ ] camera photos
 - [ ] audio recordings
