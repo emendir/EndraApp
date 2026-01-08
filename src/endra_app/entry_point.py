@@ -4,7 +4,7 @@ import os
 
 def run():
     # # IMPORT ORDER IS IMPORTANT
-    from .log import logger
+    from .log import logger_endra as logger
     from . import _load_kivy  # noqa load kivy library
 
     print(_load_kivy.kivy.platform)

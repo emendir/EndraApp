@@ -2,7 +2,7 @@ from .peering import bootstrap_peer_monitor
 from .config import APPDATA_DIR
 from . import config
 import walytis_beta_embedded
-from .log import logger
+from .log import logger_endra as logger
 import tempfile
 from datetime import datetime, UTC
 from walytis_identities.key_objects import Key

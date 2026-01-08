@@ -1,7 +1,7 @@
 from threading import Thread
 from .config import ENABLE_PUBSUB_LOGGING, APPDATA_DIR
 import logging
-from .log import logger
+from .log import logger_endra as logger
 from walytis_beta_embedded import ipfs
 from kivy import platform
 import os

@@ -1,9 +1,8 @@
 import logging
 from logging.handlers import RotatingFileHandler
+
 # Formatter
-formatter = logging.Formatter(
-    '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
-)
+formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 
 # Console handler (INFO+)
 console_handler = logging.StreamHandler()
@@ -11,9 +10,7 @@ console_handler.setLevel(logging.INFO)
 console_handler.setFormatter(formatter)
 
 # File handler (DEBUG+ with rotation)
-file_handler = RotatingFileHandler(
-    'app.log', maxBytes=5*1024*1024, backupCount=5
-)
+file_handler = RotatingFileHandler("app.log", maxBytes=5 * 1024 * 1024, backupCount=5)
 file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(formatter)
 
@@ -24,7 +21,9 @@ file_handler.setFormatter(formatter)
 # root_logger.addHandler(file_handler)
 
 
+logger_endra = logging.getLogger("Endra")
 
-logger = logging.getLogger("Endra")
-
-
+disabled_loggers = ["urllib3.connectionpool"]
+for logger_name in disabled_loggers:
+    _logger = logging.getLogger(logger_name)
+    _logger.setLevel(logging.WARNING)

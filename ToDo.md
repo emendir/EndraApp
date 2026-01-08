@@ -1,4 +1,6 @@
 ## Next Steps
+- [ ] Chat: show list of pending attachments
+- [ ] Chat: render images in messages
 
 ## DevOps
 

@@ -73,13 +73,28 @@
             id: add_message_btn_lyt
             size_hint_x: 3
             
-        Button:
-            id: add_message_btn
+        BoxLayout:
+            id: message_buttons_lyt
+            orientation: 'vertical'
             size_hint_x: 1
-            text: "Send"
-            size_hint: 1, None
-            height: 50
-            background_color: 0.8, 0.3, 0.3, 1  # Light red button
-            font_size: sp(18)
-            font_context: 'system://myapp'
-            # font_name: 'LibertinusSerif-Regular.otf'
+            Button:
+                id: add_message_btn
+                size_hint_x: 1
+                text: "Send"
+                size_hint: 1, None
+                height: 50
+                background_color: 0.8, 0.3, 0.3, 1  # Light red button
+                font_size: sp(18)
+                font_context: 'system://myapp'
+                # font_name: 'LibertinusSerif-Regular.otf'
+            Button:
+                id: add_attachment_btn
+                size_hint_x: 1
+                text: "Attach"
+                size_hint: 1, None
+                height: 50
+                background_color: 0.8, 0.3, 0.3, 1  # Light red button
+                font_size: sp(18)
+                font_context: 'system://myapp'
+                # font_name: 'LibertinusSerif-Regular.otf'
+

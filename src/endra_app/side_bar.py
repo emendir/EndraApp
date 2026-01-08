@@ -7,7 +7,7 @@ from .profiles import Profiles
 from .settings import ProfileSettingsPopup
 from walytis_beta_tools.exceptions import JoinFailureError
 import json
-from .log import logger
+from .log import logger_endra as logger
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from endra import Profile, Correspondence

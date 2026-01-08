@@ -7,7 +7,7 @@ from kivy.uix.popup import Popup
 from endra import Profile
 from .utils import InvitationPopupView
 import json
-from .log import logger
+from .log import logger_endra as logger
 from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 import os
