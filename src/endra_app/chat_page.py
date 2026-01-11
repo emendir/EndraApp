@@ -1,4 +1,7 @@
 # side_bar.py
+from kivy.uix.image import Image
+import io
+from kivy.core.image import Image as CoreImage
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
 from plyer import filechooser
@@ -7,6 +10,7 @@ from kivy.clock import Clock
 import json
 from .log import logger_endra as logger
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
 from kivy.lang import Builder
 from endra import (
     Message,
@@ -81,7 +85,9 @@ class MessageEditor(MessageEditorView):
     def get_pending_attachments(self) -> list[PendingMessageAttachment]:
         return self.pending_attachments
 
-    def get_message_content(self):
+    def get_message_content(self) -> EmbeddedContentPart | None:
+        if not self.text_input_txbx.text:
+            return None
         return EmbeddedContentPart(
             part_id=0,  # part_id will be automatically adjusted
             media_type=MediaType.TEXT_MARKDOWN.value,
@@ -97,7 +103,7 @@ class MessageEditor(MessageEditorView):
 class MessageView(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.label = self.ids.label
+        self.message_parts_lyt = self.ids.message_parts_lyt
 
 
 class MessageWidget(MessageView):
@@ -107,22 +113,54 @@ class MessageWidget(MessageView):
         super().__init__(**kwargs)
         self.message_metadata = message_metadata
         self.content_parts = content_parts
-        self.label.text = ""
         for content_part in self.content_parts:
             if content_part.media_type == MediaType.TEXT_MARKDOWN.value:
-                self.label.text += content_part.payload.decode()
-            else:
-                self.label.text += f"\n<{content_part.media_type}>"
-                logger.debug(
-                    f"Unhandled message part MediaType: {content_part.media_type}"
+                text = content_part.payload.decode()
+                if not text:
+                    continue
+                label = Label(
+                    text=content_part.payload.decode(),
+                    halign="left",
+                    valign="top",
+                    size_hint_y=None,
                 )
+                label.bind(
+                    width=lambda inst, w: setattr(inst, "text_size", (w, None)),
+                    texture_size=lambda inst, size: setattr(inst, "height", size[1]),
+                )
+                message_part_widget = label
+
+            elif content_part.media_type in [
+                MediaType.IMAGE_JPG.value,
+                MediaType.IMAGE_PNG.value,
+            ]:
+                image_format = content_part.media_type.split("/")[1]
+                buf = io.BytesIO(content_part.payload)
+                cim = CoreImage(buf, ext=image_format)
+                image = Image(texture=cim.texture, size_hint_y=None)
+                # image.height = cim.texture.height
+                message_part_widget = image
+
+            else:
+                label = Label(
+                    text=f"<{content_part.media_type}>",
+                    halign="left",
+                    valign="top",
+                    size_hint_y=None,
+                )
+                label.bind(
+                    width=lambda inst, w: setattr(inst, "text_size", (w, None)),
+                    texture_size=lambda inst, size: setattr(inst, "height", size[1]),
+                )
+                message_part_widget = label
+            self.message_parts_lyt.add_widget(message_part_widget)
 
         # Bind events
-        self.label.bind(on_touch_down=self.on_label_click)
+        self.message_parts_lyt.bind(on_touch_down=self.on_label_click)
 
     def on_label_click(self, instance, touch):
         if self.collide_point(*touch.pos):
-            print(f"Label '{self.label.text}' clicked!")
+            print(f"Label clicked!")
 
 
 class MessagePageView(BoxLayout):
@@ -212,8 +250,13 @@ class MessagePage(MessagePageView):
                     attachment_id=attachment_block_id,
                 )
             )
-        message_text = self.message_editor.get_message_content()
-        message_parts = [message_text] + attachment_parts
+        message_text_part = self.message_editor.get_message_content()
+        message_parts = []
+        if message_text_part:
+            message_parts.append(message_text_part)
+        message_parts += attachment_parts
+        if not message_parts:
+            return
         message_content = MessageContent(
             message_metadata={},
             message_parts=message_parts,

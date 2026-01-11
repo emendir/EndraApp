@@ -1,10 +1,11 @@
 #:import QRCodeWidget kivy_garden.qrcode
 <MessageView>:
-    orientation: 'horizontal'
+    orientation: 'vertical'
     size_hint_y: None
-    height: 50
     spacing: 5
     padding: 5
+    height: message_parts_lyt.minimum_height + self.padding[1] * 2
+
     canvas.before:
         Color:
             rgba: 0.1, 0.1, 0.1, 1  # background colour
@@ -12,13 +13,14 @@
             size: self.size
             pos: self.pos
 
-    Label:
-        id: label
-        color: 0.9, 0.9, 0.9, 1
-        size_hint: 0.6, 1
-        font_size: sp(18)
-        font_context: 'system://myapp'
-        # font_name: 'LibertinusSerif-Regular.otf'
+    BoxLayout:
+        id: message_parts_lyt
+        orientation: 'vertical'
+        size_hint_y: None
+        height: self.minimum_height
+        spacing: 8          # space BETWEEN widgets
+        padding: [4, 4, 4, 4]  # space INSIDE the layout
+
 <MessageEditorView>
     orientation: 'vertical'
     TextInput:
