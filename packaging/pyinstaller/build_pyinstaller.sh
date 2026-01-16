@@ -91,7 +91,9 @@ echo "Generating requirements for $PLATFORM_DIR..."
 # installs requirements in virtualenv, and documents the recursive list of dependencies
 $GET_PYTHON_DEPS
 
-sed -i "1i# $(date '+%Y-%m-%d %H:%M:%S') " $REQS_AUTO
+
+# prepend timestamp to $REQS_AUTO file
+{ echo "# $(date '+%Y-%m-%d %H:%M:%S')"; cat $REQS_AUTO; } > script.tmp && mv script.tmp $REQS_AUTO
 
 # Build with PyInstaller
 IPFS_TK_MODE=EMBEDDED WALYTIS_BETA_API_TYPE=WALYTIS_BETA_DIRECT_API $PYTHON packaging/pyinstaller/build_pyinstaller.py
