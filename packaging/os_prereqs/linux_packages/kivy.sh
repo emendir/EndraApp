@@ -8,6 +8,7 @@
 SCRIPT_DIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 cd $SCRIPT_DIR
 source $SCRIPT_DIR/os_package_utils.sh
+source $SCRIPT_DIR/os_platform_info.sh
 
 BUILD_DIR=/tmp/EndraBuildKivy
 if ! [ -e $BUILD_DIR ]; then

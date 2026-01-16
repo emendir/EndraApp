@@ -19,7 +19,8 @@ echo "$PROJ_DIR"
 
 PYTHON="${PYTHON:-python}"
 
-source $PROJ_DIR/packaging/share/os_prereqs/os_package_utils.sh
+source $PROJ_DIR/packaging/os_prereqs/os_package_utils.sh
+source $PROJ_DIR/packaging/os_prereqs/os_platform_info.sh
 
 
 PLATFORM_DIR="$PLATFORM_BASE/$ARCH_DIR"
@@ -69,12 +70,13 @@ fi
 
 
 cd $tempdir
-ls -la
 export PY_VENV_DIR=$tempdir/.venv
 if [ $USE_VENV -eq 1 ];then
     $PYTHON -m venv $PY_VENV_DIR
     if [ $OS = "Windows" ];then
         source $PY_VENV_DIR/Scripts/activate
+        echo "Recommended execution:"
+        echo "PATH=/c/Program\ Files/liboqs/bin:$PATH PYTHON=/c/Python313/python /z/Programming/Waly/EndraApp/packaging/pyinstaller/build_pyinstaller.sh"
     else
         source $PY_VENV_DIR/bin/activate
     fi

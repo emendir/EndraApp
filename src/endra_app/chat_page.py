@@ -268,9 +268,11 @@ class MessagePage(MessagePageView):
     def add_attchment(self, instance=None):
         logger.info("Adding attachment...")
 
-        attachment_path = filechooser.open_file()
-        self.message_editor.add_attachment_from_paths(attachment_path)
-        logger.info(attachment_path)
+        attachment_paths = filechooser.open_file()
+        if not attachment_paths:
+            logger.debug(f"File dialogue return {attachment_paths}.")
+            return
+        self.message_editor.add_attachment_from_paths(attachment_paths)
 
     def create_invitation(self, instance=None):
         logger.info("Creating invitation...")

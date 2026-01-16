@@ -101,39 +101,45 @@ flatpak run --command=flatpak-builder-lint org.flatpak.Builder appstream "${MANI
 
 
 cd $SCRIPT_DIR
-# x86_64 build
-flatpak run org.flatpak.Builder \
-  --arch=x86_64 \
-  --force-clean --ccache \
-  --user --install \
-  --install-deps-from=flathub \
-  --mirror-screenshots-url=https://dl.flathub.org/media/ \
-  --repo=$FLATPAK_REPO_DIR \
-  --state-dir=$FLATPAK_STATE_DIR \
-  $FLATPAK_BUILD_DIR_X86 \
-  $MANIFEST_FILE #  \
-  # --sandbox 
-flatpak build-export $FLATPAK_REPO_DIR $FLATPAK_BUILD_DIR_X86
-# bundle for x86_64
-flatpak build-bundle $FLATPAK_REPO_DIR $DIST_DIR/${APP_NAME}_v${APP_VERSION}_linux_x86_64.flatpak $APP_ID --arch=x86_64
 
+# Get the CPU architecture
+ARCH=$(uname -m)
+
+# x86_64 build
+if [ "$ARCH" == "x86_64" ]; then
+    flatpak run org.flatpak.Builder \
+      --arch=x86_64 \
+      --force-clean --ccache \
+      --user --install \
+      --install-deps-from=flathub \
+      --mirror-screenshots-url=https://dl.flathub.org/media/ \
+      --repo=$FLATPAK_REPO_DIR \
+      --state-dir=$FLATPAK_STATE_DIR \
+      $FLATPAK_BUILD_DIR_X86 \
+      $MANIFEST_FILE #  \
+      # --sandbox 
+    flatpak build-export $FLATPAK_REPO_DIR $FLATPAK_BUILD_DIR_X86
+    # bundle for x86_64
+    flatpak build-bundle $FLATPAK_REPO_DIR $DIST_DIR/${APP_NAME}_v${APP_VERSION}_linux_x86_64.flatpak $APP_ID --arch=x86_64
+fi
 
 # aarch64 build
-flatpak run org.flatpak.Builder \
-  --arch=aarch64 \
-  --force-clean --ccache \
-  --user --install \
-  --install-deps-from=flathub \
-  --mirror-screenshots-url=https://dl.flathub.org/media/ \
-  --repo=$FLATPAK_REPO_DIR \
-  --state-dir=$FLATPAK_STATE_DIR \
-  $FLATPAK_BUILD_DIR_AARCH \
-  $MANIFEST_FILE  # \
-  # --sandbox 
-flatpak build-export $FLATPAK_REPO_DIR $FLATPAK_BUILD_DIR_AARCH
-# bundle for aarch64
-flatpak build-bundle $FLATPAK_REPO_DIR $DIST_DIR/${APP_NAME}_v${APP_VERSION}_linux_aarch64.flatpak $APP_ID --arch=aarch64
-
+if [ "$ARCH" == "aarch64" ]; then
+    flatpak run org.flatpak.Builder \
+      --arch=aarch64 \
+      --force-clean --ccache \
+      --user --install \
+      --install-deps-from=flathub \
+      --mirror-screenshots-url=https://dl.flathub.org/media/ \
+      --repo=$FLATPAK_REPO_DIR \
+      --state-dir=$FLATPAK_STATE_DIR \
+      $FLATPAK_BUILD_DIR_AARCH \
+      $MANIFEST_FILE  # \
+      # --sandbox 
+    flatpak build-export $FLATPAK_REPO_DIR $FLATPAK_BUILD_DIR_AARCH
+    # bundle for aarch64
+    flatpak build-bundle $FLATPAK_REPO_DIR $DIST_DIR/${APP_NAME}_v${APP_VERSION}_linux_aarch64.flatpak $APP_ID --arch=aarch64
+fi
 
 
 echo "

@@ -6,6 +6,7 @@ set -euo pipefail # Exit if any command/script fails
 SCRIPT_DIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 cd $SCRIPT_DIR
 source $SCRIPT_DIR/os_package_utils.sh
+source $SCRIPT_DIR/os_platform_info.sh
 
 
 case "$OS" in
@@ -36,4 +37,5 @@ for script in $scripts_dir/*.sh; do
 done
 
 ## Endra's DevOps dependencies:
+$PYTHON -m pip install -r $PROJ_DIR/requirements.txt
 $PYTHON -m pip install -r $PROJ_DIR/requirements-dev.txt
