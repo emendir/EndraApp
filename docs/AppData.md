@@ -5,3 +5,5 @@
 ### Linux
 
 ~/.local/share/Endra
+
+### Windows
