@@ -7,3 +7,4 @@
 ~/.local/share/Endra
 
 ### Windows
+
