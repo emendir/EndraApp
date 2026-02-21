@@ -37,6 +37,7 @@ WALYTIS_BETA_DATA_DIR = ensure_dir_exists(
 PRIVATE_BLOCKS_DATA_DIR = ensure_dir_exists(
     os.path.join(APPDATA_DIR, "private_blocks")
 )  # only relevant if USE_BRENTHY==False
+os.environ["PRIVATE_BLOCKS_DATA_DIR"] = PRIVATE_BLOCKS_DATA_DIR
 
 # defaults to False
 USE_BRENTHY = os.environ.get("USE_BRENTHY", "").lower() in ["true", "1"]
