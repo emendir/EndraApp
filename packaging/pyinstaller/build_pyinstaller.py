@@ -110,9 +110,8 @@ mv $tempdir/upx.exe $ORG_DIR
         """
         os.system(upx_download_cmd)
         cmd = (
-            f"{sys.executable} -m PyInstaller --name={
-                project_name
-            } --windowed --onefile -i {ICON_PATH} "
+            f"{sys.executable} -m PyInstaller "
+            f"--name={project_name} --windowed --onefile -i {ICON_PATH} "
             f"{ENTRY_POINT} {command_appendages}"
         )
 

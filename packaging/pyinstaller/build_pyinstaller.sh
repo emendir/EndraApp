@@ -76,7 +76,7 @@ if [ $USE_VENV -eq 1 ];then
     if [ $OS = "Windows" ];then
         source $PY_VENV_DIR/Scripts/activate
         echo "Recommended execution:"
-        echo "PATH=/c/Program\ Files/liboqs/bin:$PATH PYTHON=/c/Python313/python /z/Programming/Waly/EndraApp/packaging/pyinstaller/build_pyinstaller.sh"
+        echo 'PATH=/c/Program\ Files/liboqs/bin:$PATH PYTHON=/c/Python313/python /z/Programming/Waly/EndraApp/packaging/pyinstaller/build_pyinstaller.sh'
     else
         source $PY_VENV_DIR/bin/activate
     fi

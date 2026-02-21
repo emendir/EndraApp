@@ -1,6 +1,4 @@
-endra>=0.6.5,<0.7.0
-ipfs_node==0.1.12rc6
-ipfs_tk>=0.1.6
+endra>=0.6.8,<0.7.0
 
 appdirs==1.4.4
 pyzbar==0.1.9

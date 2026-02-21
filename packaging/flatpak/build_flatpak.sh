@@ -13,6 +13,11 @@ MANIFEST_GEN_DIR=$MANIFEST_DIR/generated_modules
 FLATPAK_BUILD_DIR_AARCH=$SCRIPT_DIR/build-dir-aarch
 FLATPAK_BUILD_DIR_X86=$SCRIPT_DIR/build-dir-x86
 FLATPAK_STATE_DIR=$SCRIPT_DIR/.flatpak-builder
+FLATPAK_REPO_DIR="${FLATPAK_REPO_DIR:-}"
+
+PYTHON="${PYTHON:-python}"
+echo "PYTHON"
+echo $PYTHON
 
 PY_PACKAGE_NAME=$(grep -E '^name\s*=' $PROJ_DIR/pyproject.toml | sed -E 's/name\s*=\s*"(.*)"/\1/')
 if [ -z $APP_NAME ];then # allow optional overriding variable using declaration above
@@ -20,6 +25,7 @@ if [ -z $APP_NAME ];then # allow optional overriding variable using declaration 
 fi
 APP_VERSION=$(grep -E '^version\s*=' $PROJ_DIR/pyproject.toml | sed -E 's/version\s*=\s*"(.*)"/\1/')
 
+cd $SCRIPT_DIR
 
 ## export variables used by the $GET_PYTHON_DEPS script
 # general project requirements
@@ -40,6 +46,11 @@ set -euo pipefail
 if [ -z $FLATPAK_REPO_DIR ];then
   echo 'Please define `FLATPAK_REPO_DIR`'
 exit 1
+fi
+
+if ! [ -e $FLATPAK_REPO_DIR ]; then
+    echo "FLATPAK_REPO_DIR non-existent: $FLATPAK_REPO_DIR"
+    exit 1
 fi
 
 if ! [ -e $DIST_DIR ]; then
@@ -70,11 +81,10 @@ fi
 mkdir -p $MANIFEST_GEN_DIR
 
 export PY_VENV_DIR=$(mktemp -d)
-virtualenv $PY_VENV_DIR
+$PYTHON -m pip install -r $PROJ_DIR/requirements-dev.txt
+
+$PYTHON -m virtualenv $PY_VENV_DIR
 source $PY_VENV_DIR/bin/activate
-pip install req2flatpak
-pip install flatpak_pip_generator
-pip install pyyaml
 
 # generate $REQS_AUTO file with python dependencies
 $GET_PYTHON_DEPS
@@ -82,7 +92,7 @@ $GET_PYTHON_DEPS
 # Generate Flatpak modules from requirements files
 PYVER="${PYTHON_VERSION//./}"
 PY_REQS_MANIFEST=$MANIFEST_GEN_DIR/python3-modules-auto.yml
-python3 -m req2flatpak --requirements-file $REQS_AUTO --target-platforms $PYVER-x86_64 $PYVER-aarch64 -o $PY_REQS_MANIFEST
+$PYTHON -m req2flatpak --requirements-file $REQS_AUTO --target-platforms $PYVER-x86_64 $PYVER-aarch64 -o $PY_REQS_MANIFEST
 
 # patch PY_REQS_MANIFEST
 sed -i 's/pip3 install/pip3 install --ignore-installed/g' $PY_REQS_MANIFEST
