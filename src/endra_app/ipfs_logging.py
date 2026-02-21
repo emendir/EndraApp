@@ -37,21 +37,6 @@ ipfs_handler.setFormatter(
     )
 )
 
-if ENABLE_PUBSUB_LOGGING:
-    logger_endra.info("PUBSUB LOGGING enabled.")
-    logger_endra.debug(IPFS_LOG_TOPIC)
-    logger_endra.addHandler(ipfs_handler)
-    logger_walid.addHandler(ipfs_handler)
-    logger_dm.addHandler(ipfs_handler)
-    logger_gdm.addHandler(ipfs_handler)
-    logger_ckm.addHandler(ipfs_handler)
-    logger_gdm_join.addHandler(ipfs_handler)
-    logger_datatr.addHandler(ipfs_handler)
-    logger_dmws.addHandler(ipfs_handler)
-    logger_keys.addHandler(ipfs_handler)
-
-    logger_waloff.addHandler(ipfs_handler)
-
 
 class IPFSHandler2(logging.Handler):
     def emit(self, record):
@@ -69,5 +54,21 @@ ipfs_handler_2.setFormatter(
 logger_conv.setLevel(logging.DEBUG)
 logger_transm.setLevel(logging.DEBUG)
 
-logger_transm.addHandler(ipfs_handler_2)
-logger_conv.addHandler(ipfs_handler_2)
+
+if ENABLE_PUBSUB_LOGGING:
+    logger_endra.info("PUBSUB LOGGING enabled.")
+    logger_endra.debug(IPFS_LOG_TOPIC)
+    logger_endra.addHandler(ipfs_handler)
+    logger_walid.addHandler(ipfs_handler)
+    logger_dm.addHandler(ipfs_handler)
+    logger_gdm.addHandler(ipfs_handler)
+    logger_ckm.addHandler(ipfs_handler)
+    logger_gdm_join.addHandler(ipfs_handler)
+    logger_datatr.addHandler(ipfs_handler)
+    logger_dmws.addHandler(ipfs_handler)
+    logger_keys.addHandler(ipfs_handler)
+
+    logger_waloff.addHandler(ipfs_handler)
+
+    logger_transm.addHandler(ipfs_handler_2)
+    logger_conv.addHandler(ipfs_handler_2)
