@@ -13,4 +13,5 @@ pycparser==2.23
 tqdm==4.67.1
 eth-hash==0.7.1
 qrcode==8.2
-
+pyyaml
+req2flatpak

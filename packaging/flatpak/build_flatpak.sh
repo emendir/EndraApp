@@ -92,7 +92,7 @@ $GET_PYTHON_DEPS
 # Generate Flatpak modules from requirements files
 PYVER="${PYTHON_VERSION//./}"
 PY_REQS_MANIFEST=$MANIFEST_GEN_DIR/python3-modules-auto.yml
-$PYTHON -m req2flatpak --requirements-file $REQS_AUTO --target-platforms $PYVER-x86_64 $PYVER-aarch64 -o $PY_REQS_MANIFEST
+python -m req2flatpak --requirements-file $REQS_AUTO --target-platforms $PYVER-x86_64 $PYVER-aarch64 -o $PY_REQS_MANIFEST
 
 # patch PY_REQS_MANIFEST
 sed -i 's/pip3 install/pip3 install --ignore-installed/g' $PY_REQS_MANIFEST
