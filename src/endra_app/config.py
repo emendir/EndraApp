@@ -22,6 +22,9 @@ else:
 
 print(f"Appdata Dir: {APPDATA_DIR}")
 
+os.environ["WALY_LOG_DIR"] = os.path.join(APPDATA_DIR, "logs")
+os.environ["WALY_LOG_DIR"] = "DISABLED"
+
 ENABLE_PUBSUB_LOGGING = False
 BOOTSTRAP_PEERS_PATH = os.path.join(APPDATA_DIR, "BOOTSTRAP_PEERS.txt")
 PEER_MONITOR_PATH = os.path.join(APPDATA_DIR, "ipfs_bootstrap_peer_monitor.json")
