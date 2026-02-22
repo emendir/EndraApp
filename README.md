@@ -37,13 +37,16 @@ However, now is the time where some of these will start being developed and test
 - user profile info
 - chat user permissions
 
-### Disadvantages
+## Getting Started
 
-- higher resource usage on user devices compared to conventional messengers
+See the documentation:
 
-## Usage Notes
+- [Download and run Endra](https://github.com/emendir/WalytisTechnologies/blob/master/EndraApp/2-RunningEndraAppPackages.md)
+- [Run Endra from source](https://github.com/emendir/WalytisTechnologies/blob/master/EndraApp/3-RunningFromSource.md)
 
-- Patience - The app is slow to start, and the communication is not neccesarily something you'd call 'instant messaging'.
+### Usage Notes
+
+- Patience - The app can be slow to start, and the communication is not neccesarily something you'd call 'instant messaging'.
 - Battery drain - On mobile devices, keep an eye on your battery level, as this app's P2P networking engine uses a fair amount of power.
 
 ![](docs/EndraDemo.jpg)
@@ -57,30 +60,30 @@ Package build pipelines have been developed for the below listed formats.
 You can [download these application packages here](https://github.com/emendir/EndraApp/releases).
 
 ### Linux
+
 - flatpak for x86-64 and arm64
 - executable binary for x86-64 and arm64
 
 Coming soon: Nix, AUR
 
 ### Android
+
 - APK for arm64
 
 ### MacOS
+
 - executable binary for x86-64 and arm64
 - .app package for x86-64 and arm64
 
 ### iOS
+
 probably coming later, in [Phase IV of the Endra Roadmap](../RoadMap.md#Phase%20IV%20-%20Transform%20into%20Production-Grade%20Software), unless
 
 ### Windows
+
 - portable EXE for x86-64
 
 
-## Getting Started
-
-See the documentation:
-- [Download and run Endra](https://github.com/emendir/WalytisTechnologies/blob/master/EndraApp/2-RunningEndraAppPackages.md)
-- [Run Endra from source](https://github.com/emendir/WalytisTechnologies/blob/master/EndraApp/3-RunningFromSource.md)
 
 ## Documentation
 
