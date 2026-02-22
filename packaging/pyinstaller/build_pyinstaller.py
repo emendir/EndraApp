@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 
-import pyperclip
 import sys
 import shutil
 import os
@@ -133,7 +132,6 @@ mv $tempdir/upx.exe $ORG_DIR
             )
         )
         shutil.move(os.path.join("dist", f"{project_name}.exe"), dest_path)
-        pyperclip.copy(dest_path)
     case "linux":
         cmd = (
             f"pyinstaller --name={project_name} --windowed --onefile "
@@ -150,7 +148,6 @@ mv $tempdir/upx.exe $ORG_DIR
             )
         )
         shutil.move(os.path.join("dist", f"{project_name}"), dest_path)
-        pyperclip.copy(dest_path)
     case "darwin":
         import platform
 
@@ -178,6 +175,5 @@ mv $tempdir/upx.exe $ORG_DIR
         )
         shutil.move(os.path.join("dist", f"{project_name}"), dest_path)
         shutil.move(os.path.join("dist", f"{project_name}.app"), f"{dest_path}.app")
-        pyperclip.copy(dest_path)
     case _:
         raise Exception("Unknown OS")
