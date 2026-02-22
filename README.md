@@ -76,45 +76,11 @@ probably coming later, in [Phase IV of the Endra Roadmap](../RoadMap.md#Phase%20
 - portable EXE for x86-64
 
 
-## Run From Source
+## Getting Started
 
-Install Prerequisites:
-
-```sh
-./packaging/os_prereqs/install_prereqs.sh
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
-```
-
-```sh
-python .
-```
-## DevOps
-
-For speedy starting and termination of the app, on Linux, [install Brenthy](https://github.com/emendir/BrenthyAndWalytis) to run Walytis & IPFS as a systemd service.
-Then run Endra with:
-
-```sh
-USE_BRENTHY=1 python tests/test_app.py
-```
-
-Pressing Ctrl+C in the terminal should promptly close the Endra app.
-
-Rerunning the app this way overwrites the app's appdata with a cache stored in `tests/appdata`, so that it doesn't matter if the app crashes and corrupts its appdata.
-
-To save the current appdata, close the endra app, and run:
-
-```sh
-tests/update_appdata.sh
-```
-
-From now on, every time you run `tests/test_app.py`, the new appdata state will be loaded.
-
-To reset the appdata, run:
-
-```sh
-rm -rf tests/appdata
-```
+See the documentation:
+- [Download and run Endra](https://github.com/emendir/WalytisTechnologies/blob/master/EndraApp/2-RunningEndraAppPackages.md)
+- [Run Endra from source](https://github.com/emendir/WalytisTechnologies/blob/master/EndraApp/3-RunningFromSource.md)
 
 ## Documentation
 
