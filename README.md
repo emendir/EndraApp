@@ -31,9 +31,11 @@ However, now is the time where some of these will start being developed and test
 - inline multimedia
 - file attachments with progress tracking for transmission
 - take photos with camera
-- scan QR-codes
+- scan QR-codes to join chats and profiles
 - record audio with microphone
 - zip-file backups
+- user profile info
+- chat user permissions
 
 ### Disadvantages
 
@@ -79,7 +81,7 @@ probably coming later, in [Phase IV of the Endra Roadmap](../RoadMap.md#Phase%20
 Install Prerequisites:
 
 ```sh
-./install_prereqs.sh
+./packaging/os_prereqs/install_prereqs.sh
 pip install -r requirements.txt
 pip install -r requirements-dev.txt
 ```
@@ -87,13 +89,6 @@ pip install -r requirements-dev.txt
 ```sh
 python .
 ```
-
-### Environment Variables
-
-- `USE_PANGO` (defaults to false): Use the Pango text provider to enable broader character & emoji text rendering support
-- `USE_BRENTHY` (defaults to false): Instead of running an embedded IPFS and Walytis node, use the separately running system services for IPFS and Walytis. This enables faster loading times. To set up IPFS & Walytis in this way, [install Brenthy](https://github.com/emendir/BrenthyAndWalytis)
-- `KIVY_NO_CONSOLELOG` (defaults to false): stop kivy logging to console
-
 ## DevOps
 
 For speedy starting and termination of the app, on Linux, [install Brenthy](https://github.com/emendir/BrenthyAndWalytis) to run Walytis & IPFS as a systemd service.

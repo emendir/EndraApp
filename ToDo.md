@@ -1,10 +1,16 @@
 ## Next Steps
+
 - [ ] Chat: show list of pending attachments
 - [ ] Chat: render images in messages
+- [ ] enable ability to use kubo without brenthy
+- [ ] implement and test all planned environment variables
+
 
 ## DevOps
 
-- [x] Pakaging: ⏫ 
+- [ ] consistent naming of builds
+- [ ] clearly mark standalone as such ⏫
+- [x] Packaging: 
 	- [x] Android
     - build recipe to support wheels newer versions of ipfs_node
     - implement auto-generated requierements like in flatpak
