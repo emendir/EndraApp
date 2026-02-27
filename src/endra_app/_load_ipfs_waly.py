@@ -1,4 +1,5 @@
 import os
+from emtest import set_env_var
 from .config import (
     USE_BRENTHY,
     IPFS_REPO_DIR,
@@ -11,11 +12,11 @@ if True:  # SENSITIVE IMPORT ORDERS
         os.environ["WALYTIS_BETA_API_TYPE"] = "WALYTIS_BETA_BRENTHY_API"
 
     else:
-        os.environ["IPFS_TK_MODE"] = "EMBEDDED"
-        os.environ["IPFS_REPO_DIR"] = IPFS_REPO_DIR
-        os.environ["AUTO_LOAD_BAP_MODULES"] = "false"
-        os.environ["WALYTIS_BETA_API_TYPE"] = "WALYTIS_BETA_DIRECT_API"
-        os.environ["WALYTIS_BETA_DATA_DIR"] = WALYTIS_BETA_DATA_DIR
+        set_env_var("IPFS_TK_MODE", "EMBEDDED", override=False)
+        set_env_var("IPFS_REPO_DIR", IPFS_REPO_DIR)
+        set_env_var("AUTO_LOAD_BAP_MODULES", 0)
+        set_env_var("WALYTIS_BETA_API_TYPE", "WALYTIS_BETA_DIRECT_API")
+        set_env_var("WALYTIS_BETA_DATA_DIR", WALYTIS_BETA_DATA_DIR)
     print("Set environ:", os.environ["WALYTIS_BETA_API_TYPE"])
 
     import brenthy_tools_beta  # depends on AUTO_LOAD_BAP_MODULES environment var
