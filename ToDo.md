@@ -1,10 +1,6 @@
 ## Next Steps
 
 - [ ] Chat: show list of pending attachments
-- [ ] Chat: render images in messages
-- [ ] enable ability to use kubo without brenthy
-- [ ] implement and test all planned environment variables
-
 
 ## DevOps
 
