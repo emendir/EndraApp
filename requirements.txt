@@ -1,6 +1,4 @@
-endra>=0.6.5,<0.7.0
-ipfs_node==0.1.12rc6
-ipfs_tk>=0.1.6
+endra>=0.6.10,<0.7.0
 
 appdirs==1.4.4
 pyzbar==0.1.9
@@ -11,7 +9,7 @@ kivy==2.3.1
 pytest
 python-dotenv
 environs
-emtest
+emtest>=0.1.2
 toolz
 eth_keys
 eth_typing

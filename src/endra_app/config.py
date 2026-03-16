@@ -1,3 +1,4 @@
+from emtest import env_vars, set_env_var
 import sys
 import ctypes
 import os
@@ -20,9 +21,15 @@ elif platform in ("linux", "win", "macosx"):
 else:
     raise NotImplementedError(f"Unsupported platform: {platform}")
 
+# override if environment variable is set
+APPDATA_DIR = env_vars.str("ENDRA_APPDATA_DIR", default=APPDATA_DIR)
 print(f"Appdata Dir: {APPDATA_DIR}")
 
-ENABLE_PUBSUB_LOGGING = False
+set_env_var("WALY_LOG_DIR", "DISABLED", override=False)
+if os.environ["WALY_LOG_DIR"] == "ENDRA_APPDATA":
+    os.environ["WALY_LOG_DIR"] = os.path.join(APPDATA_DIR, "logs")
+
+ENABLE_PUBSUB_LOGGING = env_vars.bool("ENDRA_PUBSUB_LOGGING", default=False)
 BOOTSTRAP_PEERS_PATH = os.path.join(APPDATA_DIR, "BOOTSTRAP_PEERS.txt")
 PEER_MONITOR_PATH = os.path.join(APPDATA_DIR, "ipfs_bootstrap_peer_monitor.json")
 
@@ -34,6 +41,7 @@ WALYTIS_BETA_DATA_DIR = ensure_dir_exists(
 PRIVATE_BLOCKS_DATA_DIR = ensure_dir_exists(
     os.path.join(APPDATA_DIR, "private_blocks")
 )  # only relevant if USE_BRENTHY==False
+os.environ["PRIVATE_BLOCKS_DATA_DIR"] = PRIVATE_BLOCKS_DATA_DIR
 
 # defaults to False
 USE_BRENTHY = os.environ.get("USE_BRENTHY", "").lower() in ["true", "1"]

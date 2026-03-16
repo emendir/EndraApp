@@ -1,10 +1,12 @@
 ## Next Steps
+
 - [ ] Chat: show list of pending attachments
-- [ ] Chat: render images in messages
 
 ## DevOps
 
-- [x] Pakaging: ⏫ 
+- [ ] consistent naming of builds
+- [ ] clearly mark standalone as such ⏫
+- [x] Packaging: 
 	- [x] Android
     - build recipe to support wheels newer versions of ipfs_node
     - implement auto-generated requierements like in flatpak

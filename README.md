@@ -31,17 +31,22 @@ However, now is the time where some of these will start being developed and test
 - inline multimedia
 - file attachments with progress tracking for transmission
 - take photos with camera
-- scan QR-codes
+- scan QR-codes to join chats and profiles
 - record audio with microphone
 - zip-file backups
+- user profile info
+- chat user permissions
 
-### Disadvantages
+## Getting Started
 
-- higher resource usage on user devices compared to conventional messengers
+See the documentation:
 
-## Usage Notes
+- [Download and run Endra](https://github.com/emendir/WalytisTechnologies/blob/master/EndraApp/2-RunningEndraAppPackages.md)
+- [Run Endra from source](https://github.com/emendir/WalytisTechnologies/blob/master/EndraApp/3-RunningFromSource.md)
 
-- Patience - The app is slow to start, and the communication is not neccesarily something you'd call 'instant messaging'.
+### Usage Notes
+
+- Patience - The app can be slow to start, and the communication is not neccesarily something you'd call 'instant messaging'.
 - Battery drain - On mobile devices, keep an eye on your battery level, as this app's P2P networking engine uses a fair amount of power.
 
 ![](docs/EndraDemo.jpg)
@@ -55,71 +60,30 @@ Package build pipelines have been developed for the below listed formats.
 You can [download these application packages here](https://github.com/emendir/EndraApp/releases).
 
 ### Linux
+
 - flatpak for x86-64 and arm64
 - executable binary for x86-64 and arm64
 
 Coming soon: Nix, AUR
 
 ### Android
+
 - APK for arm64
 
 ### MacOS
+
 - executable binary for x86-64 and arm64
 - .app package for x86-64 and arm64
 
 ### iOS
+
 probably coming later, in [Phase IV of the Endra Roadmap](../RoadMap.md#Phase%20IV%20-%20Transform%20into%20Production-Grade%20Software), unless
 
 ### Windows
+
 - portable EXE for x86-64
 
 
-## Run From Source
-
-Install Prerequisites:
-
-```sh
-./install_prereqs.sh
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
-```
-
-```sh
-python .
-```
-
-### Environment Variables
-
-- `USE_PANGO` (defaults to false): Use the Pango text provider to enable broader character & emoji text rendering support
-- `USE_BRENTHY` (defaults to false): Instead of running an embedded IPFS and Walytis node, use the separately running system services for IPFS and Walytis. This enables faster loading times. To set up IPFS & Walytis in this way, [install Brenthy](https://github.com/emendir/BrenthyAndWalytis)
-- `KIVY_NO_CONSOLELOG` (defaults to false): stop kivy logging to console
-
-## DevOps
-
-For speedy starting and termination of the app, on Linux, [install Brenthy](https://github.com/emendir/BrenthyAndWalytis) to run Walytis & IPFS as a systemd service.
-Then run Endra with:
-
-```sh
-USE_BRENTHY=1 python tests/test_app.py
-```
-
-Pressing Ctrl+C in the terminal should promptly close the Endra app.
-
-Rerunning the app this way overwrites the app's appdata with a cache stored in `tests/appdata`, so that it doesn't matter if the app crashes and corrupts its appdata.
-
-To save the current appdata, close the endra app, and run:
-
-```sh
-tests/update_appdata.sh
-```
-
-From now on, every time you run `tests/test_app.py`, the new appdata state will be loaded.
-
-To reset the appdata, run:
-
-```sh
-rm -rf tests/appdata
-```
 
 ## Documentation
 

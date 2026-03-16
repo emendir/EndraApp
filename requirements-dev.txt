@@ -1,6 +1,7 @@
 tqdm
 pipdeptree
-req2flatpak
+#req2flatpak>=0.3.1
+setuptools
 pyyaml
 pytest
 emtest
