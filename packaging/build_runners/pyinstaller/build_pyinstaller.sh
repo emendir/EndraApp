@@ -9,7 +9,7 @@ tempdir=$(mktemp -d)
 # get the absolute path of this script's directory
 SCRIPT_DIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
-PROJ_DIR=$(realpath $SCRIPT_DIR/../..)
+PROJ_DIR=$(realpath "$SCRIPT_DIR/../../../")
 DIST_DIR=$PROJ_DIR/dist
 if ! [ -e $DIST_DIR ];then
     mkdir -p $DIST_DIR
@@ -19,14 +19,14 @@ echo "$PROJ_DIR"
 
 PYTHON="${PYTHON:-python}"
 
-source $PROJ_DIR/packaging/os_prereqs/os_package_utils.sh
-source $PROJ_DIR/packaging/os_prereqs/os_platform_info.sh
+source "$PROJ_DIR/packaging/os_prereqs/os_package_utils.sh"
+source "$PROJ_DIR/packaging/os_prereqs/os_platform_info.sh"
 
 
 PLATFORM_DIR="$PLATFORM_BASE/$ARCH_DIR"
 
 # Create the architecture-specific directory if it doesn't exist
-PLATFORM_REQ_DIR="$PROJ_DIR/packaging/pyinstaller/$PLATFORM_DIR"
+PLATFORM_REQ_DIR="$PROJ_DIR/packaging/build_runners/pyinstaller/$PLATFORM_DIR"
 if ! [ -e "$PLATFORM_REQ_DIR" ]; then
     echo "Creating requirements directory: $PLATFORM_REQ_DIR"
     mkdir -p "$PLATFORM_REQ_DIR"
@@ -50,16 +50,16 @@ fi
 cp -r $PROJ_DIR/src $tempdir
 cp -r $PROJ_DIR/*.toml $tempdir
 cp -r $PROJ_DIR/*.txt $tempdir
-mkdir $tempdir/packaging
-cp -r $PROJ_DIR/packaging/pyinstaller $tempdir/packaging
-cp -r $PROJ_DIR/packaging/share $tempdir/packaging
+mkdir -p $tempdir/packaging/build_runners
+cp -r $PROJ_DIR/packaging/build_runners/pyinstaller $tempdir/packaging/build_runners
+cp -r $PROJ_DIR/packaging/build_runners/share $tempdir/packaging/build_runners
 
 # Set up platform-specific requirements paths for get_python_deps.sh
 export REQS_MAIN=$PROJ_DIR/requirements.txt
-export REQS_MANUAL=$PROJ_DIR/packaging/pyinstaller/$PLATFORM_DIR/requirements-manual.txt
-export REQS_EXCLUSIONS=$PROJ_DIR/packaging/pyinstaller/$PLATFORM_DIR/requirements-exclusions.txt
-export REQS_AUTO=$PROJ_DIR/packaging/pyinstaller/$PLATFORM_DIR/requirements-auto.txt
-GET_PYTHON_DEPS=$PROJ_DIR/packaging/share/get_python_deps.sh
+export REQS_MANUAL=$PROJ_DIR/packaging/build_runners/pyinstaller/$PLATFORM_DIR/requirements-manual.txt
+export REQS_EXCLUSIONS=$PROJ_DIR/packaging/build_runners/pyinstaller/$PLATFORM_DIR/requirements-exclusions.txt
+export REQS_AUTO=$PROJ_DIR/packaging/build_runners/pyinstaller/$PLATFORM_DIR/requirements-auto.txt
+GET_PYTHON_DEPS=$PROJ_DIR/packaging/build_runners/share/get_python_deps.sh
 
 if ! [ -e $REQS_MANUAL ];then
     touch $REQS_MANUAL
@@ -76,7 +76,7 @@ if [ $USE_VENV -eq 1 ];then
     if [ $OS = "Windows" ];then
         source $PY_VENV_DIR/Scripts/activate
         echo "Recommended execution:"
-        echo 'PATH=/c/Program\ Files/liboqs/bin:$PATH PYTHON=/c/Python313/python /z/Programming/Waly/EndraApp/packaging/pyinstaller/build_pyinstaller.sh'
+        echo 'PATH=/c/Program\ Files/liboqs/bin:$PATH PYTHON=/c/Python313/python /z/Programming/Waly/EndraApp/packaging/build_runner/pyinstaller/build_pyinstaller.sh'
     else
         source $PY_VENV_DIR/bin/activate
     fi
@@ -96,7 +96,7 @@ $GET_PYTHON_DEPS
 { echo "# $(date '+%Y-%m-%d %H:%M:%S')"; cat $REQS_AUTO; } > script.tmp && mv script.tmp $REQS_AUTO
 
 # Build with PyInstaller
-IPFS_TK_MODE=EMBEDDED WALYTIS_BETA_API_TYPE=WALYTIS_BETA_DIRECT_API $PYTHON packaging/pyinstaller/build_pyinstaller.py
+IPFS_TK_MODE=EMBEDDED WALYTIS_BETA_API_TYPE=WALYTIS_BETA_DIRECT_API $PYTHON packaging/build_runners/pyinstaller/build_pyinstaller.py
 
 echo $tempdir/dist
 cp -r $tempdir/dist/* $PROJ_DIR/dist/

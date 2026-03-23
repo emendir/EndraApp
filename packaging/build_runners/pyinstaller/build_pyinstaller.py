@@ -17,7 +17,7 @@ print("PYTHON", sys.executable)
 
 WORK_DIR = os.path.dirname(__file__)
 # os.chdir(os.path.dirname(__file__))
-PROJ_DIR = os.path.abspath(os.path.join(WORK_DIR, "..", ".."))
+PROJ_DIR = os.path.abspath(os.path.join(WORK_DIR, "..", "..", ".."))
 # PROJ_DIR = os.path.join(WORK_DIR, "..", "..")
 
 os.chdir(PROJ_DIR)
@@ -27,7 +27,7 @@ ENTRY_POINT = os.path.join(SOURCE_DIR, "main.py")
 DIST_DIR = os.path.join(PROJ_DIR, "dist")
 assert os.path.exists(os.path.abspath(ENTRY_POINT)), "WRONG PROJECT PATH"
 
-ICON_PATH = os.path.join("packaging", "share", "endra-icon.ico")
+ICON_PATH = os.path.join("packaging", "build_runners", "share", "endra-icon.ico")
 assert os.path.exists(ICON_PATH)
 print("DIST_DIR", DIST_DIR)
 if not os.path.exists(DIST_DIR):

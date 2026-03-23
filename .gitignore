@@ -21,12 +21,12 @@ __pycache__
 .buildozer
 EndraAppdata
 
-packaging/flatpak/build-dir*
-packaging/flatpak/.flatpak-builder
 .flatpak-builder
-packaging/buildozer/bin
-packaging/buildozer/.buildozer
-packaging/buildozer/.gradle
+packaging/build_runners/flatpak/build-dir*
+packaging/build_runners/flatpak/.flatpak-builder
+packaging/build_runners/buildozer/bin
+packaging/build_runners/buildozer/.buildozer
+packaging/build_runners/buildozer/.gradle
 # <<< CLEANUP
 
 run_pyreverse.sh

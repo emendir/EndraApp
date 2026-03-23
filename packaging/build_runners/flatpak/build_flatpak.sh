@@ -5,7 +5,7 @@ PYTHON_VERSION="3.11"
 
 # the absolute path of this script's directory
 SCRIPT_DIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-PROJ_DIR=$(realpath $SCRIPT_DIR/../..)
+PROJ_DIR=$(realpath $SCRIPT_DIR/../../..)
 DIST_DIR=$PROJ_DIR/dist/
 MANIFEST_DIR=$SCRIPT_DIR/manifest/
 MANIFEST_GEN_DIR=$MANIFEST_DIR/generated_modules
@@ -37,7 +37,7 @@ export REQS_EXCLUSIONS=$SCRIPT_DIR/requirements-exclusions.txt
 # final generated requirements list
 export REQS_AUTO=$SCRIPT_DIR/requirements-auto.txt
 # script for generating python requirements
-GET_PYTHON_DEPS=$PROJ_DIR/packaging/share/get_python_deps.sh
+GET_PYTHON_DEPS=$PROJ_DIR/packaging/build_runners/share/get_python_deps.sh
 
 echo "Project: $APP_NAME"
 echo "Version: $APP_VERSION"
@@ -126,7 +126,8 @@ if [ "$ARCH" == "x86_64" ]; then
       --repo=$FLATPAK_REPO_DIR \
       --state-dir=$FLATPAK_STATE_DIR \
       $FLATPAK_BUILD_DIR_X86 \
-      $MANIFEST_FILE #  \
+      $MANIFEST_FILE \
+      --jobs "$(( $(nproc) - 1 ))" #  \
       # --sandbox 
     flatpak build-export $FLATPAK_REPO_DIR $FLATPAK_BUILD_DIR_X86
     # bundle for x86_64
@@ -144,7 +145,8 @@ if [ "$ARCH" == "aarch64" ]; then
       --repo=$FLATPAK_REPO_DIR \
       --state-dir=$FLATPAK_STATE_DIR \
       $FLATPAK_BUILD_DIR_AARCH \
-      $MANIFEST_FILE  # \
+      $MANIFEST_FILE \
+      --jobs "$(( $(nproc) - 1 ))" #  \
       # --sandbox 
     flatpak build-export $FLATPAK_REPO_DIR $FLATPAK_BUILD_DIR_AARCH
     # bundle for aarch64

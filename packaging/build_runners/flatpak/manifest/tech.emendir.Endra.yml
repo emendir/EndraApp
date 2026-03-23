@@ -24,7 +24,7 @@ modules:
     build-commands:
       - autoreconf
       - ./configure --prefix=/app
-      - make -j$(nproc)
+      - make -j$(nproc -1)
       - make install
       
   ## required by kivy
@@ -41,7 +41,7 @@ modules:
     build-commands:
       # - ./autogen.sh
       - ./configure --prefix=/app
-      - make -j$(nproc)
+      - make -j$(nproc -1)
       - make install
   # # SDL2 (instead of downloading in build_linux_dependencies.sh)
   # - name: sdl2
@@ -52,7 +52,7 @@ modules:
   #       sha256: 2508c80438cd5ff3bbeb8fe36b8f3ce7805018ff30303010b61b03bb83ab9694
   #   build-commands:
   #     - ./configure --prefix=/app --disable-static
-  #     - make -j$(nproc)
+  #     - make -j$(nproc -1)
   #     - make install
   #
   # # GStreamer core
@@ -82,7 +82,7 @@ modules:
   #       sha256: d4fc82893cfb00109578d0a1a2337fb8ca335b3ceccf97b97e5cc7f08e4353e1
   #   build-commands:
   #     # Build and install shared library
-  #     - make -j$(nproc) GLEW_DEST=/app LIBDIR=/app/lib
+  #     - make -j$(nproc -1) GLEW_DEST=/app LIBDIR=/app/lib
   #     - make install GLEW_DEST=/app LIBDIR=/app/lib
   #
   #
@@ -220,10 +220,10 @@ modules:
     build-commands:
       - pip3 install --no-build-isolation --prefix=/app  --no-deps .
       - install -D graphics/endra-icon.svg /app/share/icons/hicolor/scalable/apps/tech.emendir.Endra.svg
-      - install -D packaging/share/tech.emendir.Endra.desktop /app/share/applications/tech.emendir.Endra.desktop
+      - install -D packaging/build_runners/share/tech.emendir.Endra.desktop /app/share/applications/tech.emendir.Endra.desktop
     sources:
       - type:                  dir
-        path:                  ../../..
+        path:                  ../../../..
 cleanup:
   - /share
   - /lib/cmake

@@ -12,7 +12,7 @@ DOCKER_IMAGE=ghcr.io/kivy/buildozer@sha256:75a1ed9d378489eb281733ae61b1e144ce454
 SCRIPT_DIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 cd $SCRIPT_DIR
 
-PROJ_DIR=$(realpath $SCRIPT_DIR/../..)
+PROJ_DIR=$(realpath $SCRIPT_DIR/../../..)
 WORK_DIR=$SCRIPT_DIR
 
 PY_PACKAGE_NAME=$(grep -E '^name\s*=' $PROJ_DIR/pyproject.toml | sed -E 's/name\s*=\s*"(.*)"/\1/')
@@ -23,7 +23,7 @@ APP_VERSION=$(grep -E '^version\s*=' $PROJ_DIR/pyproject.toml | sed -E 's/versio
 APK_PATH=$PROJ_DIR/dist/${APP_NAME}_v${APP_VERSION}_android_28_arm64_v8a.apk
 
 # script for generating python requirements
-GET_PYTHON_DEPS=$PROJ_DIR/packaging/share/get_python_deps.sh
+GET_PYTHON_DEPS=$PROJ_DIR/packaging/build_runners/share/get_python_deps.sh
 
 BUILDOZER_SPEC=$SCRIPT_DIR/buildozer.spec
 

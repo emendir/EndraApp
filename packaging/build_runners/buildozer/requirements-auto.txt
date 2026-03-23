@@ -26,7 +26,7 @@ liboqs
 liboqs-python
 loguru==0.7.3
 marshmallow==3.26.2
-mmh3==5.2.0
+mmh3==5.2.1
 multi_crypt==0.1.3
 mypy_extensions==1.1.0
 packaging==26.0
@@ -34,7 +34,7 @@ pathspec==1.0.4
 pluggy==1.6.0
 plyer==2.1.0
 portalocker==3.2.0
-protobuf==6.33.5
+protobuf==7.34.1
 pycryptodome==3.23.0
 pygments
 py_ipfs_node
@@ -42,7 +42,7 @@ py-multihash==3.0.0
 py-strict-typing==0.1.1
 pytest==9.0.2
 python3
-python-dotenv==1.2.1
+python-dotenv==1.2.2
 qrcode==8.2
 rfc3987==1.3.8
 termcolor==3.3.0
