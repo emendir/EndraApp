@@ -59,6 +59,7 @@ DATA_FILES = [
 with open(os.path.join(PROJ_DIR, "pyproject.toml"), "r") as file:
     data = toml.load(file)
     project_name = data["project"]["name"]
+    project_name = "Endra"
     version = data["project"]["version"]
 
 if os.path.exists("build"):
