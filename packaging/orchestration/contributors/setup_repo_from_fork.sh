@@ -23,8 +23,8 @@ cd "$REPO_DIR"
 echo "Local repo dir: $REPO_DIR"
 
 if ! git rev-parse --git-dir 1>/dev/null 2>&1; then
-    echo "Cloning $FORK_REPO"
-    git clone "$FORK_REPO" "$REPO_DIR"
+    echo "Cloning https://github.com/$FORK_REPO"
+    git clone "https://github.com/$FORK_REPO" "$REPO_DIR"
 fi
 
 

@@ -38,7 +38,7 @@ fi
 if git remote | grep upstream 1>/dev/null;then
     git remote set-url upstream "https://github.com/$UPSTREAM_REPO.git"
 else
-    git remote add upstream "https://$UPSTREAM_REPO.git"
+    git remote add upstream "https://github.com/$UPSTREAM_REPO.git"
 fi
 
 if git remote | grep origin 1>/dev/null;then
