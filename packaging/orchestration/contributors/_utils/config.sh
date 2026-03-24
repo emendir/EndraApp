@@ -3,7 +3,7 @@
 REPO_DIR=$1
 FORK_REPO=$2
 
-UPSTREAM_REPO=https://github.com/emendir/EndraApp.git
+UPSTREAM_REPO=emendir/EndraApp
 
 BUILD_SCRIPT=packaging/build_all.sh
 

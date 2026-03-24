@@ -22,8 +22,8 @@ if [ -z  "$FORK_REPO" ]; then
     echo "Specify your git fork repository on the web."
     exit 1
 fi
-if ! env GIT_PROXY_COMMAND=myproxy.sh GIT_TRACE=1 git ls-remote "$FORK_REPO" 2>/dev/null 1>&2; then
-    echo "Failed to access fork repository: '$FORK_REPO'"
+if ! env GIT_PROXY_COMMAND=myproxy.sh GIT_TRACE=1 git ls-remote "https://github.com/$FORK_REPO.git" 2>/dev/null 1>&2; then
+    echo "Failed to access fork repository: 'https://github.com/$FORK_REPO.git'"
     exit 1
 fi
 
@@ -36,13 +36,13 @@ if ! git rev-parse --git-dir 1>/dev/null 2>&1; then
 fi
 
 if git remote | grep upstream 1>/dev/null;then
-    git remote set-url upstream "$UPSTREAM_REPO"
+    git remote set-url upstream "https://github.com/$UPSTREAM_REPO.git"
 else
-    git remote add upstream "$UPSTREAM_REPO"
+    git remote add upstream "https://$UPSTREAM_REPO.git"
 fi
 
 if git remote | grep origin 1>/dev/null;then
-    git remote set-url origin "$FORK_REPO"
+    git remote set-url origin "ssh://git@github.com/$FORK_REPO.git"
 else
-    git remote add upstream "$FORK_REPO"
+    git remote add upstream "ssh://git@github.com/$FORK_REPO.git"
 fi
