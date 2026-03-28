@@ -21,7 +21,7 @@ echo ""
 cd "$REPO_DIR"
 source packaging/os_prereqs/os_platform_info.sh
 
-APP_VERSION=$(grep -E '^version\s*=' "$REPO_DIR/pyproject.toml" | sed -E 's/version\s*=\s*"(.*)"/\1/')
+APP_VERSION=$(awk -F'"' '/^version[[:space:]]*=/ {print $2}' "$REPO_DIR/pyproject.toml")
 
 BRANCH_NAME="build/$OS-$ARCH"
 
@@ -47,10 +47,10 @@ git checkout -B "$BRANCH_NAME" upstream/release/candidate
 
 
 
-$BUILD_SCRIPT
+# $BUILD_SCRIPT
 
 # for testing
-# date | tee "$REPO_DIR/testing"
+date | tee "$REPO_DIR/testing"
 
 # Commit
 git add -A
