@@ -44,5 +44,5 @@ fi
 if git remote | grep origin 1>/dev/null;then
     git remote set-url origin "ssh://git@github.com/$FORK_REPO.git"
 else
-    git remote add upstream "ssh://git@github.com/$FORK_REPO.git"
+    git remote add origin "ssh://git@github.com/$FORK_REPO.git"
 fi
