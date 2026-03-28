@@ -5,7 +5,7 @@ FORK_REPO=$2
 
 UPSTREAM_REPO=emendir/EndraApp
 
-BUILD_SCRIPT=packaging/build_all.sh
+BUILD_SCRIPT=packaging/orchestration/build_all.sh
 
 
 
