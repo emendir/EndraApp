@@ -23,7 +23,7 @@ source packaging/os_prereqs/os_platform_info.sh
 
 APP_VERSION=$(grep -E '^version\s*=' "$REPO_DIR/pyproject.toml" | sed -E 's/version\s*=\s*"(.*)"/\1/')
 
-BRANCH_NAME="release/dev-$OS-$ARCH-build"
+BRANCH_NAME="build/$OS-$ARCH"
 
 
 echo ""
@@ -43,7 +43,7 @@ git fetch upstream
 
 # create branch if missing,
 # reset to upstream if existing
-git checkout -B "$BRANCH_NAME" upstream/release/dev
+git checkout -B "$BRANCH_NAME" upstream/release/candidate
 
 
 
@@ -71,7 +71,7 @@ if ask_yes_no "Push to origin and open pull request? Do this when you've ensured
     gh pr create \
         --repo $UPSTREAM_REPO \
         --head "$github_user:$BRANCH_NAME" \
-        --base release/dev \
+        --base release/candidate \
         --title "Build for v$APP_VERSION on $OS $ARCH" \
         --body "Updated dependencies for build for v$APP_VERSION on $OS $ARCH"
 else
