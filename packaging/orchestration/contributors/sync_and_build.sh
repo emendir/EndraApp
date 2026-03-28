@@ -47,10 +47,10 @@ git checkout -B "$BRANCH_NAME" upstream/release/candidate
 
 
 
-# $BUILD_SCRIPT
+$BUILD_SCRIPT
 
 # for testing
-date | tee "$REPO_DIR/testing"
+# date | tee "$REPO_DIR/testing"
 
 # Commit
 git add -A
